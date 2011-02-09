@@ -1,0 +1,151 @@
+<PlugIn>
+   <Type name="folder">
+      <MetaData>
+         <UItype>VBUserInterface.AreaUI</UItype>
+         <ShowInMainTree>Yes</ShowInMainTree>
+         <LargeIcon>%apsim%\folder_closed32.png</LargeIcon>
+         <SmallIcon>%apsim%\folder_closed16.png</SmallIcon>
+         <drops>
+            <drop>area</drop>
+            <drop>folder</drop>
+            <drop>simulations</drop>
+            <drop>toolbox</drop>
+         </drops>
+      </MetaData>
+   </Type>
+<Type name="soil">
+  <MetaData>
+    <UItype>VBUserInterface.GenericUI</UItype>
+    <ShowInMainTree>Yes</ShowInMainTree>
+    <LargeIcon>%apsim%\shovel32.bmp</LargeIcon>
+    <SmallIcon>%apsim%\shovel16.bmp</SmallIcon>
+    <drops>
+      <drop>toolbox</drop>
+      <drop>area</drop>
+      <drop>simulation</drop>
+      <drop>folder</drop>
+      <drop>factorial</drop>
+    </drops>
+    <ApsimToSim>
+      [foreach Soil.SoilWat]
+      <component name="[soil.Name] Water" executable="%apsim%\Model\SoilWat.dll"><executable name="%apsim%\Model\SoilWat.dll" version="1.0" /><initdata>
+               [Model SoilWat]
+               <diffus_const>[soil.DiffusConst]</diffus_const><diffus_slope>[soil.DiffusSlope]</diffus_slope><cn2_bare>[soil.CN2Bare]</cn2_bare><cn_red>[soil.CNRed]</cn_red><cn_cov>[soil.CNCov]</cn_cov><salb>[soil.Salb]</salb><SummerCona>[soil.SummerCona]</SummerCona><WinterCona>[soil.WinterCona]</WinterCona><SummerU>[soil.SummerU]</SummerU><WinterU>[soil.WinterU]</WinterU><SummerDate>[soil.SummerDate]</SummerDate><WinterDate>[soil.WinterDate]</WinterDate><dlayer>[soil.Thickness(mm)]</dlayer><sat>[soil.Sat(mm/mm)]</sat><dul>[soil.Dul(mm/mm)]</dul><ll15>[soil.LL15(mm/mm)]</ll15><air_dry>[soil.AirDry(mm/mm)]</air_dry><swcon>[soil.SWCon(0-1)]</swcon><bd>[soil.BD(g/cc)]</bd><sw>[soil.SW(mm/mm)]</sw>
+               [if [soil.MWCon(0-1)]]
+               <mwcon>[soil.MWCon(0-1)]</mwcon>
+               [endif]
+               [if [soil.KS(mm/day)]]
+               <ks>[soil.KS(mm/day)]</ks>
+               [endif]
+               [if [soil.Slope]]
+               <slope>[soil.Slope]</slope>
+               [endif]
+               [if [soil.DischargeWidth]]
+               <discharge_width>[soil.DischargeWidth]</discharge_width>
+               [endif]
+               [if [soil.CatchmentArea]]
+               <catchment_area>[soil.CatchmentArea]</catchment_area>
+               [endif]
+               [if [soil.KLAT]]
+               <klat>[soil.KLAT]</klat>
+               [endif]
+               [if [soil.MaxPond]]
+               <max_pond>[soil.MaxPond]</max_pond>
+               [endif]
+         </initdata></component>
+      [endfor]
+      <component name="[soil.Name] Nitrogen" executable="%apsim%\Model\SoilN.dll"><executable name="%apsim%\Model\SoilN.dll" version="1.0" /><initdata>
+               [Model SoilN]
+               [if "[soil.SoilType]"]
+               <soiltype>[soil.SoilType]</soiltype>
+               [endif]
+               <root_cn>[soil.RootCN]</root_cn><root_wt>[soil.RootWT]</root_wt><soil_cn>[soil.SoilCN]</soil_cn><enr_a_coeff>[soil.EnrACoeff]</enr_a_coeff><enr_b_coeff>[soil.EnrBCoeff]</enr_b_coeff><profile_reduction>off</profile_reduction><oc>[soil.OC(Total %)]</oc><ph>[soil.PH(1:5 water)]</ph><fbiom>[soil.FBIOM(0-1)]</fbiom><finert>[soil.FINERT(0-1)]</finert><no3ppm>[soil.NO3(ppm)]</no3ppm><nh4ppm>[soil.NH4(ppm)]</nh4ppm>
+               [if [soil.Rocks(%)]]
+               <rocks>[soil.Rocks(%)]</rocks>
+               [endif]
+         </initdata></component>
+    </ApsimToSim>         
+  </MetaData>
+</Type>
+   <Type name="SoilWat">
+     <MetaData>
+       <UItype>CSUserInterface.ProfileUI</UItype>
+       <ShowInMainTree>Yes</ShowInMainTree>
+       <SmallIcon>%apsim%\drop16.gif</SmallIcon>
+       <drops>
+         <drop>soil</drop>
+       </drops>
+     </MetaData>
+   </Type>
+   <Type name="Water">
+     <MetaData>
+       <UItype>CSUserInterface.ProfileUI</UItype>
+       <ShowInMainTree>Yes</ShowInMainTree>
+       <SmallIcon>%apsim%\drop16.gif</SmallIcon>
+       <drops>
+         <drop>soil</drop>
+       </drops>
+     </MetaData>
+   </Type>
+   <Type name="SoilOrganicMatter">
+     <MetaData>
+       <UItype>CSUserInterface.ProfileUI</UItype>
+       <ShowInMainTree>Yes</ShowInMainTree>
+       <SmallIcon>%apsim%\SoilOrganicMatter16.png</SmallIcon>
+       <drops>
+         <drop>soil</drop>
+       </drops>
+     </MetaData>
+   </Type>
+   <Type name="Analysis">
+     <MetaData>
+       <UItype>CSUserInterface.ProfileUI</UItype>
+       <ShowInMainTree>Yes</ShowInMainTree>
+       <SmallIcon>%apsim%\potion_red.png</SmallIcon>
+       <drops>
+         <drop>soil</drop>
+       </drops>
+     </MetaData>
+   </Type>
+   <Type name="Sample">
+     <MetaData>
+       <UItype>CSUserInterface.ProfileUI</UItype>
+       <ShowInMainTree>Yes</ShowInMainTree>
+       <SmallIcon>%apsim%\drink_yellow16.png</SmallIcon>
+       <drops>
+         <drop>soil</drop>
+       </drops>
+     </MetaData>
+   </Type>
+   <Type name="SoilCrop">
+     <MetaData>
+       <UItype>CSUserInterface.ProfileUI</UItype>
+       <ShowInMainTree>Yes</ShowInMainTree>
+       <SmallIcon>%apsim%\wheat16.gif</SmallIcon>
+       <drops>
+         <drop>water</drop>
+       </drops>
+     </MetaData>
+   </Type>
+   <Type name="Phosphorus">
+     <MetaData>
+       <UItype>CSUserInterface.ProfileUI</UItype>
+       <ShowInMainTree>Yes</ShowInMainTree>
+       <SmallIcon>%apsim%\phosphorus16.png</SmallIcon>
+       <drops>
+         <drop>soil</drop>
+       </drops>
+     </MetaData>
+   </Type>
+   <Type name="Thickness">
+     <MetaData>
+       <UItype>VBUserInterface.GenericUI</UItype>
+       <ShowInMainTree>Yes</ShowInMainTree>
+       <SmallIcon>%apsim%\thickness16.png</SmallIcon>
+       <drops>
+         <drop>soil</drop>
+         <drop>folder</drop>
+       </drops>
+     </MetaData>
+   </Type>
+</PlugIn>

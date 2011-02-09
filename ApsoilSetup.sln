@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ApsoilSetup", "ApsoilSetup.vdproj", "{5B1EF2E3-4903-4E18-9FE4-CF8751B3D6B8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5B1EF2E3-4903-4E18-9FE4-CF8751B3D6B8}.Debug|Default.ActiveCfg = Debug
+		{5B1EF2E3-4903-4E18-9FE4-CF8751B3D6B8}.Debug|Default.Build.0 = Debug
+		{5B1EF2E3-4903-4E18-9FE4-CF8751B3D6B8}.Release|Default.ActiveCfg = Release
+		{5B1EF2E3-4903-4E18-9FE4-CF8751B3D6B8}.Release|Default.Build.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
