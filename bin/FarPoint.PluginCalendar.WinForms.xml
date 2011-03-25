@@ -1,0 +1,2824 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FarPoint.PluginCalendar.WinForms</name>
+    </assembly>
+    <members>
+        <member name="T:FarPoint.PluginCalendar.WinForms.DaySelectedEventArgs">
+            <summary>
+            Represents the event data for the day-selected event.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.DaySelectedEventArgs.#ctor(System.DateTime,System.DateTime)">
+            <summary>
+            Occurs when the currently selected day changes in the control.
+            </summary>
+            <param name="selectedDate">Returns the selected date</param>
+            <param name="previousDate">Returns the previously selected date</param>
+            <example>
+            <code lang="csharp">
+            private void control_DaySelected(object sender, FarPoint.Win.Input.DaySelectedEventArgs e)
+            {
+            textBox1.Text = Convert.ToString(e.SelectedDate);
+            textBox2.Text = Convert.ToString(e.PreviousDate);
+            }
+            </code>
+            <code lang="vb">
+            Private Sub control_DaySelected(ByVal sender As Object, ByVal e As FarPoint.Win.Input.DaySelectedEventArgs) Handles control.DaySelected
+            TextBox1.Text = e.SelectedDate
+            TextBox2.Text = e.PreviousDate
+            End Sub
+            </code>
+            </example>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.DaySelectedEventArgs.SelectedDate">
+            <summary>
+            Gets the selected day in the control as a DateTime object.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.DaySelectedEventArgs.PreviousDate">
+            <summary>
+            Gets the previously selected day in the control as a DateTime object.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.DaySelectedEventArgs.Cancel">
+            <summary>
+            Gets or sets whether to cancel the event and the selection.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.DaySelectedEventHandler">
+            The delegate that refers to an instance of the DaySelectedEventArgs class.
+            <summary>
+            Represents a defined method that handles the DaySelected event.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.YearChangingEventArgs">
+            <summary>
+            Represents the event data for the year-changing event.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearChangingEventArgs.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Occurs when the current year is changing in the control.
+            </summary>
+            <param name="newYear">Returns the new year</param>
+            <param name="previousYear">Returns the previous year</param>
+            <example>
+            <code lang="csharp">
+            private void control_YearChanging(object sender, FarPoint.Win.Input.YearChangingEventArgs e)
+            {
+            textBox1.Text = Convert.ToString(e.PreviousYear);
+            textBox2.Text = Convert.ToString(e.NewYear);
+            }
+            </code>
+            <code lang="vb">
+            Private Sub control_YearChanging(ByVal sender As Object, ByVal e As FarPoint.Win.Input.YearChangingEventArgs) Handles control.YearChanging
+            TextBox1.Text = e.PreviousYear
+            TextBox2.Text = e.NewYear
+            End Sub
+            </code>
+            </example>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.YearChangingEventArgs.NewYear">
+            <summary>
+            Gets the new year when an action causes the year to change.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.YearChangingEventArgs.PreviousYear">
+            <summary>
+            Gets the previous year when an action causes the year to change.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.YearChangingEventArgs.Cancel">
+            <summary>
+            Gets or sets whether to cancel the event and leave the year unchanged.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.YearChangingEventHandler">
+            The delegate that refers to an instance of the YearChangingEventArgs class.
+            <summary>
+            Represents the method that handles the YearChanging event.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.YearChangedEventArgs">
+            <summary>
+            Represents the event data for the year-changed event.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearChangedEventArgs.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Occurs when the current year changes in the control.
+            </summary>
+            <param name="newYear">Returns the new year</param>
+            <param name="previousYear">Returns the previous year</param>
+            <example>
+            <code lang="csharp">
+            private void control_YearChanged(object sender, FarPoint.Win.Input.YearChangedEventArgs e)
+            {
+            textBox1.Text = Convert.ToString(e.PreviousYear);
+            textBox2.Text = Convert.ToString(e.NewYear);
+            }
+            </code>
+            <code lang="vb">
+            Private Sub control_YearChanged(ByVal sender As Object, ByVal e As FarPoint.Win.Input.YearChangedEventArgs) Handles control.YearChanging
+            TextBox1.Text = e.PreviousYear
+            TextBox2.Text = e.NewYear
+            End Sub
+            </code>
+            </example>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.YearChangedEventArgs.NewYear">
+            <summary>
+            Gets the new year when an action causes the year to change.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.YearChangedEventArgs.PreviousYear">
+            <summary>
+            Gets the previous year when an action causes the year to change.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.YearChangedEventHandler">
+            The delegate that refers to an instance of the YearChangedEventArgs class.
+            <summary>
+            Represents the method that handles the YearChanged event.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.MonthChangingEventArgs">
+            <summary>
+            Represents the event data for the month-changing event.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthChangingEventArgs.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Occurs when the current month is changing in the control.
+            </summary>
+            <param name="newMonth">Returns the new month</param>
+            <param name="previousMonth">Returns the previous month</param>
+            <example>
+            <code lang="csharp">
+            private void control_MonthChanging(object sender, FarPoint.Win.Input.MonthChangingEventArgs e)
+            {
+            textBox1.Text = e.NewMonth.ToString();
+            textBox2.Text = e.PreviousMonth.ToString();
+            }
+            </code>
+            <code lang="vb">
+            Private Sub control_MonthChanging(ByVal sender As Object, ByVal e As FarPoint.Win.Input.MonthChangingEventArgs) Handles control.MonthChanging
+            TextBox1.Text = e.NewMonth
+            TextBox2.Text = e.PreviousMonth
+            End Sub
+            </code>
+            </example>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.MonthChangingEventArgs.NewMonth">
+            <summary>
+            Gets the new month when an action causes the month to change.
+            </summary>	
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.MonthChangingEventArgs.PreviousMonth">
+            <summary>
+            Gets the previous month when an action causes the month to change.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.MonthChangingEventArgs.NewYear">
+            <summary>
+            Gets the new year when an action causes the month to change.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.MonthChangingEventArgs.PreviousYear">
+            <summary>
+            Gets the previous year when an action causes the month to change.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.MonthChangingEventArgs.Cancel">
+            <summary>
+            Gets or sets whether to cancel the event and leave the month unchanged.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.MonthChangingEventHandler">
+            The delegate that refers to an instance of the MonthChangingEventArg class.
+            <summary>
+            Represents the method that handles the MonthChanging event.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.MonthChangedEventArgs">
+            <summary>
+            Represents the event data for the month-changed event.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthChangedEventArgs.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Occurs when the current month changes in the control.
+            </summary>
+            <param name="newMonth">Returns the new month</param>
+            <param name="previousMonth">Returns the previous month</param>
+            <example>
+            <code lang="csharp">
+            private void control_MonthChanged(object sender, FarPoint.Win.Input.MonthChangedEventArgs e)
+            {
+            textBox1.Text = e.NewMonth.ToString();
+            textBox2.Text = e.PreviousMonth.ToString();
+            }
+            </code>
+            <code lang="vb">
+            Private Sub control_MonthChanged(ByVal sender As Object, ByVal e As FarPoint.Win.Input.MonthChangedEventArgs) Handles control.MonthChanging
+            TextBox1.Text = e.NewMonth
+            TextBox2.Text = e.PreviousMonth
+            End Sub
+            </code>
+            </example>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.MonthChangedEventArgs.NewMonth">
+            <summary>
+            Gets the new month when an action causes the month to change.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.MonthChangedEventArgs.PreviousMonth">
+            <summary>
+            Gets the previous month when an action causes the month to change.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.MonthChangedEventHandler">
+            The delegate that refers to an instance of the MonthChangedEventArgs class.
+            <summary>
+            Represents the method that handles the MonthChanged event.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.TimeChangedEventArgs">
+            <summary>
+            Represents the event data for the time-changed event.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.TimeChangedEventArgs.#ctor(System.DateTime)">
+            <summary>
+            Occurs when the current time changes in the control.
+            </summary>
+            <example>
+            <code lang="csharp">
+            /// private void control_TimeChanged(object sender, FarPoint.Win.Input.TimeChangedEventArgs e)
+            {
+            textBox1.Text = e.Time.ToString();
+            }
+            </code>
+            <code lang="vb">
+            Private Sub control_TimeChanged(ByVal sender As System.Object, ByVal e As FarPoint.Win.Input.TimeChangedEventArgs) Handles control.TimeChanged
+            TextBox1.Text = e.Time
+            End Sub
+            </code>
+            </example>
+            <param name="currentTime">Returns the current time value in the control</param>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.TimeChangedEventArgs.Time">
+            <summary>
+            Gets the current time in the control when an action causes the time to change.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.TimeChangedEventArgs.TimeString">
+            <summary>
+            Gets the current time (converted to a long time string) in the control when an action causes the time to change.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.TimeChangedEventArgs.Hour">
+            <summary>
+            Gets the current hour in the control when an action causes the time to change.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.TimeChangedEventArgs.Minute">
+            <summary>
+            Gets the current minute in the control when an action causes the time to change.
+            </summary>    
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.TimeChangedEventArgs.Second">
+            <summary>
+            Gets the current second in the control when an action causes the time to change.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.TimeChangedEventArgs.Millisecond">
+            <summary>
+            Gets the current millisecond in the control when an action causes the time to change.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.TimeChangedEventArgs.Cancel">
+            <summary>
+            Gets or sets whether to cancel the event and leave the time unchanged.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.TimeChangedEventHandler">
+            The delegate that refers to an instance of the TimeChangedEventArgs class.
+            <summary>
+            Represents the method that handles the TimeChanged event.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.AlarmEventArgs">
+            <summary>
+            Represents the event data for the alarm event. 
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.AlarmEventArgs.#ctor(System.DateTime)">
+            <summary>
+            Occurs when the value of the CurrentTime property equals the value of the AlarmTime property.
+            </summary>
+            <example>
+            <code lang="csharp">
+            private void Form1_Load(object sender, System.EventArgs e)
+            {
+            control.AlarmTime = control.CurrentTime.AddSeconds(10);
+            }
+            private void control_Alarm(object sender, FarPoint.Win.Input.AlarmEventArgs e)
+            {
+            MessageBox.Show("Alarm");
+            }
+            </code>
+            <code lang="vb">
+            Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+            control.AlarmTime = control.CurrentTime.AddSeconds(10)
+            End Sub
+            Private Sub control_Alarm(ByVal sender As System.Object, ByVal e As FarPoint.Win.Input.AlarmEventArgs) Handles control.Alarm
+            MessageBox.Show("Alarm")
+            End Sub
+            </code>
+            </example>
+            <param name="alarmTime">Returns the value of the AlarmTime</param>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.AlarmEventArgs.AlarmTime">
+            <summary>
+            Gets the alarm time set for the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.AlarmEventArgs.AlarmTimeString">
+            <summary>
+            Gets the alarm time(converted to long time string) set for the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.AlarmEventArgs.Hour">
+            <summary>
+            Gets the hour portion of the alarm time set for the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.AlarmEventArgs.Minute">
+            <summary>
+            Gets the minute portion of the alarm time set for the control.
+            </summary>   
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.AlarmEventArgs.Second">
+            <summary>
+            Gets the second portion of the alarm time set for the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.AlarmEventArgs.Millisecond">
+            <summary>
+            Gets the millisecond portion of the alarm time set for the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.AlarmEventArgs.Cancel">
+            <summary>
+            Gets or sets whether to cancel the event and not trigger the alarm.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.AlarmEventHandler">
+            The delegate that refers to an instance of the AlarmEventArgs class.
+            <summary>
+            Represents the method that handles the FpClock Alarm event.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.AnalogHandStyle">
+            <summary>
+            Specifies the type of hands to display in an FpClock control.
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.AnalogHandStyle.Default">
+            <summary>
+            Uses standard hour, minute, and second hands 
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.AnalogHandStyle.Custom">
+            <summary>
+            Uses custom hour, minute, and second hands as determined by the GraphicsPath and PointF classes
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.AnalogHandStyle.Circles">
+            <summary>
+            Uses circles as the hour, minute, and second hands 
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.AnalogHandStyle.Arrows">
+            <summary>
+            Uses arrows as the hour, minute, and second hands 
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.AnalogHandStyle.Diamonds">
+            <summary>
+            Uses diamonds as the hour, minute, and second hands 
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.AnalogHandStyle.Elaborate">
+            <summary>
+            Uses an elaborate design for the hour, minute, and second hands 
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.ClockStyle">
+            <summary>
+            Specifies the type of clock to display in a FarPoint clock control.
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.ClockStyle.Font">
+            <summary>
+            (0) Displays clock with the standard settings as specified in the Windows Control Panel
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.ClockStyle.Digital">
+            <summary>
+            Displays clock with LCD-type digits
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.ClockStyle.Analog">
+            <summary>
+            Displays clock as a traditional analog clock face with hour, minute, and second hands
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.AllowMoveHands">
+            <summary>
+            Specifies the way that user interaction moves the clock hands in a FarPoint clock control.
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.AllowMoveHands.None">
+            <summary>
+            (Default)Does not move the clock hands when the user clicks on them with the mouse
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.AllowMoveHands.LeftMouseButton">
+            <summary>
+            Moves clock hands when the user clicks on them with the left mouse button down
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.AllowMoveHands.RightMouseButton">
+            <summary>
+            Moves clock hands when the user clicks on them with the right mouse button down
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.AllowMoveHands.MiddleMouseButton">
+            <summary>
+            Moves clock hands when the user clicks on them with the middle mouse button down
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.ClockMode">
+            <summary>
+            Specifies the type of mode to use in a FarPoint clock control.
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.ClockMode.Regional">
+            <summary>
+            (0) Uses the regional settings in the Windows Control Panel
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.ClockMode.TwelveHour">
+            <summary>
+            Calculates the time as a 12-hour clock
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.ClockMode.TwentyFourHour">
+            <summary>
+            Calculates the time as a 24-hour clock
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.ClockMode.StopWatch">
+            <summary>
+            Supports time from 0 to 99 hours
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.ClockFace">
+            <summary>
+            Specifies the number and type of numerals to display in an analog FarPoint clock control.
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.ClockFace.NoNumbers">
+            <summary>
+            (Default) Does not display numerals in the analog clock face
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.ClockFace.AllArabic">
+            <summary>
+            Displays the Arabic numerals 1,2,3,...,12 in the analog clock face
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.ClockFace.Every3Arabic">
+            <summary>
+            Displays the Arabic numerals 3,6,9,12 in the analog clock face
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.ClockFace.AllRoman">
+            <summary>
+            Displays the Roman numerals I,II,III,...,XII in the analog clock face
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.ClockFace.Every3Roman">
+            <summary>
+            Displays the Roman numerals III,VI,IX,XII in the analog clock face
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.ClockHandShadow">
+            <summary> 
+            Specifies the direction of light cast (and thus how shadow appears) 
+            in an analog FarPoint clock control.
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.ClockHandShadow.LowerRight">
+            <summary>
+            Light source appears to come from the upper left; shadows display below and to the right of the clock hands
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.ClockHandShadow.LowerLeft">
+            <summary>
+            Light source appears to come from the upper right; shadows display below and to the left of the clock hands
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.ClockHandShadow.UpperRight">
+            <summary>
+            Light source appears to come from the lower right; shadows display above and to the left of the clock hands
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.ClockHandShadow.UpperLeft">
+            <summary>
+            Light source appears to come from the lower left; shadows display above and to the right of the clock hands
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.FpClock">
+            The main class for the FpClock control, which lets the user display and manipulate time values.
+            <summary>
+            Represents a FarPoint clock control that displays a customizable clock interface 
+            and allows time value selections.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.#ctor(System.Boolean)">
+            <summary>
+            Creates a new FarPoint clock control with the option of whether to automatically start the timer.
+            </summary>
+            <param name="autoStartTimer">Whether to automatically start the timer</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.#ctor">
+            <summary>
+            Creates a new FarPoint clock control. 
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.#ctor(FarPoint.PluginCalendar.WinForms.ClockStyle)">
+            <summary>
+            Creates a new FarPoint clock control with the specified clock style.
+            </summary>
+            <param name="style">Specified clock style (how the clock is displayed)</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.Clone">
+            <summary>
+            Internal use only. 
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ResetBorder">
+            <summary>
+            Resets the border for the control to its default settings.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.Reset">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.OnMouseUp(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.OnMouseMove(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.OnMouseDown(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ClockSetByCapture(System.Int32)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.OnTimerElapsed(System.Object,System.Timers.ElapsedEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.GetFont">
+            <summary>
+            Gets the current font used in the control.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ShouldSerializeHourHandFillColor">
+            <summary>
+            Indicates whether the HourHandFillColor property should be persisted.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ResetHourHandFillColor">
+            <summary>
+            Resets the HourHandFillColor property to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ShouldSerializeMinuteHandFillColor">
+            <summary>
+            Indicates whether the MinuteHandFillColor property should be persisted.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ResetMinuteHandFillColor">
+            <summary>
+            Resets the MinuteHandFillColor property to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ShouldSerializeSecondHandFillColor">
+            <summary>
+            Indicates whether the SecondHandFillColor property should be persisted.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ResetSecondHandFillColor">
+            <summary>
+            Resets the SecondHandFillColor property to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ShouldSerializeHourHandOutlineColor">
+            <summary>
+            Indicates whether the HourHandOutlineColor property should be persisted.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ResetHourHandOutlineColor">
+            <summary>
+            Resets the HourHandOutlineColor property to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ShouldSerializeMinuteHandOutlineColor">
+            <summary>
+            Indicates whether the MinuteHandOutlineColor property should be persisted.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ResetMinuteHandOutlineColor">
+            <summary>
+            Resets the MinuteHandOutlineColor property to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ShouldSerializeSecondHandOutlineColor">
+            <summary>
+            Indicates whether the SecondHandOutlineColor property should be persisted.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ResetSecondHandOutlineColor">
+            <summary>
+            Resets the SecondHandOutlineColor property to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ResetHandShadowColor">
+            <summary>
+            Resets the HandShadowColor property to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ShouldSerializeTickFillColor">
+            <summary>
+            Indicates whether the TickFillColor property should be persisted.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ResetTickFillColor">
+            <summary>
+            Resets the TickFillColor property to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ShouldSerializeTickShadowColor">
+            <summary>
+            Indicates whether the TickShadowColor property should be persisted.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ResetTickShadowColor">
+            <summary>
+            Resets the TickShadowColor property to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.ClearAlarmTime">
+            <summary>
+            Clears the alarm set for the control.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.OnSizeChanged(System.EventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.GetAdjustedString">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.OnFontChanged(System.EventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.AdjustClientArea">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.AdjustClientArea(System.Boolean)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.PaintTextAndPicture(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.PaintFocusRectangle(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.OnPaint(System.Windows.Forms.PaintEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.PaintBorder(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.PaintClock(System.Windows.Forms.PaintEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.StateNotify(System.Object)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.OnAlarm(FarPoint.PluginCalendar.WinForms.AlarmEventArgs)">
+            <summary>
+            Raises the Alarm event.
+            </summary>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.OnTimeChanged(FarPoint.PluginCalendar.WinForms.TimeChangedEventArgs)">
+            <summary>
+            Raises the TimeChanged event.
+            </summary>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.CalcDiffAngle(System.Double,System.Double)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.CalcMouseAngle(System.Int32,System.Int32,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.CalcAngle(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.CalcPoint(System.Double,System.Double,System.Drawing.PointF,System.Drawing.PointF@)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.CalcTick(System.Double,System.Int32,System.Int32,System.Drawing.PointF,System.Drawing.Rectangle@)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.CalcClockDim(System.Drawing.Graphics,System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.PaintHands(System.Drawing.Graphics,System.Int32,System.Drawing.Point)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.GetScaleFactor(System.Int32,System.Single@,System.Single@)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.PaintStatic(System.Drawing.Graphics,System.Int32,System.Drawing.Point,System.Int32,System.Int32)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.PaintTick(System.Drawing.Graphics,System.Double,System.Int32,System.Drawing.PointF,System.Int32,System.Drawing.Pen,System.Drawing.SolidBrush)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.PaintText(System.Drawing.Graphics,System.Double,System.Int32,System.Drawing.PointF,System.String,System.Drawing.SolidBrush)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.LcdDrawTime(System.Drawing.Graphics)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.LcdDrawNumber(System.Drawing.Graphics,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpClock.LcdDrawColon(System.Drawing.Graphics,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="E:FarPoint.PluginCalendar.WinForms.FpClock.TimeChanged">
+            <summary>
+            Occurs when the time in the control changes.
+            </summary>
+        </member>
+        <member name="E:FarPoint.PluginCalendar.WinForms.FpClock.Alarm">
+            <summary>
+            Occurs when an alarm goes off in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.Region">
+            <summary>
+            Gets or sets the region of the control if the AnalogFaceOnly property is set to True.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.AnalogHandStyle">
+            <summary>
+            Gets or sets the type of hands to display for an analog control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.Interval">
+            <summary>
+            Gets or sets the interval between timer events and clock time updates.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.AnalogFaceOnly">
+            <summary>
+            Gets or sets whether the area of the control outside the analog face is transparent.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.CustomHourHand">
+            <summary>
+            Gets or sets the GraphicsPath used to construct a custom hour hand for the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.CustomMinuteHand">
+            <summary>
+            Gets or sets the GraphicsPath used to construct a custom minute hand for the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.CustomSecondHand">
+            <summary>
+            Gets or sets the GraphicsPath used to construct a custom second hand for the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.Border">
+            <summary>
+            Gets or sets the border for the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.HandShadowOffset">
+            <summary>
+            Gets or sets the number of pixels to offset the drop shadows displayed for the clock hands on an analog control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.AllowMoveHands">
+            <summary>
+            Gets or sets whether the user can change the time on an analog clock by dragging and dropping the hands.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.TickFill">
+            <summary>
+            Gets or sets whether the tick marks on an analog clock face are filled (solid).
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.ShowHourTicks">
+            <summary>
+            Gets or sets whether an analog clock face displays hour tick marks.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.ShowMinuteTicks">
+            <summary>
+            Gets or sets whether an analog clock face displays minute tick marks.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.LeadZero">
+            <summary>
+            Gets or sets whether the time value in a default or digital control displays a leading zero.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.HandShadowFill">
+            <summary>
+            Gets or sets whether the drop shadows displayed for the hands on an analog control are filled (solid).
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.HourHandFillColor">
+            <summary>
+            Gets or sets the color to used to fill the hour hand.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.MinuteHandFillColor">
+            <summary>
+            Gets or sets the color used to fill the minute hand.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.SecondHandFillColor">
+            <summary>
+            Gets or sets the color used to fill the second hand.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.HourHandOutlineColor">
+            <summary>
+            Gets or sets the color used to outline the hour hand in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.MinuteHandOutlineColor">
+            <summary>
+            Gets or sets the color used to outline the minute hand in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.SecondHandOutlineColor">
+            <summary>
+            Gets or sets the color used to outline the second hand in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.HourHandFill">
+            <summary>
+            Gets or sets whether the hour hand is filled (solid) in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.MinuteHandFill">
+            <summary>
+            Gets or sets whether the minute hand is filled (solid) in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.SecondHandFill">
+            <summary>
+            Gets or sets whether the second hand is filled (solid) in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.HandShadowColor">
+            <summary>
+            Gets or sets the color of the drop shadows displayed for the hands on an analog control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.TickFillColor">
+            <summary>
+            Gets or sets the fill color of the tick marks on an analog control face.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.TickShadowColor">
+            <summary>
+            Gets or sets the shadow color of the tick marks on an analog control face.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.ClockFace">
+            <summary>
+            Gets or sets whether an analog control face displays Roman numerals, Arabic numerals, or no numerals.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.RightToLeft">
+            <summary>
+            Internal use only.
+            Gets or sets whether the text appears from right to left in the edit control
+            (as when using Hebrew or Arabic fonts).
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.Enabled">
+            <summary>
+            Gets or sets whether the control can receive focus and respond to user actions. 
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.AlarmTime">
+            <summary>
+            Gets or sets the alarm time in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.CurrentTime">
+            <summary>
+            Gets or sets the current time in the control.
+            </summary>   
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.StartTime">
+            <summary>
+            Gets or sets the start time in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.ElapsedTime">
+            <summary>
+            Gets the difference between the start time and the current time in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.Hour">
+            <summary>
+            Gets or sets the hour portion of the time value in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.Minute">
+            <summary>
+            Gets or sets the minute portion of the time value in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.Second">
+            <summary>
+            Gets or sets the second portion of the time value in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.Millisecond">
+            <summary>
+            Gets or sets the millisecond portion of the time value in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.HandShadowPosition">
+            <summary>
+            Gets or sets the position of the hand shadow in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.ShowSeconds">
+            <summary>
+            Gets or sets whether the seconds portion of the time value is displayed or, in an analog clock, if the second hand is displayed.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.AutoStart">
+            <summary>
+            Gets or sets whether the clock automatically starts when it is created.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.ShowAMPM">
+            <summary>
+            Gets or sets whether to append the AM or PM characters to the end of the value in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.TabStop">
+            <summary>
+            Gets and sets whether the user can press the Tab key to move focus to the control. 
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.Text">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.ClockStyle">
+            <summary>
+            Gets or sets the style of clock to use.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.ClockMode">
+            <summary>
+            Gets or sets whether the control keeps time as a 12-hour clock, a 24-hour clock, or a stopwatch. 
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.DrawFocusRectangle">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.PictureMargin">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.TextOrientation">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.AlignHorz">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.AlignVert">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.AlignText">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.TextWrap">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.FaceOffsetBottom">
+            <summary>
+            Gets or sets the offset between the bottom of the control and its clock face.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.FaceOffsetBottomPriv">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.FaceOffsetTop">
+            <summary>
+            Gets or sets the offset between the top of the control and its clock face.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.FaceOffsetTopPriv">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.FaceOffsetLeft">
+            <summary>
+            Gets or sets the offset between the left of the control and its clock face.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.FaceOffsetLeftPriv">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.FaceOffsetRight">
+            <summary>
+            Gets or sets the offset between the right of the control and its clock face.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpClock.FaceOffsetRightPriv">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.IYearChangedNotify">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.IMonthChangedNotify">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.IYearChangingNotify">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.IMonthChangingNotify">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.HeaderStyle">
+            <summary>
+            Specifies the styles to apply to the header.
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.HeaderStyle.Scroll">
+            <summary>
+            (Default) Displays a button on either side of the header to allow scrolling
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.HeaderStyle.DropDown">
+            <summary>
+            Displays a single button that allows the user to select from a list
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.HeaderStyle.StaticNoButtons">
+            <summary>
+            Does not display a button
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.WeekdayDock">
+            <summary>
+            Specifies the locations for docking the weekday display.
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.WeekdayDock.Top">
+            <summary>
+            (Default) Displays the weekdays at the top of the control
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.WeekdayDock.Bottom">
+            <summary>
+            Displays the weekdays at the bottom of the control
+            </summary> 
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.WeekdayDock.Hidden">
+            <summary>
+            Does not display the weekdays
+            </summary> 
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.HeaderDock">
+            <summary>
+            Specifies the locations for docking the specified header.
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.HeaderDock.Top">
+            <summary>
+            (Default) Docks the header at the top of the control
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.HeaderDock.Bottom">
+            <summary>
+            Docks the header at the bottom of the control
+            </summary> 
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.HeaderDock.Left">
+            <summary>
+            Docks the header to the left of the control
+            </summary> 
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.HeaderDock.Right">
+            <summary>
+            Docks the header to the right of the control
+            </summary>  
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.HeaderDock.Hidden">
+            <summary>
+            Hides the header
+            </summary> 
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.SingleLineHeader">
+            <summary>
+            Specifies the order and placement of a single-line header.
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.SingleLineHeader.None">
+            <summary>
+            (Default) Does not display the headers on a single line
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.SingleLineHeader.MonthFirstTop">
+            <summary>
+            Displays the headers on a single line at the top of the control, with the month appearing first
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.SingleLineHeader.MonthFirstBottom">
+            <summary>
+            Displays the headers on a single line at the bottom of the control, with the month appearing first
+            </summary> 
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.SingleLineHeader.YearFirstTop">
+            <summary>
+            Displays the headers on a single line at the top of the control, with the year appearing first
+            </summary> 
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.SingleLineHeader.YearFirstBottom">
+            <summary>
+            Displays the headers on a single line at the bottom of the control, with the year appearing first
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.FpCalendar">
+            <summary>
+            Represents the FarPoint calendar control, which lets the user display or select date values.
+            </summary>
+        </member>
+        <member name="F:FarPoint.PluginCalendar.WinForms.FpCalendar.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.#ctor">
+            <summary>
+            Creates a new calendar control.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.#ctor(System.Boolean)">
+            <summary>
+            Creates a new calendar control with the option of showing the year.
+            </summary>
+            <param name="showYear">Year shown</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.#ctor(System.Object)">
+            <summary>
+            Creates a new calendar control as a copy of another.
+            </summary>
+            <param name="cloneFrom">Object from which to clone</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.Clone">
+            <summary>
+            Internal use only. 
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.AttachMouseEventRouterHandlers">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.AttachDayEvents(FarPoint.PluginCalendar.WinForms.DayElement)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.AttachMonthEvents(FarPoint.PluginCalendar.WinForms.MonthElement)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.AttachYearEvents(FarPoint.PluginCalendar.WinForms.YearElement)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.AttachWeekdaysEvents(FarPoint.PluginCalendar.WinForms.WeekdaysElement)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.AttachEventHandlers(System.Object)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.DetachDayEvents(FarPoint.PluginCalendar.WinForms.DayElement)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.DetachMonthEvents(FarPoint.PluginCalendar.WinForms.MonthElement)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.DetachYearEvents(FarPoint.PluginCalendar.WinForms.YearElement)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.DetachWeekdaysEvents(FarPoint.PluginCalendar.WinForms.WeekdaysElement)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.DetachEventHandlers(System.Object)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.ResetElements">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.Reset">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.Dispose(System.Boolean)">
+            <summary>
+            Cleans up any resources being used.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.GetRecurringDateElement(System.String)">
+            <summary>
+            Gets an instance of a recurring date element.
+            </summary>
+            <param name="recurringDate">Recurring date as a string, for example, "0827"</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.AddRecurringDateElement(FarPoint.PluginCalendar.WinForms.RecurringDateElement)">
+            <summary>
+            Adds a recurring date element to the collection.
+            </summary>
+            <param name="recurringElement">Date that occurs once a year, as a string (for example, "0827")</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.RemoveRecurringDateElement(System.String)">
+            <summary>
+            Removes a recurring date element from the collection.
+            </summary>
+            <param name="recurringDate">Recurring date as a string, for example, "0827"</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.GetSpecificDateElement(System.String)">
+            <summary>
+            Gets an instance of a specific date element.
+            </summary>
+            <param name="recurringDate">Date that occurs only once (not recurring), as a string (for example, "20020827")</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.AddSpecificDateElement(FarPoint.PluginCalendar.WinForms.SpecificDateElement)">
+            <summary>
+            Adds a specific date element to the collection.
+            </summary>
+            <param name="specificElement">Date that occurs only once (not recurring), as a string (for example, "20020827")</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.RemoveSpecificDateElement(System.String)">
+            <summary>
+            Removes a specific date element from the collection.
+            </summary>
+            <param name="specificDate">Specific date as a string, for example, "20020827"</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.GetDayElement(System.Int32)">
+            <summary>
+            Gets the day element based on the index.
+            </summary>
+            <param name="index">Index of the day element (between 1 and 31 inclusive)</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.GetDayElement(System.String)">
+            <summary>
+            Gets the day element based on the index.
+            </summary>
+            <param name="dayIndex">Index of the day element, as a string (between "1" and "31" inclusive)</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.GetMonthElement">
+            <summary>
+            Gets the month element for the control.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.GetYearElement">
+            <summary>
+            Gets the year element for the control.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.GetWeekdaysElement">
+            <summary>
+            Gets the weekdays element for the control.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.GetSelectionStyle">
+            <summary>
+            Gets the style that determines how selected elements are represented.
+            </summary>
+            Gets the ElementStyle object that determines how selected days are represented.
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.ShouldSerializeSurroundingDaysForeColor">
+            <summary>
+            Indicates whether the color of the days surrounding the current calendar should be persisted.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.ResetSurroundingDaysForeColor">
+            <summary>
+            Resets the color of the days surrounding the current calendar to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.ResetDefaultElementFont">
+            <summary>
+            Resets the default font of the calendar elements to initial value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.ResetDefaultElementForeColor">
+            <summary>
+            Resets the default text color of the calendar elements to initial value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.ResetDefaultElementBackColor">
+            <summary>
+            Resets the default back color of the calendar elements to initial value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.ResetFirstDayOfWeek">
+            <summary>
+            Resets the first day of the week to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.ResetDayNames">
+            <summary>
+            Resets the day names to their default values. 
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.GetDayNames">
+            <summary>
+            Gets the day names. 
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.GetDayName(System.Int32)">
+            <summary>
+            Gets the day name at the specified index. 
+            </summary>
+            <param name="index">Index for the day name (between 0 and 6 inclusive)</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.ResetMonthNames">
+            <summary>
+            Resets the month names to their default values. 
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.GetMonthNames">
+            <summary>
+            Gets the month names. 
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.GetMonthName(System.Int32)">
+            <summary>
+            Gets the month name at the specified index. 
+            </summary>
+            <param name="index">Index for the month name (between 0 and 11 inclusive)</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.Sync">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnGotFocus(System.EventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnLostFocus(System.EventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnSizeChanged(System.EventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnPaint(System.Windows.Forms.PaintEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.AdjustClientArea">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.SetDayElementBounds">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.ToggleState">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.IsDaySelected(System.Int32)">
+            <summary>
+            Gets whether the specified day on the calendar is selected.
+            </summary>
+            <param name="d">Integer number for day on the calendar</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.IsDaySelected(FarPoint.PluginCalendar.WinForms.DayElement)">
+            <summary>
+            Gets whether the specified day on the calendar is selected. 
+            </summary>
+            <param name="d">DayElement object containing the day to check </param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.SetElementBounds(System.Drawing.Rectangle,System.Boolean)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.PaintTextAndPicture(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.PaintFocusRectangle(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.PaintSurroundingDays(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.PaintSpecialBackground(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.PaintIndividualDay(FarPoint.PluginCalendar.WinForms.DayElement,System.Boolean)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.PaintElements(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.DateIsValid(System.DateTime)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.Select(System.DateTime,System.Boolean)">
+            <summary>
+            Select a specific date in the control.
+            </summary>
+            <param name="specificDate">Date to select in the control based on a DateTime structure</param>
+            <param name="selected">Value that determines if selection occurs (true to select or false to deselect)</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.Select(System.Int32,System.Boolean)">
+            <summary>
+            Select a specific date in the control.
+            </summary>
+            <param name="visibleDay">Date to select in the control based on its visiblity</param>
+            <param name="selected">Value that determines if selection occurs (true to select or false to deselect)</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.LoadBasicElements">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnDayVisibleChanged(System.Object,System.EventArgs)">
+            <summary>
+            Processes VisibleChanged events that occur in days.
+            </summary>
+            <param name="sender">Object that sent event</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.ProcessDialogKey(System.Windows.Forms.Keys)">
+            <summary>
+            Processes the specified dialog key by the control.
+            </summary>
+            <param name="keyData">Key for the control to process</param>
+            <returns>true if the key was processed by the control; false otherwise</returns>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnKeyDown(System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.ChangeSelectedDay(System.Object)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.ChangeFocusDay(System.Object)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnMouseRouterDoubleClick(System.Object,System.EventArgs)">
+            <summary>
+            Processes DoubleClick events that occur in the generic mouse event router.
+            </summary>
+            <param name="sender">Object that raised the event</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnMouseRouterClick(System.Object,System.EventArgs)">
+            <summary>
+            Processes Click events that occur in generic mouse event router.
+            </summary>
+            <param name="sender">Object that raised the event</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnMouseRouterMouseUp(System.Object,System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Processes MouseUp events that occur in generic mouse event router.
+            </summary>
+            <param name="sender">Object that raised the event</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnMouseRouterMouseDown(System.Object,System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Processes MouseDown events that occur in generic mouse event router.
+            </summary>
+            <param name="sender">Object that raised the event</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnYearFontChanged(System.Object,System.EventArgs)">
+            <summary>
+            Processes FontChanged events that occur in year header.
+            </summary>
+            <param name="sender">Object that raised the event</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnMonthFontChanged(System.Object,System.EventArgs)">
+            <summary>
+            Processes FontChanged events that occur in month header.
+            </summary>
+            <param name="sender">Object that raised the event</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnWeekdaysFontChanged(System.Object,System.EventArgs)">
+            <summary>
+            Processes FontChanged events that occur in weekdays header.
+            </summary>
+            <param name="sender">Object that raised the event</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnDayLostFocus(System.Object,System.EventArgs)">
+            <summary>
+            Processes Focus events that occur in days.
+            </summary>
+            <param name="sender">Object that raised the event</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnClick(System.EventArgs)">
+            <summary>
+            Processes Click event.
+            </summary>
+            <param name="sender">Object that raised the event</param>
+            <param name="e">Event arguments</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.GetElementUnderMouse">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.YearChangingNotify(System.Object,System.Int32,System.Int32)">
+            <summary>
+            Used internally by the control when the year is changing
+            </summary>
+            <param name="o">YearElement object</param>
+            <param name="newYear">Newly selected year</param>
+            <param name="previousYear">Previously selected year</param>
+            <returns ></returns>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.MonthChangingNotify(System.Object,System.Int32,System.Int32)">
+            <summary>
+            Used internally by the control when the month is changing
+            </summary>
+            <param name="o">Calendar object</param>
+            <param name="newMonth">Newly selected month</param>
+            <param name="previousMonth">Previously selected month</param>
+            <returns ></returns>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.MonthChangedNotify(System.Object,System.Int32,System.Int32)">
+            <summary>
+            Used internally by the control when the month has changed.
+            </summary>
+            <param name="o">Calendar object</param>
+            <param name="newMonth">Newly selected month</param>
+            <param name="previousMonth">Previously selected month</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.YearChangedNotify(System.Object,System.Int32,System.Int32)">
+            <summary>
+            Used internally by the control when the year has changed.
+            </summary>
+            <param name="o">Calendar object</param>
+            <param name="newYear">Newly selected year</param>
+            <param name="previousYear">Previously selected year</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.ElementNotify(System.Object,System.Object)">
+            <summary>
+            Notifies one of the control's Elements collection is being added to or removed from.
+            </summary>
+            <param name="o">Collection that notifies</param>
+            <param name="element">Element that was added/removed</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.StateNotify(System.Object)">
+            <summary>
+            Occurs when one of the element's state has changed.
+            </summary>
+            <param name="o">Element whose state has changed</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnDaySelected(FarPoint.PluginCalendar.WinForms.DaySelectedEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnYearChanging(FarPoint.PluginCalendar.WinForms.YearChangingEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnMonthChanging(FarPoint.PluginCalendar.WinForms.MonthChangingEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnYearChanged(FarPoint.PluginCalendar.WinForms.YearChangedEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.FpCalendar.OnMonthChanged(FarPoint.PluginCalendar.WinForms.MonthChangedEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="E:FarPoint.PluginCalendar.WinForms.FpCalendar.DaySelected">
+            <summary>
+            Occurs when a day is selected in the control.
+            </summary>
+        </member>
+        <member name="E:FarPoint.PluginCalendar.WinForms.FpCalendar.YearChanging">
+            <summary>
+            Occurs when the year in the control is changing.
+            </summary>
+        </member>
+        <member name="E:FarPoint.PluginCalendar.WinForms.FpCalendar.MonthChanging">
+            <summary>
+            Occurs when the month in the control is changing.
+            </summary>
+        </member>
+        <member name="E:FarPoint.PluginCalendar.WinForms.FpCalendar.YearChanged">
+            <summary>
+            Occurs when the year in the control has changed.
+            </summary>
+        </member>
+        <member name="E:FarPoint.PluginCalendar.WinForms.FpCalendar.MonthChanged">
+            <summary>
+            Occurs when the month in the control has changed.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.SelectedDates">
+            <summary>
+            Gets a collection of selected dates. 
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.Elements">
+            <summary>
+            Gets or sets a collection of calendar elements.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.Days">
+            <summary>
+            Gets all day elements in the collection. 
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.RecurringDates">
+            <summary>
+            Gets all recurring date elements in the collection. 
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.SpecificDates">
+            <summary>
+             Gets all specific dates in the collection. 
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.AllElements">
+            <summary>
+            Gets all elements in the collection. 
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.Border">
+            <summary>
+            Gets or sets the border for the different elements in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.MonthHeaderStyle">
+            <summary>
+            Gets or sets the style for the month header.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.YearHeaderStyle">
+            <summary>
+            Gets or sets the style for the year header.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.ShowSurroundingDays">
+            <summary>
+            Gets or sets whether the days surrounding the current calendar are visible.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.SurroundingDaysForeColor">
+            <summary>
+            Gets or sets the color of the days surrounding the current calendar.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.Font">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.ForeColor">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.DefaultElementFont">
+            <summary>
+            Gets or sets the default font of the calendar elements.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.DefaultElementBackColor">
+            <summary>
+            Gets or sets the default back color of the calendar elements.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.DefaultElementForeColor">
+            <summary>
+            Gets or sets the default text color of the calendar elements.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.DefaultHeaderHeight">
+            <summary>
+            Gets or sets the default header height for month, year, and weekday headers.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.MonthHeaderHeight">
+            <summary>
+            Gets or sets the month header height.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.YearHeaderHeight">
+            <summary>
+            Gets or sets the year header height.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.WeekdayHeaderHeight">
+            <summary>
+            Gets or sets the weekday header height.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.MultiSelect">
+            <summary>
+            Gets or sets whether the user can select more than one date in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.Month">
+            <summary>
+            Gets or sets the month displayed in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.MonthPriv">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.Year">
+            <summary>
+            Gets or sets the year displayed in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.YearPriv">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.RightToLeft">
+            <summary>
+            Gets or sets whether the text appears from right to left in the edit control
+            (as when using Hebrew or Arabic fonts).
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.Text">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.MonthDock">
+            <summary>
+            Gets or sets the position of the month header in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.YearDock">
+            <summary>
+            Gets or sets the position of the year header in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.SingleLineHeader">
+            <summary>
+            Gets or sets the position and style of a single line header in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.WeekdayDock">
+            <summary>
+            Gets or sets the position of the weekdays in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.DateMax">
+            <summary>
+            Gets or the sets the maximum date for the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.DateMin">
+            <summary>
+            Gets or the sets the minimum date for the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.CurrentDate">
+            <summary>
+            Gets or sets the current selected date for the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.FirstDayOfWeek">
+            <summary>
+            Gets or sets the day used as the first day of the week.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.LastSelectedMonth">
+            <summary>
+            Gets the month for the last selected date in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.LastSelectedDay">
+            <summary>
+            Gets the day for the last selected date in the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.LastSelectedYear">
+            <summary>
+            Gets the year for the last selected date in the control.
+            </summary> 
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.LastSelectedWeekday">
+            <summary>
+            Gets the weekday for the last selected date in the control.
+            </summary>  
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.Picture">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.PictureMargin">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.PictureOrientation">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.PictureTransparencyColor">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.TextOrientation">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.AlignHorz">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.AlignVert">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.AlignText">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.TextWrap">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.DayNames">
+            <summary>
+            Gets or sets alternate day names for the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.FpCalendar.MonthNames">
+            <summary>
+            Gets or sets alternate month names for the control.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MouseEventRouter.Refresh">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MouseEventRouter.Update">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MouseEventRouter.DoMouseDown(System.Object,System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Mouse down processing.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MouseEventRouter.DoMouseUp(System.Object,System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Mouse up processing.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MouseEventRouter.DoClick(System.Object,System.EventArgs)">
+            <summary>
+            Click processing.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MouseEventRouter.DoDoubleClick(System.Object,System.EventArgs)">
+            <summary>
+            DoubleClick processing.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.ElementEnumerators">
+            <summary>
+            Enumerators for the type of element to retrieve from the Elements collection.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.CalendarElements">
+            <summary>
+            Class that creates a collection representing the calendar elements.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.CalendarElements.#ctor">
+            <summary>
+            Creates a collection representing the calendar elements.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.CalendarElements.FindVisibleDay(System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Finds an element in the collection that matches the specified name.
+            </summary>
+            <param name="year">Year of the element sought</param>
+            <param name="month">Month of the element sought</param>
+            <param name="day">Day of the element sought</param>
+            <param name="findExact"></param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.CalendarElements.Add(System.Object,System.Boolean)">
+            <summary>
+            Adds a calendar element to the collection and returns its index.
+            </summary>
+            <param name="e">Element to add to the collection</param>
+            <param name="noClone">Whether to clone this element from the instance of another</param>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.CalendarElements.ControlElements">
+            <summary>
+            Exposes the enumerator, which supports a simple iteration over a collection.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.CalendarElements.Days">
+            <summary>
+            Exposes the enumerator, which supports a simple iteration over a collection.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.CalendarElements.RecurringDates">
+            <summary>
+            Exposes the enumerator, which supports a simple iteration over a collection.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.CalendarElements.SpecificDates">
+            <summary>
+            Exposes the enumerator, which supports a simple iteration over a collection.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.CalendarElements.All">
+            <summary>
+            Exposes the enumerator, which supports a simple iteration over a collection.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.CalendarElements.DaysEnum">
+            ======================================================================================================
+             <summary>
+             Internal use only.
+             </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.CalendarElements.DaysEnum.GetEnumerator">
+            <summary>
+            Internal use only.
+            </summary>
+            <returns>Enumerated day</returns>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.CalendarElements.RecurringDatesEnum.GetEnumerator">
+            <summary>
+            Internal use only.
+            </summary>
+            <returns>Recurring days</returns>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.CalendarElements.SpecificDatesEnum.GetEnumerator">
+            <summary>
+            Internal use only.
+            </summary>
+            <returns>Specific days</returns>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.CalendarElements.AllElementsEnum.#ctor(FarPoint.Win.Elements)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.CalendarElements.AllElementsEnum.GetEnumerator">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.CalendarElements.CalendarElementEnumerator">
+            <summary>
+            Internal use only. 
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.CalendarElements.CalendarElementEnumerator.MoveNext">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.CalendarElements.CalendarElementEnumerator.Current">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.RecurringDateElement">
+            ==========================================================================================
+             <summary>
+             Represents a recurring date element, which can be used to modify a date that recurs 
+             once a year in a FarPoint calendar control. 
+             </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.DayElement">
+            <summary>
+            Represents a day element, which can be used to modify a day
+            that occurs in a FarPoint calendar control.
+            </summary>  
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.DayElement.#ctor">
+            <summary>
+            Creates a new day element.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.DayElement.ResetBackColor">
+            <summary>
+            Resets the background color of the element to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.DayElement.ResetForeColor">
+            <summary>
+            Resets the text color of the element to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.DayElement.Clone">
+            <summary>
+            Internal use only. 
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.DayElement.Refresh">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.DayElement.OnMouseUp(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.DayElement.GetDefaultElementStyle">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.DayElement.PaintBackColor(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.DayElement.PaintTextAndPicture(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.DayElement.PaintFocusRectangle(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.DayElement.OnGotFocus(System.EventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.DayElement.Day">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.DayElement.BackColor">
+            <summary>
+            Gets or sets the background color for the element.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.DayElement.ForeColor">
+            <summary>
+            Gets or sets the text color for the element.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.RecurringDateElement.#ctor(System.String)">
+            <summary>
+            Creates a new recurring date element. 
+            </summary>
+            <param name="recurringDate">Date designated to recur</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.RecurringDateElement.#ctor(System.Object)">
+            <summary>
+            Creates a cloned recurring date element.
+            </summary>
+            <param name="cloneFrom">Recurring date element from which to clone the new element</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.RecurringDateElement.Clone">
+            <summary>
+            Internal use only. 
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.RecurringDateElement.Visible">
+            <summary>
+            Gets whether the recurring date is visible.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.RecurringDateElement.Name">
+            <summary>
+            Gets the name of the recurring date element.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.RecurringDateElement.RecurringDate">
+            <summary>
+            Gets the recurring date value of the element.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.RecurringDateElement.Month">
+            <summary>
+            Gets the month for the recurring date value.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.RecurringDateElement.Day">
+            <summary>
+            Gets the day for the recurring date value.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.SpecificDateElement">
+            ==========================================================================================
+             <summary>
+             Represents a specific date element, which can be used to modify a date that occurs 
+             once in time in a FarPoint calendar control.
+             </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.SpecificDateElement.#ctor(System.String)">
+            <summary>
+            Creates a new specific date element.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.SpecificDateElement.#ctor(System.Object)">
+            <summary>
+            Creates a cloned specific date element.
+            </summary>
+            <param name="cloneFrom">Object from which to clone the new date element</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.SpecificDateElement.Clone">
+            <summary>
+            Internal use only. 
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.SpecificDateElement.Visible">
+            <summary>
+            Gets whether a specific date element is visible.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.SpecificDateElement.Name">
+            <summary>
+            Gets the name of the specific date element.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.SpecificDateElement.SpecificDate">
+            <summary>
+            Gets the specific date of the element as a DateTime object.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.SpecificDateElement.Year">
+            <summary>
+            Gets the year of the specific date elelment.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.SpecificDateElement.Month">
+            <summary>
+            Gets the month of the specific date element.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.SpecificDateElement.Day">
+            <summary>
+            Gets the day of the specific date element.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.YearElement">
+            <summary>
+            Represents a year element, which can be used to modify a year 
+            in a FarPoint calendar control.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.#ctor">
+            <summary>
+            Creates a new year element.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.#ctor(System.String)">
+            <summary>
+            The year of the current Year Element.
+            </summary>
+            <param name="year">Year</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.#ctor(System.Object)">
+            <summary>
+            Creates a new year element by cloning another.
+            </summary>
+            <param name="cloneFrom">Object from which to clone</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.Reset">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.GetDropDownItemStyle">
+            <summary>
+            Gets the style for the drop-down items for the element.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.ResetBackColor">
+            <summary>
+            Resets the background color of the element to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.ResetForeColor">
+            <summary>
+            Resets the text color of the element to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.PaintBackColor(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.PaintTextAndPicture(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.ShowList(System.Boolean)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.OnDDYearKeyDown(System.Object,System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.OnDDYearApply(System.Object,System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.OnDropDoubleClick(System.Object,System.EventArgs)">
+            <summary>
+            Processes doubleclick events that occur in the drop-down button as two click events.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.OnDropClick(System.Object,System.EventArgs)">
+            <summary>
+            Processes click events that occur in the drop-down button.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.OnScrollDoubleClick(System.Object,System.EventArgs)">
+            <summary>
+            Processes doubleclick events that occur in scroll buttons as two click events.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.ScrollUpProc">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.ScrollDownProc">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.OnScrollMouseDown(System.Object,System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Processes click events that occur in scroll buttons.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.ToggleState">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.Clone">
+            <summary>
+            Internal use only. 
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.AddYearChangingNotify(FarPoint.PluginCalendar.WinForms.IYearChangingNotify)">
+            <summary>
+            Internal use only.
+            </summary>
+            <param name="target"></param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.RemoveYearChangingNotify(FarPoint.PluginCalendar.WinForms.IYearChangingNotify)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.RemoveYearChangedNotify(FarPoint.PluginCalendar.WinForms.IYearChangedNotify)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.FireYearChangingNotify">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.YearElement.FireYearChangedNotify">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.YearElement.Text">
+            <summary>
+            Gets or sets the text for the element.
+            </summary>    
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.YearElement.Year">
+            <summary>
+            Gets or sets the year value for the control.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.YearElement.YearPriv">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.YearElement.ButtonStyle">
+            <summary>
+            Gets or sets the button style for the element.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.YearElement.BackColor">
+            <summary>
+            Gets or sets the background color of the element.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.YearElement.ForeColor">
+            <summary>
+            Gets or sets the text color of the element.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.YearElement.YearChangingNotifyList">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.YearElement.YearChangedNotifyList">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.MonthElement">
+            ==========================================================================================
+             <summary>
+             Represents a month element that allows the user to modify the months 
+             in a FarPoint calendar control.
+             </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.#ctor">
+            <summary>
+            Creates a new month element.
+            </summary>  
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.#ctor(System.Int32,System.String)">
+            <summary>
+            Creates a new month element.
+            </summary>
+            <param name="month">Numerical value of the month</param>
+            <param name="monthText">Text for the month</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.#ctor(System.Object)">
+            <summary>
+            Creates a clone from a month element.
+            </summary>
+            <param name="cloneFrom">Object from which to clone the new element</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.Reset">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.ToggleState">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.GetMonthName(System.Int32)">
+            <summary>
+            Gets the month name for a Month Element.
+            </summary>
+            <param name="index">Integer value corresponding to the month (1-12)</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.SetMonthName(System.Int32,System.String)">
+            <summary>
+            Sets the month name for a Month Element.
+            </summary>
+            <param name="index">Integer value corresponding to the month (1-12)</param>
+            <param name="name">String value for the name of the month</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.GetDropDownItemStyle">
+            <summary>
+            Gets the style for drop-down items for the element.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.ResetBackColor">
+            <summary>
+            Resets the background color of the element to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.ResetForeColor">
+            <summary>
+            Resets the text color of the element to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.ShowList(System.Boolean)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.PaintBackColor(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.PaintTextAndPicture(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.OnDDMonthKeyDown(System.Object,System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.OnDDMonthApply(System.Object,System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.OnDropDoubleClick(System.Object,System.EventArgs)">
+            <summary>
+            Processes doubleclick events that occur in the drop-down button as two click events.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.OnDropClick(System.Object,System.EventArgs)">
+            <summary>
+            Processes click events that occur in a drop-down button.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.OnScrollDoubleClick(System.Object,System.EventArgs)">
+            <summary>
+            Processes doubleclick events that occur in scroll buttons as two click events.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.ScrollUpProc">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.ScrollDownProc">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.OnScrollMouseDown(System.Object,System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Processes mousedown events that occur in scroll buttons.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.Clone">
+            <summary>
+            Internal use only. 
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.AddMonthChangedNotify(FarPoint.PluginCalendar.WinForms.IMonthChangedNotify)">
+            <summary>
+            Notification of month changed.
+            </summary>
+            <param name="target"></param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.RemoveMonthChangingNotify(FarPoint.PluginCalendar.WinForms.IMonthChangingNotify)">
+            <summary>
+            Notification to remove month changing.
+            </summary>
+            <param name="target"></param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.RemoveMonthChangedNotify(FarPoint.PluginCalendar.WinForms.IMonthChangedNotify)">
+             <summary>
+            Notification to remove month changed.
+             </summary>
+             <param name="target"></param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.FireMonthChangingNotify">
+            <summary>
+            Notification to fire month changing.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.MonthElement.FireMonthChangedNotify">
+            <summary>
+            Notification to fire month changed.
+            </summary> 
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.MonthElement.Month">
+            <summary>
+            Gets or sets the month for an Month Element.
+            </summary>    
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.MonthElement.MonthPriv">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.MonthElement.Text">
+            <summary>
+            Gets or sets the text for a Month Element.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.MonthElement.ButtonStyle">
+            <summary>
+            Gets or sets the button style for the element.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.MonthElement.BackColor">
+            <summary>
+            Gets or sets the background color of the element.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.MonthElement.ForeColor">
+            <summary>
+            Gets or sets the text color of the element.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.MonthElement.MonthChangingNotifyList">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.MonthElement.MonthChangedNotifyList">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="T:FarPoint.PluginCalendar.WinForms.WeekdaysElement">
+            <summary>
+            Represents a weekday element, which can be used to modify the weekdays 
+            in a FarPoint calendar control.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.WeekdaysElement.#ctor">
+            <summary>
+            Creates a new weekday element.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.WeekdaysElement.#ctor(System.String)">
+            <summary>
+            Creates a new weekday element.
+            </summary>
+            <param name="days">String designating the days</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.WeekdaysElement.#ctor(System.Object)">
+            <summary>
+            Creates a cloned weekday element.
+            </summary>
+            <param name="cloneFrom">Object from which to create the new element</param>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.WeekdaysElement.ResetBackColor">
+            <summary>
+            Resets the background color of the element to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.WeekdaysElement.ResetForeColor">
+            <summary>
+            Resets the text color of the element to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.WeekdaysElement.ResetFirstDayOfWeek">
+            <summary>
+            Resets the first day of the week to its default value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.WeekdaysElement.PaintBackColor(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.WeekdaysElement.PaintTextAndPicture(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.WeekdaysElement.PaintFocusRectangle(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Internal use only.
+            </summary>
+        </member>
+        <member name="M:FarPoint.PluginCalendar.WinForms.WeekdaysElement.Clone">
+            <summary>
+            Internal use only. 
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.WeekdaysElement.Font">
+            <summary>
+            Gets or sets the font for the element.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.WeekdaysElement.BackColor">
+            <summary>
+            Gets or sets the background color of the element.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.WeekdaysElement.ForeColor">
+            <summary>
+            Gets or sets the text color of the element.
+            </summary>
+        </member>
+        <member name="P:FarPoint.PluginCalendar.WinForms.WeekdaysElement.FirstDayOfWeek">
+            <summary>
+            Gets or sets the day used as the first day of the week.
+            </summary>
+        </member>
+    </members>
+</doc>
