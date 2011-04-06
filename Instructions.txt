@@ -1,10 +1,11 @@
 To release Apsoil:
 
 1. Update Release Notes.htm
-2. Recompile the release - ApsoilSetup.sln
-3. Run Create Release.bat
-4. Copy ApsoilSetup.exe to FTP://www.apsim.info//ProductDownload/Files/APSoil
-5. Update the web site: http://www.apsim.info/Wiki/APSoil.ashx
+2. Update the version number in Apsim.xml
+3. Recompile the release - ApsoilSetup.sln
+4. Run Create Release.bat
+5. Copy ApsoilSetup.exe to FTP://www.apsim.info//ProductDownload/Files/APSoil
+6. Update the web site: http://www.apsim.info/Wiki/APSoil.ashx
 
 
 To upload a new .soils file.

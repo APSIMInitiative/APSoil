@@ -94,12 +94,6 @@
         "Entry"
         {
         "MsmKey" = "8:_1828820C509660F5D99A90F7E81B599F"
-        "OwnerKey" = "8:_A2201181F61F4F4ABC5720F929B6F8AA"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_1828820C509660F5D99A90F7E81B599F"
         "OwnerKey" = "8:_3426D3A80DF20213DBB3847D1EA59860"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -131,12 +125,6 @@
         {
         "MsmKey" = "8:_235421D949ED435DA97B44CCFFD83949"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_239271658DBD754BAA6F1451A5E1AD86"
-        "OwnerKey" = "8:_0C67604EBBC69E2C31DE42280F1B6F08"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -351,6 +339,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_6F3E126D90714D8DAA4FAEF347D1BE3C"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_734CAC8DF86F4B45919F528BCD023710"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -519,6 +513,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_94470D7A8520A6C47856CDA4EFC3AE55"
+        "OwnerKey" = "8:_2AC81DD7499BE0A9EDF965C90EBC6091"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_9604A2B040A7D6ABDB715E666C749544"
         "OwnerKey" = "8:_7DEB628C4D1CC696296AC7027DD1CCB6"
         "MsmSig" = "8:_UNDEFINED"
@@ -593,6 +593,12 @@
         {
         "MsmKey" = "8:_A19AF803CB304A7491F76401623E1FCD"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A20472E6D80BD920788FF9256BE45F7E"
+        "OwnerKey" = "8:_0C67604EBBC69E2C31DE42280F1B6F08"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1516,26 +1522,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_239271658DBD754BAA6F1451A5E1AD86"
-            {
-            "SourcePath" = "8:TclControl84.dll"
-            "TargetName" = "8:tclcontrol84.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_DE2E9E812FD946A3B8CF90D18BC68BDC"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2AC81DD7499BE0A9EDF965C90EBC6091"
             {
             "AssemblyRegister" = "3:1"
@@ -2057,7 +2043,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:VBUserInterface, Version=1.0.4055.28127, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:VBUserInterface, Version=1.0.4108.28739, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_6F0AE3750DB87413CEE79EADB0DA8700"
@@ -2082,6 +2068,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6F3E126D90714D8DAA4FAEF347D1BE3C"
+            {
+            "SourcePath" = "8:..\\..\\Apsim\\UserInterface\\Images\\GoogleEarth24.png"
+            "TargetName" = "8:GoogleEarth24.png"
+            "Tag" = "8:"
+            "Folder" = "8:_DE2E9E812FD946A3B8CF90D18BC68BDC"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_734CAC8DF86F4B45919F528BCD023710"
@@ -2654,11 +2660,31 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A20472E6D80BD920788FF9256BE45F7E"
+            {
+            "SourcePath" = "8:tclcontrol84.dll"
+            "TargetName" = "8:tclcontrol84.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_DE2E9E812FD946A3B8CF90D18BC68BDC"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A2201181F61F4F4ABC5720F929B6F8AA"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:CSUserInterface, Version=1.0.4056.25477, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:CSUserInterface, Version=1.0.4113.20887, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_A2201181F61F4F4ABC5720F929B6F8AA"
