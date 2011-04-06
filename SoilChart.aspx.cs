@@ -64,11 +64,17 @@ namespace Apsoil
             Graph.DataSources.Add(Table);
             Graph.OnRefresh();           
             
-            // Make all series active.
+            // Make first 3 LL series active.
+            int Count = 0;
             foreach (Series S in Graph.Chart.Series)
                {
                if (S.Title.Contains(" LL"))
+                  {
                   S.Active = true;
+                  Count++;
+                  if (Count == 3)
+                     break;
+                  }
                }
             Graph.Chart.Legend.CheckBoxes = false;
 

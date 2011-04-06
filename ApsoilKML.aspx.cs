@@ -114,7 +114,7 @@ namespace Apsoil
                    double.TryParse(Soil.Get(SoilNode, "Longitude").Value, out Longitude))
                   {
                   //string BalloonDescription = "<iframe src=\"http://localhost:56966/SoilChart.aspx?Name=" + Name + "\">No iframe support!</iframe>";
-                  string BalloonDescription = "<p><i>" + XmlHelper.Value(SoilNode, "Comments") + "</i></p>";
+                  string BalloonDescription = "<p><b>" + XmlHelper.Name(SoilNode) + "</b></p><p><i>" + XmlHelper.Value(SoilNode, "Comments") + "</i></p>";
 
                   // For debugging replace: 
                   //    http://www.apsim.info/ApsoilWeb/
@@ -122,7 +122,12 @@ namespace Apsoil
 
                   BalloonDescription += "<img src=\"http://www.apsim.info/ApsoilWeb/SoilChart.aspx?Name=" + Name + "\"/>";
                   BalloonDescription += "<p><a href=\"http://www.apsim.info/ApsoilWeb/GetSoil.aspx?Name=" + Name + "\">Download this soil.</a></p>";
-                  Placemark plmMyPlaceMark = new Placemark(XmlHelper.Name(SoilNode),
+
+                  string SoilName = XmlHelper.Name(SoilNode);
+                  Soil.Variable SoilNumber = Soil.Get(SoilNode, "ApsoilNumber");
+                  if (SoilNumber.Value != "")
+                     SoilName = SoilNumber.Value;
+                  Placemark plmMyPlaceMark = new Placemark(SoilName,
                                                            BalloonDescription,
                                                            Latitude,
                                                            Longitude,
