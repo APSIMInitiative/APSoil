@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApsoilWeb", "ApsoilWeb.csproj", "{1CDA4F3A-F779-40CA-9859-E6582A763AC1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApsoilWebService", "ApsoilWebService\ApsoilWebService.csproj", "{CC557A3F-A09E-460F-B624-22389AFB368D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{1CDA4F3A-F779-40CA-9859-E6582A763AC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CDA4F3A-F779-40CA-9859-E6582A763AC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CDA4F3A-F779-40CA-9859-E6582A763AC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC557A3F-A09E-460F-B624-22389AFB368D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC557A3F-A09E-460F-B624-22389AFB368D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC557A3F-A09E-460F-B624-22389AFB368D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC557A3F-A09E-460F-B624-22389AFB368D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,31 @@
+<publishData>
+  <publishTarget publishUrl="ftp://www.apsim.info/ApsoilWeb/ApsoilWebService/">
+    <file relUrl="bin/FarPoint.PluginCalendar.WinForms.dll" publishTime="02/16/2006 14:55:02" />
+    <file relUrl="bin/ApsoilWebService.dll" publishTime="05/04/2011 15:38:31" />
+    <file relUrl="bin/Graph.pdb" publishTime="05/04/2011 14:07:48" />
+    <file relUrl="Web.config" publishTime="05/03/2011 14:35:23" />
+    <file relUrl="bin/CSGeneral.dll" publishTime="04/20/2011 08:42:30" />
+    <file relUrl="bin/FarPoint.CalcEngine.dll" publishTime="02/16/2006 14:55:02" />
+    <file relUrl="Service.asmx" publishTime="05/03/2011 14:41:31" />
+    <file relUrl="bin/FarPoint.Win.dll" publishTime="02/16/2006 14:55:02" />
+    <file relUrl="bin/FarPoint.Win.Spread.dll" publishTime="02/16/2006 14:55:02" />
+    <file relUrl="bin/ApsimFile.pdb" publishTime="05/04/2011 14:07:34" />
+    <file relUrl="bin/ICSharpCode.SharpZipLib.dll" publishTime="01/27/2005 22:39:32" />
+    <file relUrl="bin/Controllers.pdb" publishTime="05/04/2011 14:07:36" />
+    <file relUrl="bin/ApsoilWebService.pdb" publishTime="05/04/2011 15:38:31" />
+    <file relUrl="bin/FarPoint.PluginCalendar.WinForms.xml" publishTime="02/16/2006 14:55:02" />
+    <file relUrl="bin/FarPoint.Excel.xml" publishTime="02/16/2006 14:55:02" />
+    <file relUrl="bin/ApsimFile.dll" publishTime="05/04/2011 14:07:35" />
+    <file relUrl="bin/TeeChart.dll" publishTime="05/08/2006 11:10:00" />
+    <file relUrl="bin/UIUtility.dll" publishTime="05/04/2011 14:07:38" />
+    <file relUrl="bin/TeeChart.xml" publishTime="05/08/2006 11:10:00" />
+    <file relUrl="bin/UIUtility.pdb" publishTime="05/04/2011 14:07:38" />
+    <file relUrl="bin/Controllers.dll" publishTime="05/04/2011 14:07:36" />
+    <file relUrl="bin/Graph.dll" publishTime="05/04/2011 14:07:48" />
+    <file relUrl="bin/FarPoint.Win.xml" publishTime="02/16/2006 14:55:02" />
+    <file relUrl="bin/FarPoint.Excel.dll" publishTime="02/16/2006 14:55:02" />
+    <file relUrl="bin/FarPoint.Win.Spread.xml" publishTime="02/16/2006 14:55:02" />
+    <file relUrl="bin/FarPoint.CalcEngine.xml" publishTime="02/16/2006 14:55:02" />
+    <file relUrl="bin/CSGeneral.pdb" publishTime="04/20/2011 08:42:30" />
+  </publishTarget>
+</publishData>

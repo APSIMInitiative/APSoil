@@ -97,15 +97,16 @@ namespace Apsoil
 
          Dictionary<string, Folder> Folders = new Dictionary<string, Folder>();
 
-         SoilsDB SoilsDB = new SoilsDB();
-         SoilsDB.Open();
-         foreach (string Name in SoilsDB.SoilNames)
+         ApsoilWeb.Service SoilsDB = new Apsoil.ApsoilWeb.Service();
+         foreach (string Name in SoilsDB.SoilNames())
             {
             string FolderName = Name;
             if (FolderName.Contains("/"))
                FolderName = FolderName.Substring(0, FolderName.LastIndexOf('/'));
 
-            XmlNode SoilNode = SoilsDB.GetSoil(Name);
+            XmlDocument Doc = new XmlDocument();
+            Doc.LoadXml(SoilsDB.SoilXML(Name));
+            XmlNode SoilNode = Doc.DocumentElement;
             if (SoilNode != null)
                {
                double Latitude;
@@ -120,7 +121,9 @@ namespace Apsoil
                   //    http://www.apsim.info/ApsoilWeb/
                   //    http://localhost:56966/
 
+                  //BalloonDescription += "<img src=\"http://localhost:56966/SoilChart.aspx?Name=" + Name + "\"/>";
                   BalloonDescription += "<img src=\"http://www.apsim.info/ApsoilWeb/SoilChart.aspx?Name=" + Name + "\"/>";
+
                   BalloonDescription += "<p><a href=\"http://www.apsim.info/ApsoilWeb/GetSoil.aspx?Name=" + Name + "\">Download this soil.</a></p>";
 
                   string SoilName = XmlHelper.Name(SoilNode);
@@ -141,8 +144,6 @@ namespace Apsoil
                   }
                }
             }
-
-         SoilsDB.Close();
 
          KmlContent.NetworkLinkControl.Expires.Value = DateTime.Now.AddDays(7);
          KmlContent.NetworkLinkControl.LinkDescription.Text = "Characterised sites - " + DateTime.Now.ToString("dd MMM yyyy HH:mm:ss");

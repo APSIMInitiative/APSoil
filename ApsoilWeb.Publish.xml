@@ -1,38 +1,47 @@
 <publishData>
   <publishTarget publishUrl="ftp://www.apsim.info/ApsoilWeb/">
+    <file relUrl="bin/TeeChart.xml" publishTime="05/08/2006 11:10:00" />
     <file relUrl="bin/WRON.KML.dll.refresh" publishTime="10/05/2007 17:50:14" />
-    <file relUrl="bin/Controllers.dll" publishTime="04/06/2011 11:36:09" />
+    <file relUrl="bin/Controllers.dll" publishTime="04/20/2011 14:06:31" />
+    <file relUrl="bin/.svn/prop-base/WRON.KML.dll.refresh.svn-base" publishTime="04/06/2011 12:29:54" />
+    <file relUrl="bin/.svn/text-base/FarPoint.Win.Spread.xml.svn-base" publishTime="04/06/2011 12:29:54" />
     <file relUrl="ApsoilKML.aspx" publishTime="03/21/2011 15:29:47" />
-    <file relUrl="bin/Apsoil.dll" publishTime="04/06/2011 12:08:58" />
-    <file relUrl="bin/Apsoil.pdb" publishTime="04/06/2011 12:08:58" />
+    <file relUrl="bin/Apsoil.dll" publishTime="05/04/2011 10:10:02" />
+    <file relUrl="bin/.svn/text-base/FarPoint.CalcEngine.xml.svn-base" publishTime="04/06/2011 12:29:54" />
+    <file relUrl="bin/Apsoil.pdb" publishTime="05/04/2011 10:10:01" />
     <file relUrl="bin/ICSharpCode.SharpZipLib.dll" publishTime="01/27/2005 22:39:32" />
-    <file relUrl="Water.xml" publishTime="02/03/2011 15:20:51" />
-    <file relUrl="bin/ApsimFile.pdb" publishTime="04/06/2011 11:36:09" />
-    <file relUrl="bin/FarPoint.Win.xml" publishTime="02/16/2006 14:55:02" />
-    <file relUrl="bin/TeeChart.dll" publishTime="05/08/2006 11:10:00" />
-    <file relUrl="bin/Controllers.pdb" publishTime="04/06/2011 11:36:09" />
-    <file relUrl="Apsim.xml" publishTime="03/17/2011 13:51:17" />
-    <file relUrl="bin/Graph.dll" publishTime="04/06/2011 11:36:12" />
-    <file relUrl="bin/UIUtility.dll" publishTime="04/06/2011 11:36:10" />
-    <file relUrl="bin/FarPoint.PluginCalendar.WinForms.dll" publishTime="02/16/2006 14:55:02" />
-    <file relUrl="bin/ApsimFile.dll" publishTime="04/06/2011 11:36:09" />
     <file relUrl="bin/FarPoint.Win.dll" publishTime="02/16/2006 14:55:02" />
-    <file relUrl="Web.config" publishTime="03/22/2011 11:28:52" />
-    <file relUrl="bin/FarPoint.Excel.xml" publishTime="02/16/2006 14:55:02" />
-    <file relUrl="bin/CSGeneral.dll" publishTime="04/06/2011 11:36:08" />
+    <file relUrl="bin/FarPoint.CalcEngine.xml" publishTime="02/16/2006 14:55:02" />
+    <file relUrl="bin/ApsimFile.pdb" publishTime="04/20/2011 14:06:31" />
+    <file relUrl="bin/FarPoint.Win.xml" publishTime="02/16/2006 14:55:02" />
+    <file relUrl="bin/.svn/text-base/FarPoint.Excel.xml.svn-base" publishTime="04/06/2011 12:29:54" />
+    <file relUrl="Water.xml" publishTime="02/03/2011 15:20:51" />
+    <file relUrl="Apsim.xml" publishTime="03/17/2011 13:51:17" />
+    <file relUrl="bin/Graph.dll" publishTime="04/20/2011 14:06:34" />
+    <file relUrl="bin/UIUtility.dll" publishTime="04/20/2011 14:06:32" />
+    <file relUrl="bin/FarPoint.PluginCalendar.WinForms.dll" publishTime="02/16/2006 14:55:02" />
+    <file relUrl="bin/ApsimFile.dll" publishTime="04/20/2011 14:06:31" />
+    <file relUrl="Web.config" publishTime="05/03/2011 14:44:08" />
+    <file relUrl="bin/.svn/text-base/FarPoint.Win.xml.svn-base" publishTime="04/06/2011 12:29:54" />
+    <file relUrl="bin/Controllers.pdb" publishTime="04/20/2011 14:06:31" />
+    <file relUrl="bin/CSGeneral.dll" publishTime="04/20/2011 08:42:30" />
     <file relUrl="SoilChart.aspx" publishTime="03/22/2011 12:52:10" />
+    <file relUrl="bin/.svn/entries" publishTime="04/06/2011 12:35:25" />
+    <file relUrl="bin/UIUtility.pdb" publishTime="04/20/2011 14:06:32" />
+    <file relUrl="bin/.svn/text-base/FarPoint.PluginCalendar.WinForms.xml.svn-base" publishTime="04/06/2011 12:29:54" />
     <file relUrl="bin/FarPoint.Win.Spread.xml" publishTime="02/16/2006 14:55:02" />
     <file relUrl="bin/WRON.KML.dll" publishTime="10/26/2007 17:11:08" />
+    <file relUrl="GetSoil.aspx" publishTime="03/22/2011 14:46:18" />
     <file relUrl="bin/FarPoint.Win.Spread.dll" publishTime="02/16/2006 14:55:02" />
     <file relUrl="bin/FarPoint.PluginCalendar.WinForms.xml" publishTime="02/16/2006 14:55:02" />
     <file relUrl="bin/FarPoint.Excel.dll" publishTime="02/16/2006 14:55:02" />
     <file relUrl="bin/FarPoint.CalcEngine.dll" publishTime="02/16/2006 14:55:02" />
-    <file relUrl="bin/CSGeneral.pdb" publishTime="04/06/2011 11:36:08" />
-    <file relUrl="bin/Graph.pdb" publishTime="04/06/2011 11:36:12" />
+    <file relUrl="bin/CSGeneral.pdb" publishTime="04/20/2011 08:42:30" />
+    <file relUrl="bin/Graph.pdb" publishTime="04/20/2011 14:06:34" />
     <file relUrl="shovel.png" publishTime="02/05/2008 14:55:42" />
     <file relUrl="UploadSoilsFile.aspx" publishTime="03/21/2011 14:57:58" />
-    <file relUrl="bin/UIUtility.pdb" publishTime="04/06/2011 11:36:10" />
-    <file relUrl="bin/FarPoint.CalcEngine.xml" publishTime="02/16/2006 14:55:02" />
-    <file relUrl="GetSoil.aspx" publishTime="03/22/2011 14:46:18" />
+    <file relUrl="bin/TeeChart.dll" publishTime="05/08/2006 11:10:00" />
+    <file relUrl="bin/.svn/text-base/WRON.KML.dll.refresh.svn-base" publishTime="04/06/2011 12:29:54" />
+    <file relUrl="bin/FarPoint.Excel.xml" publishTime="02/16/2006 14:55:02" />
   </publishTarget>
 </publishData>

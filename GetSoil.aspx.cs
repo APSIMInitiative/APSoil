@@ -9,7 +9,6 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
-using System.Xml.Linq;
 using System.Xml;
 using System.IO;
 
@@ -31,13 +30,12 @@ namespace Apsoil
             {
             string SoilName = Request.QueryString["Name"];
 
-            SoilsDB SoilsDB = new SoilsDB();
-            SoilsDB.Open();
-            XmlNode SoilNode = SoilsDB.GetSoil(SoilName);
-            SoilsDB.Close();
+            ApsoilWeb.Service SoilsDB = new Apsoil.ApsoilWeb.Service();
+            XmlDocument Doc = new XmlDocument();
+            Doc.LoadXml(SoilsDB.SoilXML(SoilName));
 
             MemoryStream MemStream = new MemoryStream(10000);
-            SoilNode.OwnerDocument.Save(MemStream);
+            Doc.Save(MemStream);
             if (MemStream.ToArray() != null)
                Response.BinaryWrite(MemStream.ToArray());
             }

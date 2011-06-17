@@ -4,12 +4,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1CDA4F3A-F779-40CA-9859-E6582A763AC1}</ProjectGuid>
+    <ProjectGuid>{CC557A3F-A09E-460F-B624-22389AFB368D}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Apsoil</RootNamespace>
-    <AssemblyName>Apsoil</AssemblyName>
+    <AssemblyName>ApsoilWebService</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -32,19 +32,19 @@
   <ItemGroup>
     <Reference Include="ApsimFile, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Apsim\Model\ApsimFile.dll</HintPath>
+      <HintPath>..\..\..\Apsim\Model\ApsimFile.dll</HintPath>
     </Reference>
     <Reference Include="Controllers, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Apsim\Model\Controllers.dll</HintPath>
+      <HintPath>..\..\..\Apsim\Model\Controllers.dll</HintPath>
     </Reference>
     <Reference Include="CSGeneral, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Apsim\Model\CSGeneral.dll</HintPath>
+      <HintPath>..\..\..\Apsim\Model\CSGeneral.dll</HintPath>
     </Reference>
     <Reference Include="Graph, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Apsim\Model\Graph.dll</HintPath>
+      <HintPath>..\..\..\Apsim\Model\Graph.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -68,93 +68,21 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="TeeChart, Version=2.0.2306.26232, Culture=neutral, PublicKeyToken=9c8126276c77bdb7, processorArchitecture=MSIL" />
-    <Reference Include="WRON.KML, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Apsim.xml" />
-    <Content Include="ApsoilKML.aspx" />
-    <Content Include="GetSoil.aspx" />
-    <Content Include="shovel.png" />
-    <Content Include="SoilChart.aspx" />
-    <Content Include="Test.aspx" />
-    <Content Include="UploadSoilsFile.aspx" />
-    <Content Include="Water.xml" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Web References\ApsoilWeb\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Web References\ApsoilWeb\Service.disco" />
-    <None Include="Web References\ApsoilWeb\Service.wsdl" />
+    <Content Include="Service.asmx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApsoilKML.aspx.cs">
-      <SubType>ASPXCodeBehind</SubType>
-      <DependentUpon>ApsoilKML.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ApsoilKML.aspx.designer.cs">
-      <DependentUpon>ApsoilKML.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GetSoil.aspx.cs">
-      <DependentUpon>GetSoil.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GetSoil.aspx.designer.cs">
-      <DependentUpon>GetSoil.aspx</DependentUpon>
+    <Compile Include="Service.asmx.cs">
+      <DependentUpon>Service.asmx</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="SoilChart.aspx.cs">
-      <DependentUpon>SoilChart.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="SoilChart.aspx.designer.cs">
-      <DependentUpon>SoilChart.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Test.aspx.cs">
-      <DependentUpon>Test.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Test.aspx.designer.cs">
-      <DependentUpon>Test.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UploadSoilsFile.aspx.cs">
-      <DependentUpon>UploadSoilsFile.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UploadSoilsFile.aspx.designer.cs">
-      <DependentUpon>UploadSoilsFile.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Web References\ApsoilWeb\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.map</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferences Include="Web References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferenceUrl Include="http://www.apsim.info/ApsoilWebService/Service.asmx">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\ApsoilWeb\</RelPath>
-      <UpdateFromURL>http://www.apsim.info/ApsoilWebService/Service.asmx</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>Apsoil_ApsoilWeb_Service</CachedSettingsPropName>
-    </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -174,7 +102,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>56966</DevelopmentServerPort>
+          <DevelopmentServerPort>59532</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

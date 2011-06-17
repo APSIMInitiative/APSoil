@@ -1,0 +1,2799 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FarPoint.Excel</name>
+    </assembly>
+    <members>
+        <member name="T:FarPoint.Excel.TriCoord">
+            <summary>
+            A coordinate class made up of sheet, row, column
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.TriCoord.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.TriCoord.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <param name="col"></param>
+        </member>
+        <member name="P:FarPoint.Excel.TriCoord.Sheet">
+            <summary>
+            Sheet
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.TriCoord.Row">
+            <summary>
+            Row
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.TriCoord.Col">
+            <summary>
+            Column
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.TriCoordCompare">
+            <summary>
+            IComparer implementation for TriCoord objects
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.TriCoordCompare.Compare(System.Object,System.Object)">
+            <summary>
+            Compare public method
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.TriCoordCompare.Compare(FarPoint.Excel.TriCoord,FarPoint.Excel.TriCoord)">
+            <summary>
+            Compare static method
+            </summary>
+            <param name="xTC"></param>
+            <param name="yTC"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.Utilities.ByteArrayToReader(System.Byte[])">
+            <summary>
+            ByteArrayToReader static method
+            </summary>
+            <param name="byteBuffer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.Utilities.dmyFromJulian(System.Int64,System.Int16,System.Int16@,System.Int16@,System.Int16@)">
+            <summary>
+            dmyFromJulian static method
+            </summary>
+            <param name="julianDate"></param>
+            <param name="julianStartYear"></param>
+            <param name="day"></param>
+            <param name="month"></param>
+            <param name="year"></param>
+        </member>
+        <member name="M:FarPoint.Excel.Utilities.ColorFromIndex(System.Int32)">
+            <summary>
+            ColorFromIndex
+            Convert from an Excel BIFF color index to an RGB value.
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.Utilities.IndexFromColor(System.Drawing.Color,System.Int32)">
+            <summary>
+            Convert from an RGB value to an Excel BIFF color index.
+            </summary>
+            <param name="color"></param>
+            <param name="emptyVal"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.Utilities.SnapToColor(System.Drawing.Color,System.Int32)">
+            <summary>
+            Return the Excel BIFF color index that represents the RGB color
+            closest to the specified RGB value.
+            </summary>
+            <param name="color"></param>
+            <param name="emptyVal"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FarPoint.Excel.BiffRec">
+            <summary>
+            BiffRec
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.Biff">
+            <summary>
+            Biff class
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.Biff.#ctor">
+            <summary>
+            Biff - default constructor
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.Biff.#ctor(System.Byte[])">
+            <summary>
+            Biff - constructor
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="M:FarPoint.Excel.Biff.FromByteArray(System.Byte[])">
+            <summary>
+            FromByteArray
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="T:FarPoint.Excel.IExcelBiffRead">
+            <summary>
+            ExcelRead interface
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.Finish">
+            <summary>
+            Finish - Called after the Excel file has completed loading
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelGetFontInfo(System.Boolean@)">
+            <summary>
+            ExcelGetFontInfo - Called to determine if Spread Web or Spread Win build.  Spread Web stores the default font name in the resources.
+            </summary>
+            <param name="getDefaultFontNameFromResource"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelBof(System.Int16)">
+            <summary>
+            BOF - Notify the implementation that the workbook load is beginning, or we are loading a new sheet.
+            This is needed to clear the shared formula list for each sheet.
+            </summary>
+            <param name="sheet"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSet1904(System.Boolean)">
+            <summary>
+            1904 - Excel Biff Record
+            </summary>
+            <param name="date1904"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelAddSheet(System.String,System.Byte)">
+            <summary>
+            BUNDLESHEET - Excel Biff Record
+            </summary>
+            <param name="sheetName"></param>
+            <param name="hiddenState"> 0-visible, 1-hidden, 2-very hidden</param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetArrayFormula(System.Int32,System.Int32,System.Int32,System.Int16,System.Int16,System.Byte[],System.Byte[])">
+            <summary>
+            ARRAY - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="rowFirst"></param>
+            <param name="rowLast"></param>
+            <param name="colFirst"></param>
+            <param name="colLast"></param>
+            <param name="formula"></param>
+            <param name="extra"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetBottomMargin(System.Int16,System.Double)">
+            <summary>
+            BOTTOMMARGIN - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="margin"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetCalcMode(System.Int16,System.Int16)">
+            <summary>
+            CALCMODE - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="autoRecalc">0-manual, 1-automatic, -1-automatic(except tables)</param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetCellFormat(System.Int16,System.Int32,System.Int32,System.Int32,System.Type)">
+            <summary>
+            Set cell format - BIFF
+            </summary>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <param name="col"></param>
+            <param name="ixf"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetCellFormula(System.Int16,System.Int32,System.Int32,System.String)">
+            <summary>
+            FORMULA
+            </summary>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <param name="col"></param>
+            <param name="formula"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetCellFormula(System.Int16,System.Int32,System.Int32,System.IO.BinaryReader,System.IO.BinaryReader,System.Int32,System.Int32)">
+            <summary>
+            FORMULA
+            </summary>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <param name="col"></param>
+            <param name="rdr"></param>
+            <param name="rdrExtra"></param>
+            <param name="rowFirst"></param>
+            <param name="colFirst"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetCellNote(System.Int16,System.Int32,System.Int32,System.String)">
+            <summary>
+            NOTE
+            </summary>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <param name="col"></param>
+            <param name="note"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetCommentObjId(System.Int16)">
+            <summary>
+            OBJ
+            </summary>
+            <param name="objId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelGetCommentObjId">
+            <summary>
+            OBJ
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetConditionalFormat(System.Int16,System.Int32[],System.Int32[],System.Int32[],System.Int32[],System.Byte,FarPoint.Excel.IExcelXF,System.Boolean,System.Drawing.FontStyle,System.Int32,System.Int32,System.Byte[],System.Byte[])">
+            <summary>
+            CONDFMT, CF - Excel Biff Records
+            </summary>
+            <param name="sheet"></param>
+            <param name="firstRows"></param>
+            <param name="lastRows"></param>
+            <param name="firstCols"></param>
+            <param name="lastCols"></param>
+            <param name="comparisonOperator"></param>
+            <param name="xf"></param>
+            <param name="isFontSet"></param>
+            <param name="fontStyle"></param>
+            <param name="fontHeight"></param>
+            <param name="patternStyle"></param>
+            <param name="firstCondition"></param>
+            <param name="lastCondition"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetCellValue(System.Int16,System.Int32,System.Int32,System.Object)">
+            <summary>
+            LABEL, LABELSST, NUMBER, RK - Excel Biff Records
+            </summary>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <param name="col"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetColInfo(System.Int16,System.Int16,System.Int16,System.Int16,System.Int32,System.Boolean,System.Byte,System.Boolean,System.Boolean)">
+            <summary>
+            COLINFO - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="colFirst"></param>
+            <param name="colLast"></param>
+            <param name="ixf"></param>
+            <param name="width"></param>
+            <param name="hidden"></param>
+            <param name="outlineLevel"></param>
+            <param name="collapsed"></param>
+            <param name="bufferColInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetCustomNames(System.Int16,System.Collections.ArrayList)">
+            <summary>
+            NAME - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="customNameList"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetDefaultRowHeight(System.Int16,System.Int16)">
+            <summary>
+            DEFAULTROWHEIGHT - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="defRowHeight"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetDefColWidth(System.Int16,System.Int16)">
+            <summary>
+            DEFCOLWIDTH - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="defColWidth"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetDelta(System.Int16,System.Double)">
+            <summary>
+            DELTA - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="delta"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetDimensions(System.Int16,System.Int32,System.Int32,System.Int16,System.Int16)">
+            <summary>
+            DIMENSIONS - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="firstRow"></param>
+            <param name="lastRowPlus1"></param>
+            <param name="firstCol"></param>
+            <param name="lastColPlus1"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetDisplayElements(System.Int16,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            WINDOW2 - Excel Biff Record (element display values)
+            </summary>
+            <param name="sheet"></param>
+            <param name="dispFormula"></param>
+            <param name="dispZeros"></param>
+            <param name="dispGrid"></param>
+            <param name="dispRowColHdr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetExternName(System.String)">
+            <summary>
+            ExcelSetExternName
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetExternSheet2(System.String,System.String,System.String)">
+            <summary>
+            ExcelSetExternSheet
+            </summary>
+            <param name="fileName"></param>
+            <param name="startSheet"></param>
+            <param name="endSheet"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetExternSheet2(System.Int16,System.Int16)">
+            <summary>
+            ExcelSetExternSheet
+            </summary>
+            <param name="startSheetIndex"></param>
+            <param name="endSheetIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetExternSheet(System.Object)">
+            <summary>
+            ExcelSetExternSheet
+            </summary>
+            <param name="externSheet"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetFilePass">
+            <summary>
+            ExcelSetFilePass
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetRowColumnHeaders(System.Int16,System.Boolean,System.Boolean)">
+            <summary>
+            ExcelSetRowColumnHeaders
+            </summary>
+            <param name="sheet"></param>
+            <param name="setRowHeaders"></param>
+            <param name="setColumnHeaders"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetIteration(System.Int16,System.Int16)">
+            <summary>
+            ExcelSetIteration
+            </summary>
+            <param name="sheet"></param>
+            <param name="iteration"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetCalcCount(System.Int16,System.Int32)">
+            <summary>
+            CALCCOUNT - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="iterCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetLeftMargin(System.Int16,System.Double)">
+            <summary>
+            ExcelSetLeftMargin - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="num"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetMergeCells(System.Int16,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            MERGECELLS - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="rowStart"></param>
+            <param name="rowEnd"></param>
+            <param name="colStart"></param>
+            <param name="colEnd"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetHeader(System.Int16,System.String)">
+            <summary>
+            HEADER - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="header"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetFooter(System.Int16,System.String)">
+            <summary>
+            FOOTER - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="footer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetRowPageBreaks(System.Int16,System.Int32[])">
+            <summary>
+            HORIZONTALPAGEBREAKS - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="pageBreaks"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetColumnPageBreaks(System.Int16,System.Int32[])">
+            <summary>
+            VERTICALPAGEBREAKS - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="pageBreaks"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetPrintGridlines(System.Int16,System.Boolean)">
+            <summary>
+            ExcelSetPrintGridlines
+            </summary>
+            <param name="sheet"></param>
+            <param name="printGridlines"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetPrintHeaders(System.Int16,System.Boolean)">
+            <summary>
+            ExcelSetPrintHeaders
+            </summary>
+            <param name="sheet"></param>
+            <param name="printHeaders"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetPageSetup(System.Int16,System.Int16,System.Int16,System.Int16,System.Int16,System.Int16,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Int16,System.Int16,System.Double,System.Double,System.Int16)">
+            <summary>
+            ExcelSetPageSetup - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="paperSize"></param>
+            <param name="scale"></param>
+            <param name="pageStart"></param>
+            <param name="fitWidth"></param>
+            <param name="fitHeight"></param>
+            <param name="leftToRight"></param>
+            <param name="isPortrait"></param>
+            <param name="noPls"></param>
+            <param name="noColor"></param>
+            <param name="draft"></param>
+            <param name="notes"></param>
+            <param name="noOrient"></param>
+            <param name="usePage"></param>
+            <param name="printRes"></param>
+            <param name="vertPrintRes"></param>
+            <param name="numHdr"></param>
+            <param name="numFtr"></param>
+            <param name="copies"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetPane(System.Int16,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            PANE - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="rwTop"></param>
+            <param name="colLeft"></param>
+            <param name="pnnAct"></param>
+            <param name="isPanesFrozen"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetPassword(System.Boolean)">
+            <summary>
+            PASSWORD - Excel Biff Record
+            </summary>
+            <param name="isSheet"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetProtect(System.Int16,System.Boolean)">
+            <summary>
+            PROTECT - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="isProtect"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetRefMode(System.Int16,System.Int32)">
+            <summary>
+            REFMODE - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="refMode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetRightMargin(System.Int16,System.Double)">
+            <summary>
+            ExcelSetRightMargin - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="num"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetRowColGridColor(System.Int16,System.Drawing.Color)">
+            <summary>
+            WINDOW2 - Excel Biff Record (row and column headers, and grid color value)
+            </summary>
+            <param name="sheet"></param>
+            <param name="color"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetRowInfo(System.Int16,System.Int32,System.Int32,System.Int32,System.Int16,System.Int32,System.Byte,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            ExcelSetRowInfo - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <param name="colFirstDef"></param>
+            <param name="colLastDefPlus1"></param>
+            <param name="ixf"></param>
+            <param name="height"></param>
+            <param name="outlineLevel"></param>
+            <param name="collapsed"></param>
+            <param name="zeroHeight"></param>
+            <param name="unSynced"></param>
+            <param name="ghostDirty"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetSaveExtLinks(System.Boolean)">
+            <summary>
+            BOOKBOOL - Excel Biff Record 
+            </summary>
+            <param name="saveLinks"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetScroll(System.Boolean,System.Boolean)">
+            <summary>
+            WINDOW1 - Excel Biff Record (scrollbar-specific values)
+            </summary>
+            <param name="dispHScroll"></param>
+            <param name="dispVScroll"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetSelection(System.Int16,System.Byte,System.Int32,System.Int32,System.Int32,System.Collections.ArrayList,System.Collections.ArrayList,System.Collections.ArrayList,System.Collections.ArrayList)">
+            <summary>
+            ExcelSetSelection - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="paneNum"></param>
+            <param name="rowActive"></param>
+            <param name="colActive"></param>
+            <param name="refCount"></param>
+            <param name="rowFirst"></param>
+            <param name="rowLast"></param>
+            <param name="colFirst"></param>
+            <param name="colLast"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetSharedFormula(System.Int32,System.Int32,System.Int32,System.Int16,System.Int16,System.Byte[],System.Byte[])">
+            <summary>
+            SHRFMLA - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="rowFirst"></param>
+            <param name="rowLast"></param>
+            <param name="colFirst"></param>
+            <param name="colLast"></param>
+            <param name="formula"></param>
+            <param name="extra"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelGetSharedFormula(System.Int32,System.Int32)">
+            <summary>
+            Called from BiffRead to query the Shared Formula list maintained in the implementation of this interface
+            </summary>
+            <param name="row"></param>
+            <param name="col"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetSupbook2(System.Int16,System.Collections.ArrayList)">
+            <summary>
+            SUPBOOK - Excel Biff Record
+            </summary>
+            <param name="sheetCount"></param>
+            <param name="supBookList"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetPrintArea(System.Int16,System.Collections.ArrayList)">
+            <summary>
+            Print_Area - Excel Built-In Custom Name
+            </summary>
+            <param name="sheet"></param>
+            <param name="printAreaList"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetSupbook(System.Int16,System.Byte[])">
+            <summary>
+            SUPBOOK - Excel Biff Record
+            </summary>
+            <param name="tabCount"></param>
+            <param name="supbookData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetTabs(System.Boolean,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            WINDOW1 - Excel Biff Record (tab-specific values)
+            </summary>
+            <param name="dispTabs"></param>
+            <param name="tabCur"></param>
+            <param name="tabFirst"></param>
+            <param name="tabSel"></param>
+            <param name="tabRatio"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetTopLeft(System.Int16,System.Int32,System.Int32)">
+            <summary>
+            WINDOW2 - Excel Biff Record (toprow, left column values)
+            </summary>
+            <param name="sheet"></param>
+            <param name="rwTop"></param>
+            <param name="colLeft"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetTopMargin(System.Int16,System.Double)">
+            <summary>
+            ExcelSetTopMargin - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="num"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetVCenter(System.Int16,System.Boolean)">
+            <summary>
+            ExcelSetVCenter - Excel Biff Record
+            </summary>
+            <param name="sheet"></param>
+            <param name="vertCenter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetWindow(System.Drawing.Rectangle,System.Boolean,System.Boolean)">
+            <summary>
+            WINDOW1 - Excel Biff Record (window-specific values)
+            </summary>
+            <param name="rect"></param>
+            <param name="hidden"></param>
+            <param name="iconic"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetXF(FarPoint.Excel.IExcelXF)">
+            <summary>
+            ExcelSetXF - Excel Biff
+            </summary>
+            <param name="xf"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffRead.ExcelSetZoom(System.Int16,System.Single)">
+            <summary>
+            SCL - Excel Biff Record (Zoom)
+            </summary>
+            <param name="sheet"></param>
+            <param name="zoom"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffWriter.Init(System.IO.Stream)">
+            <summary>
+            Init
+            </summary>
+            <param name="stream"></param>
+        </member>
+        <member name="M:FarPoint.Excel.BiffWriter.BuildStream">
+            <summary>
+            ProcessStream method - Build the stream in BiffWriter.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffWriter.BuildStream(System.IO.Stream,FarPoint.Excel.ExcelSaveFlags)">
+            <summary>
+            BuildStream
+            </summary>
+            <param name="stream"></param>
+            <param name="saveFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffWriter.WriteBeginWorkbookRecords">
+            <summary>
+            WriteBeginWorkbookRecords
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffWriter.WriteEndWorkbookRecords">
+            <summary>
+            WriteEndWorkbookRecrods
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffWriter.WriteFormatRecords">
+            <summary>
+            WriteFormatRecords
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffWriter.WriteWorkbookRecords(System.IO.MemoryStream[],System.Int32,FarPoint.Excel.ExcelSaveFlags)">
+            <summary>
+            WriteWorkbookRecords
+            </summary>
+            <param name="streams"></param>
+            <param name="streamLen"></param>
+            <param name="saveFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffWriter.ProcessSheet(System.Int16,System.IO.MemoryStream,FarPoint.Excel.ExcelSaveFlags)">
+            <summary>
+            ProcessSheet
+            </summary>
+            <param name="sheet"></param>
+            <param name="stream"></param>
+            <param name="saveFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffWriter.ProcessNames(System.IO.MemoryStream@)">
+            <summary>
+            Write EXTERNNAME and NAME record(s) if any extern names exist
+            </summary>
+            <param name="nameStream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffWriter.ProcessAxis(System.Int16,System.Collections.ArrayList,System.Collections.ArrayList)">
+            <summary>
+            ProcessAxis
+            </summary>
+            <param name="sheet"></param>
+            <param name="rowAxisInfo"></param>
+            <param name="columnAxisInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffWriter.ProcessCells(System.Int16,System.IO.MemoryStream,System.Collections.ArrayList,System.Collections.ArrayList,FarPoint.Excel.ExcelSaveFlags)">
+            <summary>
+            ProcessCells
+            </summary>
+            <param name="sheet"></param>
+            <param name="stream"></param>
+            <param name="rowInfo"></param>
+            <param name="colInfo"></param>
+            <param name="saveFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffWriter.WriteRecord(FarPoint.Excel.Biff)">
+            <summary>
+            WriteRecord
+            </summary>
+            <param name="biff"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffWriter.WriteRecord(FarPoint.Excel.Biff,System.Object)">
+            <summary>
+            WriteRecord
+            </summary>
+            <param name="biff"></param>
+            <param name="o"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffWriter.WriteRecord(FarPoint.Excel.Biff,System.Object,System.Object)">
+            <summary>
+            WriteRecord
+            </summary>
+            <param name="biff"></param>
+            <param name="o1"></param>
+            <param name="o2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffWriter.WriteRecord(FarPoint.Excel.Biff,System.Object,System.Int16)">
+            <summary>
+            WriteRecord
+            </summary>
+            <param name="biff"></param>
+            <param name="o"></param>
+            <param name="sheet"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffWriter.AddUniqueString(System.String)">
+            <summary>
+            AddUniqueString
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FarPoint.Excel.BiffWriter.ExcelAxis">
+            <summary>
+            ExcelAxis class
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.XF">
+            <summary>
+            XF class
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.ExcelXFormat">
+            <summary>
+            XF class
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.IExcelXF">
+            <summary>
+            ExcelXF interface
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelXF.GetBorderStyle">
+            <summary>
+            GetBorderStyle
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelXF.SetBorderStyle(System.Int32[])">
+            <summary>
+            SetBorderStyle
+            </summary>
+            <param name="styles"></param>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelXF.GetBorderColor">
+            <summary>
+            GetBorderColor
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelXF.SetBorderColor(System.Drawing.Color[])">
+            <summary>
+            SetBorderColor
+            </summary>
+            <param name="colors"></param>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.FontID">
+            <summary>
+            FontID
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.Font">
+            <summary>
+            Font
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.FormatID">
+            <summary>
+            Format id
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.Format">
+            <summary>
+            Format String
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.IsLockedOrHiddenSet">
+            <summary>
+            IsLockedOrHiddenSet?
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.Locked">
+            <summary>
+            Locked?
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.Hidden">
+            <summary>
+            Hidden?
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.Style">
+            <summary>
+            Style?
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.L123Prefix">
+            <summary>
+            Not used
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.AlignHorz">
+            <summary>
+            Horizontal Alignment
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.AlignVert">
+            <summary>
+            Vertical Alignment
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.Wrap">
+            <summary>
+            Allow Wordwrap
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.JustLast">
+            <summary>
+            Not used
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.Rotation">
+            <summary>
+            Text rotation in cell
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.Indent">
+            <summary>
+            Indent
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.ShrinkToFit">
+            <summary>
+            Shrik text to fit
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.MergeCell">
+            <summary>
+            Merge the cell
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.ReadingOrder">
+            <summary>
+            for Far East versions
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.BorderSet">
+            <summary>
+            is the Border set?
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.DiagonalStyle">
+            <summary>
+            the diagonal style for diagonal borders
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.BackBackColor">
+            <summary>
+            Background back color - used in patterns
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.BackForeColor">
+            <summary>
+            Background fore color - used in patterns
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.IsBackSet">
+            <summary>
+            Is background set?
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.IsFontSet">
+            <summary>
+            Is font set?
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.ForeColor">
+            <summary>
+            Forecolor
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.IExcelXF.CellType">
+            <summary>
+            Celltype
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelXFormat.#ctor">
+            <summary>
+            ExcelXFormat - default constructor
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelXFormat.Equals(FarPoint.Excel.ExcelXFormat,FarPoint.Excel.ExcelXFormat)">
+            <summary>
+            
+            </summary>
+            <param name="xf1"></param>
+            <param name="xf2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelXFormat.GetBorderStyle">
+            <summary>
+            GetBorderStyles (left, right, top, bottom, diagonal)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelXFormat.SetBorderStyle(System.Int32[])">
+            <summary>
+            SetBorderStyles
+            </summary>
+            <param name="styles"></param>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelXFormat.GetBorderColor">
+            <summary>
+            GetBorderColor (left, right, top, bottom, diagonal)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelXFormat.SetBorderColor(System.Drawing.Color[])">
+            <summary>
+            SetBorderColor
+            </summary>
+            <param name="colors"></param>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.FontID">
+            <summary>
+            FontID
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.Font">
+            <summary>
+            Font
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.FormatID">
+            <summary>
+            FormatID
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.Format">
+            <summary>
+            Format
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.IsLockedOrHiddenSet">
+            <summary>
+            IsLockedOrHiddenSet
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.Locked">
+            <summary>
+            Locked
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.Hidden">
+            <summary>
+            Hidden
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.Style">
+            <summary>
+            Style
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.L123Prefix">
+            <summary>
+            L123Prefix
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.AlignHorz">
+            <summary>
+            AlignHorz
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.AlignVert">
+            <summary>
+            AlignVert
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.Wrap">
+            <summary>
+            Wrap
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.JustLast">
+            <summary>
+            JustLast
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.Rotation">
+            <summary>
+            Rotation
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.Indent">
+            <summary>
+            Indent
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.ShrinkToFit">
+            <summary>
+            ShrinkToFit
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.MergeCell">
+            <summary>
+            MergeCell
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.ReadingOrder">
+            <summary>
+            ReadingOrder
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.BorderSet">
+            <summary>
+            BorderSet
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.DiagonalStyle">
+            <summary>
+            DiagonalStyle
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.BackBackColor">
+            <summary>
+            BackBackColor
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.BackForeColor">
+            <summary>
+            BackForeColor
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.IsBackSet">
+            <summary>
+            IsBackSet
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.IsFontSet">
+            <summary>
+            IsFontSet
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.ForeColor">
+            <summary>
+            ForeColor
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.CellType">
+            <summary>
+            CellType
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelXFormat.ParentIndex">
+            <summary>
+            ParentIndex
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.XF.#ctor">
+            <summary>
+            XF - constructor
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.XF.#ctor(FarPoint.Excel.BiffReader,System.Int16,System.Collections.Hashtable,System.Byte[0:,0:])">
+            <summary>
+            XF - constructor
+            </summary>
+            <param name="biffReader"></param>
+            <param name="index"></param>
+            <param name="formatTable"></param>
+            <param name="palette"></param>
+        </member>
+        <member name="T:FarPoint.Excel.BiffReader">
+            <summary>
+            BiffReader class
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.IsBiff">
+            <summary>
+            IsBiff method - Returns whether the stream is a Microsoft Excel BIFF stream.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.GetSheetNames(System.Collections.ArrayList)">
+            <summary>
+            GetSheetNames
+            </summary>
+            <param name="sheetNames"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ProcessStream(FarPoint.Excel.ExcelOpenFlags)">
+            <summary>
+            ProcessStream method - Process the stream in BiffReader.
+            </summary>
+            <param name="openFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ProcessStream(System.Int32,FarPoint.Excel.ExcelOpenFlags)">
+            <summary>
+            ProcessStream method - 
+            </summary>
+            <param name="excelSheetIndex"></param>
+            <param name="openFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ProcessStream(System.IO.Stream,System.Collections.ArrayList,System.Int32,FarPoint.Excel.ExcelOpenFlags)">
+            <summary>
+            ProcssStream method - Process the stream.
+            </summary>
+            <param name="stream"></param>
+            <param name="sheetNames"></param>
+            <param name="excelSheetIndex"></param>
+            <param name="openFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadRecord(FarPoint.Excel.Biff)">
+            <summary>
+            Readrecord - Read the specified BIFF record.
+            </summary>
+            <param name="biff"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadRecord(FarPoint.Excel.Biff,System.Int32,FarPoint.Excel.ExcelOpenFlags)">
+            <summary>
+            ReadRecord - Read the specified BIFF record.
+            </summary>
+            <param name="biff"></param>
+            <param name="streamPos"></param>
+            <param name="openFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.IsSheetLoad">
+            <summary>
+            IsSheetLoad
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadCONTINUE(FarPoint.Excel.Biff)">
+            <summary>
+            ReadCONTINUE
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.Read1904">
+            <summary>
+            Read1904
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadBOF(System.Int32,System.Boolean@)">
+            <summary>
+            ReadBOF
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadBOOKBOOL">
+            <summary>
+            ReadBOOKBOOL
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadLEFTMARGIN">
+            <summary>
+            ReadLEFTMARGIN
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadTOPMARGIN">
+            <summary>
+            ReadTOPMARGIN
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadRIGHTMARGIN">
+            <summary>
+            ReadRIGHTMARGIN
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadBOTTOMMARGIN">
+            <summary>
+            ReadBOTTOMMARGIN
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadBUNDLESHEET(System.String@,System.Boolean)">
+            <summary>
+            ReadBUNDLESHEET
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadCALCCOUNT">
+            <summary>
+            ReadCALCCOUNT
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadCALCMODE">
+            <summary>
+            ReadCALCMODE
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadCF">
+            <summary>
+            ReadCF
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadCONDFMT">
+            <summary>
+            ReadCONDFMT
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadDEFCOLWIDTH">
+            <summary>
+            ReadDEFCOLWIDTH
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadDEFAULTROWHEIGHT">
+            <summary>
+            ReadDEFAULTROWHEIGHT
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadDIMENSIONS">
+            <summary>
+            ReadDIMENSIONS
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadDELTA">
+            <summary>
+            ReadDELTA
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadEXTERNCOUNT">
+            <summary>
+            ReadEXTERNCOUNT
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadEXTERNNAME">
+            <summary>
+            ReadEXTERNNAME
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadEXTERNSHEET">
+            <summary>
+            ReadEXTERNSHEET
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadFILEPASS">
+            <summary>
+            ReadFILEPASS
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadFONT">
+            <summary>
+            ReadFONT
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadITERATION">
+            <summary>
+            ReadITERATION
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadNAME">
+            <summary>
+            ReadNAME
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadREFMODE">
+            <summary>
+            ReadREFMODE
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadHEADER(FarPoint.Excel.Biff)">
+            <summary>
+            ReadHEADER
+            </summary>
+            <param name="biff"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadFOOTER(FarPoint.Excel.Biff)">
+            <summary>
+            ReadFOOTER
+            </summary>
+            <param name="biff"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadPRINTGRIDLINES">
+            <summary>
+            ReadPRINTGRIDLINES
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadPRINTHEADERS">
+            <summary>
+            ReadPRINTHEADERS
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadSETUP">
+            <summary>
+            ReadSETUP
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadSHRFMLA(FarPoint.Excel.Biff)">
+            <summary>
+            ReadSHRFMLA
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadSST(FarPoint.Excel.Biff)">
+             <summary>
+             ReadSST
+             </summary>
+             <remarks>
+             The Shared String Table (SST) record is broken into multiple records whenever the
+             byte size is greater than 8228.  When this occurs, the SST record is followed by 
+             as many CONTINUE records as are needed to persist the entire SST contents.  The
+             CONTINUE record, as well as all Excel BIFF records, also has a maximum data count of
+             8228 bytes.  
+            
+             In the simplest form, parsing a Shared String Table that is broken across multiple
+             CONTINUE records requires nothing more than stripping off the BIFF header for each
+             CONTINUE record and appending the records together.  However, Excel has implemented
+             a storage (file size) optimization where if the CONTINUE record's data begins within
+             the string portion of a BIFF String (the 8228 byte boundary occurred in the middle of
+             a string), then the CONTINUE record's string value will be stored in compressed unicode
+             regardless of how the previous portion of the string is stored.
+            
+             </remarks>
+             <param name="biff"></param>
+             <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadSUPBOOK(FarPoint.Excel.Biff)">
+            <summary>
+            ReadSUPBOOK
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadWINDOW1">
+            <summary>
+            ReadWINDOW1
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadXF">
+            <summary>
+            ReadXF
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadARRAY">
+            <summary>
+            ReadARRAY
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadCOLINFO">
+            <summary>
+            ReadCOLINFO
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadHORIZONTALPAGEBREAKS">
+            <summary>
+            ReadHORIZONTALPAGEBREKS
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadMERGECELLS">
+            <summary>
+            ReadMERGECELLS
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadROW">
+            <summary>
+            ReadROW
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadSELECTION">
+            <summary>
+            ReadSELECTION
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadVCENTER">
+            <summary>
+            ReadVCENTER
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadVERTICALPAGEBREAKS">
+            <summary>
+            ReadVERTICALPAGEBREKS
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadWINDOW2">
+            <summary>
+            ReadWINDOW2
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ProcessSST">
+            <summary>
+            ProcessSST
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadCellType(FarPoint.Excel.Biff,System.Boolean)">
+            <summary>
+            ReadCellType
+            </summary>
+            <param name="biff"></param>
+            <param name="loadFormulas"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadMulCellType(FarPoint.Excel.Biff)">
+            <summary>
+            ReadMulCellType
+            </summary>
+            <param name="biff"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.NumFromRk(System.Int64,System.Boolean@)">
+            <summary>
+            NumFromRk
+            </summary>
+            <param name="rk"></param>
+            <param name="isFloat"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.BiffReader.ReadBiffStr(System.String@,System.Int32)">
+            <summary>
+            ReadBiffStr
+            </summary>
+            <param name="stringOut"></param>
+            <param name="charCount"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FarPoint.Excel.BiffReader.rkrec">
+            <summary>
+            rkrec
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.UCOMIStorage">
+            <summary>
+            UCOMIStorage class
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.StructuredStorageOLE32">
+            <summary>
+            StructuredStorage class
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.XmlWriter">
+            <summary>
+            XmlWriter class
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.XmlReader">
+            <summary>
+            XmlReader class
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.XmlReader.ProcessXML(FarPoint.Excel.IExcelRead,System.String,System.IO.Stream)">
+            <summary>
+            ProcssStream method - Process the stream.
+            </summary>
+            <param name="excelRead"></param>
+            <param name="fileName"></param>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FarPoint.Excel.IExcelXml">
+            <summary>
+            ExcelRead interface
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelXml.ExcelXML">
+            <summary>
+            Excel XML
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelXml.ExcelSetXF(FarPoint.Excel.IExcelXF,System.String)">
+            <summary>
+            Excel XML
+            </summary>
+            <param name="xf"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelXml.ExcelGetDefaultRowHeight(System.Int16,System.Double@)">
+            <summary>
+            Excel XML
+            </summary>
+            <param name="sheet"></param>
+            <param name="rowHeight"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelXml.ExcelSetDefaultRowHeight(System.Int16,System.Double)">
+            <summary>
+            Excel XML
+            </summary>
+            <param name="sheet"></param>
+            <param name="height"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelXml.ExcelGetDefColWidth(System.Int16,System.Double@)">
+            <summary>
+            Excel XML
+            </summary>
+            <param name="sheet"></param>
+            <param name="colWidth"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelXml.ExcelSetDefColWidth(System.Int16,System.Double)">
+            <summary>
+            Excel XML
+            </summary>
+            <param name="sheet"></param>
+            <param name="width"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelXml.ExcelGetAxisInfoXml(System.Int16,System.Collections.ArrayList,System.Collections.ArrayList,System.Collections.ArrayList,System.Collections.ArrayList,System.Collections.ArrayList,System.Boolean)">
+            <summary>
+            Excel XML
+            </summary>
+            <param name="sheet"></param>
+            <param name="indexList"></param>
+            <param name="sizeList"></param>
+            <param name="hiddenList"></param>
+            <param name="styleIndexList"></param>
+            <param name="isStyleFormattedList"></param>
+            <param name="rowAxis"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelXml.ExcelSetColInfo(System.Int16,System.Int16,System.Int16,System.String,System.Double,System.Boolean,System.Byte,System.Boolean)">
+            <summary>
+            Excel XML
+            </summary>
+            <param name="sheet"></param>
+            <param name="colFirst"></param>
+            <param name="colLast"></param>
+            <param name="styleName"></param>
+            <param name="width"></param>
+            <param name="hidden"></param>
+            <param name="outlineLevel"></param>
+            <param name="collapsed"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelXml.ExcelSetRowInfo(System.Int16,System.Int32,System.Int32,System.Int32,System.String,System.Double,System.Byte,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            ExcelSetRowInfo - Excel XML
+            </summary>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <param name="colFirstDef"></param>
+            <param name="colLastDefPlus1"></param>
+            <param name="styleName"></param>
+            <param name="height"></param>
+            <param name="outlineLevel"></param>
+            <param name="collapsed"></param>
+            <param name="zeroHeight"></param>
+            <param name="unSynced"></param>
+            <param name="ghostDirty"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelXml.ExcelSetCellFormat(System.Int16,System.Int32,System.Int32,System.String,System.Type)">
+            <summary>
+            Set cell format - Excel XML
+            </summary>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <param name="col"></param>
+            <param name="styleName"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelXml.ExcelSetVisible(System.Int16,System.Boolean)">
+            <summary>
+            Set sheet visibility - Excel XML
+            </summary>
+            <param name="sheet"></param>
+            <param name="isSheetVisible"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelXml.ExcelSetCustomNames(System.Int16,System.Collections.ArrayList,System.Collections.ArrayList)">
+            <summary>
+            Set custom names - Excel XML
+            </summary>
+            <param name="sheet"></param>
+            <param name="customNameList"></param>
+            <param name="customNameDefinitionList"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FarPoint.Excel.IExcelRead">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.IExcelWrite">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.IExcelBiffWrite">
+            <summary>
+            ExcelWrite interface
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.Finish">
+            <summary>
+            Finish - Called after the Excel file has completed saving
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetLeftMargin(System.Int16,System.Double@)">
+            <summary>
+            ExcelGetLeftMargin
+            </summary>
+            <param name="sheet"></param>
+            <param name="margin"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetTopMargin(System.Int16,System.Double@)">
+            <summary>
+            ExcelGetTopMargin
+            </summary>
+            <param name="sheet"></param>
+            <param name="margin"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetRightMargin(System.Int16,System.Double@)">
+            <summary>
+            ExcelGetRightMargin
+            </summary>
+            <param name="sheet"></param>
+            <param name="margin"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetBottomMargin(System.Int16,System.Double@)">
+            <summary>
+            ExcelGetBottomMargin
+            </summary>
+            <param name="sheet"></param>
+            <param name="margin"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetCalcMode(System.Int16,System.Int16@)">
+            <summary>
+            ExcelGetCalcMode
+            </summary>
+            <param name="sheet"></param>
+            <param name="autoRecalc"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetCellFormula(System.Int16,System.Int32,System.Int32,System.Object)">
+            <summary>
+            ExcelGetCellFormula
+            </summary>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <param name="col"></param>
+            <param name="formula"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetCellInfo(System.Int16,System.Collections.ArrayList,System.Collections.ArrayList,System.Collections.ArrayList,System.Collections.ArrayList)">
+            <summary>
+            ExcelGetCellInfo
+            </summary>
+            <param name="sheet"></param>
+            <param name="cellCoord"></param>
+            <param name="cellValue"></param>
+            <param name="cellFormula"></param>
+            <param name="formatIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetAxisInfo(System.Int16,System.Collections.ArrayList,System.Collections.ArrayList,System.Collections.ArrayList,System.Collections.ArrayList,System.Collections.ArrayList,System.Boolean)">
+            <summary>
+            ExcelGetAxisInfo
+            </summary>
+            <param name="sheet"></param>
+            <param name="index"></param>
+            <param name="size"></param>
+            <param name="hidden"></param>
+            <param name="styleIndex"></param>
+            <param name="isStyleFormattedList"></param>
+            <param name="rowAxis"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetDefaultRowHeight(System.Int16,System.Int16@)">
+            <summary>
+            ExcelGetDefaultRowHeight
+            </summary>
+            <param name="sheet"></param>
+            <param name="rowHeight"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetDelta(System.Int16,System.Double@)">
+            <summary>
+            ExcelGetDelta
+            </summary>
+            <param name="sheet"></param>
+            <param name="delta"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetDefColWidth(System.Int16,System.Int16@)">
+            <summary>
+            ExcelGetDefColWidth
+            </summary>
+            <param name="sheet"></param>
+            <param name="colWidth"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetConditionalFormats(System.Int16,System.Int32[]@,System.Int32[]@,System.Collections.ArrayList[]@,System.Collections.ArrayList[]@,System.Collections.ArrayList[]@,System.Collections.ArrayList[]@)">
+            <summary>
+            ExcelGetConditionalFormats
+            </summary>
+            <param name="sheet"></param>
+            <param name="rows"></param>
+            <param name="columns"></param>
+            <param name="xfLists"></param>
+            <param name="firstConditionLists"></param>
+            <param name="lastConditionLists"></param>
+            <param name="opLists"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetExternSheetInfo(System.Collections.ArrayList)">
+            <summary>
+            ExcelGetExternSheetInfo
+            </summary>
+            <param name="sheetList"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetDimensions(System.Int16,System.Int32@,System.Int32@)">
+            <summary>
+            ExcelGetDimensions
+            </summary>
+            <param name="sheet"></param>
+            <param name="col"></param>
+            <param name="row"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetDisplayElements(System.Int16,System.Boolean@,System.Boolean@,System.Boolean@,System.Boolean@)">
+            <summary>
+            ExcelGetDisplayElements
+            </summary>
+            <param name="sheet"></param>
+            <param name="dispFormula"></param>
+            <param name="dispZeros"></param>
+            <param name="dispGrid"></param>
+            <param name="dispRowColHdr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetExternNames(System.Collections.ArrayList)">
+            <summary>
+            ExcelGetExternNames
+            </summary>
+            <param name="externNames"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetFontInfo(System.Boolean@)">
+            <summary>
+            ExcelGetFontInfo
+            </summary>
+            <param name="getDefaultFontNameFromResource"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetFormats(System.Collections.ArrayList)">
+            <summary>
+            ExcelGetFormats
+            </summary>
+            <param name="formats"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetFrozen(System.Int16,System.Int32@,System.Int32@)">
+            <summary>
+            ExcelGetFrozen
+            </summary>
+            <param name="sheet"></param>
+            <param name="frozenRowCount"></param>
+            <param name="frozenColumnCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetCalcCount(System.Int16,System.Int16@)">
+            <summary>
+            ExcelGetCalcCount
+            </summary>
+            <param name="sheet"></param>
+            <param name="iterCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetIteration(System.Int16,System.Int16@)">
+            <summary>
+            ExcelGetIteration
+            </summary>
+            <param name="sheet"></param>
+            <param name="iteration"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetFooter(System.Int16,System.Text.StringBuilder)">
+            <summary>
+            ExcelGetFooter
+            </summary>
+            <param name="sheet"></param>
+            <param name="header"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetHeader(System.Int16,System.Text.StringBuilder)">
+            <summary>
+            ExcelGetHeader
+            </summary>
+            <param name="sheet"></param>
+            <param name="header"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetRowPageBreaks(System.Int16,System.Collections.ArrayList)">
+            <summary>
+            ExcelRowPageBreaks
+            </summary>
+            <param name="sheet"></param>
+            <param name="pageBreaks"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetColumnPageBreaks(System.Int16,System.Collections.ArrayList)">
+            <summary>
+            ExcelColumnPageBreaks
+            </summary>
+            <param name="sheet"></param>
+            <param name="pageBreaks"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetPrintGridlines(System.Int16,System.Boolean@)">
+            <summary>
+            ExcelGetPrintGridlines
+            </summary>
+            <param name="sheet"></param>
+            <param name="print"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetPrintHeaders(System.Int16,System.Boolean@)">
+            <summary>
+            ExcelGetPrintHeaders
+            </summary>
+            <param name="sheet"></param>
+            <param name="print"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetPageSetup(System.Int16,System.Int16@,System.Int16@,System.Int16@,System.Int16@,System.Int16@,System.Boolean@,System.Boolean@,System.Boolean@,System.Boolean@,System.Boolean@,System.Boolean@,System.Boolean@,System.Boolean@,System.Int16@,System.Int16@,System.Double@,System.Double@,System.Int16@)">
+            <summary>
+            ExcelGetPageSetup
+            </summary>
+            <param name="sheet"></param>
+            <param name="paperSize"></param>
+            <param name="scale"></param>
+            <param name="pageStart"></param>
+            <param name="fitWidth"></param>
+            <param name="fitHeight"></param>
+            <param name="leftToRight"></param>
+            <param name="isPortrait"></param>
+            <param name="noPls"></param>
+            <param name="noColor"></param>
+            <param name="draft"></param>
+            <param name="notes"></param>
+            <param name="noOrient"></param>
+            <param name="usePage"></param>
+            <param name="printRes"></param>
+            <param name="vertPrintRes"></param>
+            <param name="numHdr"></param>
+            <param name="numFtr"></param>
+            <param name="copies"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetMergeCells(System.Int16,System.Int16@,System.Collections.ArrayList,System.Collections.ArrayList,System.Collections.ArrayList,System.Collections.ArrayList)">
+            <summary>
+            ExcelGetMergeCells
+            </summary>
+            <param name="sheet"></param>
+            <param name="count"></param>
+            <param name="rowFirsts"></param>
+            <param name="rowLasts"></param>
+            <param name="colFirsts"></param>
+            <param name="colLasts"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetNames(System.Collections.ArrayList,System.Collections.ArrayList,System.Collections.ArrayList,System.Boolean)">
+            <summary>
+            ExcelGetNames
+            </summary>
+            <param name="names"></param>
+            <param name="definitions"></param>
+            <param name="sheets"></param>
+            <param name="haveExternNames"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetPane(System.Int16,System.Int32@,System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
+            <summary>
+            ExcelGetPane
+            </summary>
+            <param name="sheet"></param>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="rwTop"></param>
+            <param name="colLeft"></param>
+            <param name="activePane"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetProtect(System.Int16,System.Boolean@)">
+            <summary>
+            ExcelGetProtect
+            </summary>
+            <param name="sheet"></param>
+            <param name="isProtect"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetRefMode(System.Int16,System.Int32@)">
+            <summary>
+            ExcelGetRefMode
+            </summary>
+            <param name="sheet"></param>
+            <param name="refMode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetRowColGridColor(System.Int16)">
+            <summary>
+            ExcelGetRowColGridColor
+            </summary>
+            <param name="sheet"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetSelectionList(System.Int16,System.Collections.ArrayList,System.Drawing.Point@,System.Byte@)">
+            <summary>
+            ExcelGetSelectionList
+            </summary>
+            <param name="sheet"></param>
+            <param name="selectionList"></param>
+            <param name="activeCell"></param>
+            <param name="paneIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetSheetCount(System.Int16@)">
+            <summary>
+            ExcelGetSheetCount
+            </summary>
+            <param name="sheetCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetSheetInfo(System.Int16,System.Boolean@)">
+            <summary>
+            ExcelGetSheetInfo
+            </summary>
+            <param name="sheet"></param>
+            <param name="hidden"></param>
+            <returns>Returns the sheet name</returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetTopLeft(System.Int16,System.Int32@,System.Int32@)">
+            <summary>
+            ExcelGetTopLeft
+            </summary>
+            <param name="sheet"></param>
+            <param name="rwTop"></param>
+            <param name="colLeft"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetWindow(System.Drawing.Rectangle,System.Boolean@,System.Boolean@)">
+            <summary>
+            ExcelGetWindow
+            </summary>
+            <param name="rect"></param>
+            <param name="hidden"></param>
+            <param name="iconic"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetTabs(System.Boolean@,System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
+            <summary>
+            ExcelGetTabs
+            </summary>
+            <param name="dispTabs"></param>
+            <param name="tabCur"></param>
+            <param name="tabFirst"></param>
+            <param name="tabSel"></param>
+            <param name="tabRatio"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetScroll(System.Boolean@,System.Boolean@)">
+            <summary>
+            ExcelGetScroll
+            </summary>
+            <param name="dispHScroll"></param>
+            <param name="dispVScroll"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelGetZoom(System.Int16,System.Single@)">
+            <summary>
+            ExcelGetZoom
+            </summary>
+            <param name="sheet"></param>
+            <param name="zoom"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.IExcelBiffWrite.ExcelIsCalcError(System.Object,System.Int16@)">
+            <summary>
+            Determine if value is an Error.  If it is, get the error string.
+            </summary>
+            <param name="value"></param>
+            <param name="errorVal"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FarPoint.Excel.ExcelSaveFlags">
+            <summary>
+            Specifies what part of the spreadsheet you want to save out to the Excel-compatible file.
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelSaveFlags.NoFlagsSet">
+            <summary>
+            [0] Saves the entire spreadsheet to the Excel-compatible file; no save flags are set
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelSaveFlags.NoFormulas">
+            <summary>
+            [1] Saves the displayed data but not the formulas to the Excel-compatible file
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelSaveFlags.SaveCustomRowHeaders">
+            <summary>
+            [2] Saves the custom row headers to the Excel-compatible file
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelSaveFlags.SaveCustomColumnHeaders">
+            <summary>
+            [4] Saves the custom column headers to the Excel-compatible file
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelSaveFlags.SaveBothCustomRowAndColumnHeaders">
+            <summary>
+            [12] Saves both the custom row headers and the custom column headers to the Excel-compatible file
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.ExcelOpenFlags">
+            <summary>
+            Specifies what part of the Excel-compatible file you want to load into the spreadsheet.
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelOpenFlags.NoFlagsSet">
+            <summary>
+            [0] Opens the entire spreadsheet from the Excel-compatible file; no open flags are set
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelOpenFlags.DataOnly">
+            <summary>
+            [1] Loads only the data from the Excel-compatible file into the spreadsheet
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelOpenFlags.DataAndFormulasOnly">
+            <summary>
+            [3] Loads formulas from the Excel-compatible file into the spreadsheet
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelOpenFlags.RowHeaders">
+            <summary>
+            [4] Loads row headers from frozen columns in the Excel-compatible file into the spreadsheet
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelOpenFlags.ColumnHeaders">
+            <summary>
+            [8] Loads column headers from frozen rows in the Excel-compatible file into the spreadsheet
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelOpenFlags.RowAndColumnHeaders">
+            <summary>
+            [12] Loads row headers from frozen columns and column headers from frozen rows
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.ExcelFileHandler">
+            <summary>
+            Handles loading from and saving to Excel-compatible files.
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelFileHandler.#ctor">
+            <summary>
+            ExcelFileHandler - default constructor
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelFileHandler.#ctor(System.Object)">
+            <summary>
+            ExcelFileHandler - constructor
+            </summary>
+            <param name="o"></param>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelFileHandler.LoadFromCompoundStorage(System.IO.Stream,FarPoint.Excel.ExcelOpenFlags)">
+            <summary>
+            LoadFromCompoundStorage
+            </summary>
+            <param name="stream"></param>
+            <param name="openFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelFileHandler.LoadFromCompoundStorage(System.IO.Stream,System.Int32,FarPoint.Excel.ExcelOpenFlags)">
+            <summary>
+            LoadFromCompoundStorage
+            </summary>
+            <param name="stream"></param>
+            <param name="excelSheetIndex"></param>
+            <param name="openFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelFileHandler.LoadFromCompoundStorage(System.String,System.IO.Stream,System.Int32,System.Collections.ArrayList,System.Boolean,FarPoint.Excel.ExcelOpenFlags)">
+            <summary>
+            LoadFromCompoundStorageFile
+            </summary>
+            <param name="fileName"></param>
+            <param name="inStream"></param>
+            <param name="excelSheetIndex"></param>
+            <param name="sheetNames"></param>
+            <param name="isFileTest"></param>
+            <param name="openFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelFileHandler.LoadFromCompoundStorage(System.String,FarPoint.Excel.ExcelOpenFlags)">
+            <summary>
+            LoadFromCompoundStorage
+            </summary>
+            <param name="fileName"></param>
+            <param name="openFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelFileHandler.LoadFromCompoundStorage(System.String,System.Int32,FarPoint.Excel.ExcelOpenFlags)">
+            <summary>
+            LoadFromCompoundStorage
+            </summary>
+            <param name="fileName"></param>
+            <param name="excelSheetIndex"></param>
+            <param name="openFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelFileHandler.SaveToCompoundStorage(System.IO.Stream,FarPoint.Excel.ExcelSaveFlags)">
+            <summary>
+            SaveToCompoundStorage
+            </summary>
+            <param name="outStream"></param>
+            <param name="saveFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelFileHandler.SaveToCompoundStorage(System.String,FarPoint.Excel.ExcelSaveFlags)">
+            <summary>
+            SaveToCompoundStorage
+            </summary>
+            <param name="fileName"></param>
+            <param name="saveFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelFileHandler.IsExcelFile(System.String)">
+            <summary>
+            Open the specified file and determine if it meets the minimal requirements to be considered a Structured Storage File containing an Excel Workbook.
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelFileHandler.IsExcelStream(System.IO.Stream)">
+            <summary>
+            IsExcelStream
+            </summary>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelFileHandler.Open(System.String,System.Int32,FarPoint.Excel.ExcelOpenFlags)">
+            <summary>
+            Open the specified Excel file and load the specified sheet
+            </summary>
+            <param name="fileName"></param>
+            <param name="excelSheetIndex"></param>
+            <param name="openFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelFileHandler.Open(System.String,System.IO.Stream,System.Collections.ArrayList,System.Int32,FarPoint.Excel.ExcelOpenFlags)">
+            <summary>
+            Open the specified Excel file and load the specified sheet
+            </summary>
+            <param name="fileName"></param>
+            <param name="stream"></param>
+            <param name="sheetNames"></param>
+            <param name="excelSheetIndex"></param>
+            <param name="openFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelFileHandler.Save(System.IO.Stream)">
+            <summary>
+            Save
+            </summary>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelFileHandler.Save(System.IO.Stream,FarPoint.Excel.ExcelSaveFlags)">
+            <summary>
+            Save
+            </summary>
+            <param name="stream"></param>
+            <param name="saveFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelFileHandler.Save(System.String,FarPoint.Excel.ExcelSaveFlags)">
+            <summary>
+            Save
+            </summary>
+            <param name="fileName"></param>
+            <param name="saveFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelFileHandler.SaveXML(System.String,System.IO.Stream,FarPoint.Excel.ExcelSaveFlags)">
+            <summary>
+            SaveXML
+            </summary>
+            <param name="fileName"></param>
+            <param name="stream"></param>
+            <param name="saveFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelFileHandler.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.BorderPattern">
+            <summary>
+            Default Pattern and compound array settings for the pens used to draw borders in the ComplexBorder class.
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.BorderPattern.FindXLIndex(System.Single[],System.Single[])">
+            <summary>
+            Return the Excel border index from the passed in pattern and compound arrays.
+            </summary>
+            <param name="pattern"></param>
+            <param name="compound"></param>
+            <returns></returns>
+        </member>
+        <member name="F:FarPoint.Excel.BorderPattern.Hair">
+            <summary>
+            DashPattern for the pen used to draw the Excel hair border
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.BorderPattern.DashDot">
+            <summary>
+            DashPattern for the pen used to draw the Excel dash-dot border
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.BorderPattern.MediumDash">
+            <summary>
+            DashPattern for the pen used to draw the Excel medium-dash border
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.BorderPattern.MediumDashDot">
+            <summary>
+            DashPattern for the pen used to draw the Excel medium-dash-dot border
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.BorderPattern.SlantedDashDot">
+            <summary>
+            DashPattern for the pen used to draw the Excel slanted-dash-dot border
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.BorderPattern.SlantedCompound">
+            <summary>
+            CompoundArray for the pen used to draw Excel slanted-dash-dot border
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.BorderPattern.Dotted">
+            <summary>
+            DashPattern for the pen used to draw the Excel dot border
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.BorderPattern.DashDotDot">
+            <summary>
+            DashPattern for the pen used to draw the Excel dash-dot-dot border
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.BorderPattern.MediumDashDotDot">
+            <summary>
+            DashPattern for the pen used to draw the Excel medium-dash-dot-dot border
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.BorderPattern.DoubleCompound">
+            <summary>
+            CompoundArray for the pen used to draw Excel double border
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.BorderPattern.SpreadDash">
+            <summary>
+            Spread Dash Pattern
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.BorderPattern.SpreadDot">
+            <summary>
+            Spread Dot Pattern
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.BorderPattern.SpreadDashDot">
+            <summary>
+            Spread Dash Dot Pattern
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.BorderPattern.SpreadDashDotDot">
+            <summary>
+            Spread Dash Dot Dot Pattern
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.FormatType">
+            <summary>
+            formatType enumeration
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.FormatType.Currency">
+            <summary>
+            Currency type
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.FormatType.DateTime">
+            <summary>
+            DateTime type
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.FormatType.Double">
+            <summary>
+            Double type
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.FormatType.Fraction">
+            <summary>
+            Fraction type
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.FormatType.General">
+            <summary>
+            General type
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.FormatType.Integer">
+            <summary>
+            Integer type
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.FormatType.Percent">
+            <summary>
+            Percent type
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.FormatType.Engineering">
+            <summary>
+            Engineering notation type
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.FormatType.Text">
+            <summary>
+            Text type
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.FormatType.PicMask">
+            <summary>
+            Pic or Mask type
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.FormatType.Boolean">
+            <summary>
+            Boolean type
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.FormatType.TimeSpan">
+            <summary>
+            TimeSpan type
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.ExcelExceptionCode">
+            <summary>
+            Specifies the values for ExcelException that can be retrieved
+            by accessing the ErrorCode property of an ExcelException object. 
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelExceptionCode.FailedOnFileOpen">
+            <summary>
+            The file cannot be opened.  Check HRESULT for more information.
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelExceptionCode.SharingViolation">
+            <summary>
+            There is a sharing violation error when trying to open this file.
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelExceptionCode.Unknown">
+            <summary>
+            There is an unknown error.  Check HRESULT for more information.
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelExceptionCode.CreateStreamError">
+            <summary>
+            The specified stream cannot be created.  Check HRESULT for more information.
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelExceptionCode.BiffStreamError">
+            <summary>
+            This stream is not a BIFF-formatted Excel file.
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelExceptionCode.NotStructuredStorage">
+            <summary>
+            This file is not a structured storage file.
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelExceptionCode.ExcelSheetIndexOutOfRange">
+            <summary>
+            The specified Excel sheet index is outside of the allowable range for the specified Excel file.
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelExceptionCode.ExcelSheetNameNotFound">
+            <summary>
+            The specified Excel sheet name is not in the specified Excel file.
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelExceptionCode.SpreadSheetIndexOutOfRange">
+            <summary>
+            The specified Spread sheet index is out of range.
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelExceptionCode.SpreadSheetNameNotFound">
+            <summary>
+            The specified Spread sheet name cannot be found.
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.ExcelWarningCode">
+            <summary>
+            Specifies the warnings codes returned in the Code property of ExcelWarning.
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelWarningCode.General">
+            <summary>
+            General warning.
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelWarningCode.CannotOpen">
+            <summary>
+            The Excel file cannot be opened.  See the warning message for more information.
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelWarningCode.CannotOpenPasswordProtect">
+            <summary>
+            The Excel file cannot be opened because it is password protected.
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelWarningCode.FormulaElementExceedsExcelLimits">
+            <summary>
+            A value in this formula exceeds an Excel limit.
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelWarningCode.FormulaElementNotFound">
+            <summary>
+            The referenced formula element cannot be found.
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelWarningCode.FormulaElementNotSupported">
+            <summary>
+            The formula element is currently not supported by Spread.
+            </summary>
+        </member>
+        <member name="F:FarPoint.Excel.ExcelWarningCode.FormulaErrorNotifyFarPoint">
+            <summary>
+            There is an unforeseen error. Please contact FarPoint with this information.
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.ExcelWarning">
+            <summary>
+            Represents the warnings arising from loading or saving Excel files.
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelWarning.#ctor(System.String,FarPoint.Excel.ExcelWarningCode)">
+            <summary>
+            Constructor - internal use
+            </summary>
+            <param name="message"></param>
+            <param name="code"></param>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelWarning.#ctor(System.String,FarPoint.Excel.ExcelWarningCode,System.String)">
+            <summary>
+            Constructor - internal use
+            </summary>
+            <param name="message"></param>
+            <param name="code"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelWarning.#ctor(System.String,FarPoint.Excel.ExcelWarningCode,System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Constructor - internal use
+            </summary>
+            <param name="message"></param>
+            <param name="code"></param>
+            <param name="name"></param>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <param name="column"></param>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelWarning.Code">
+            <summary>
+            Gets the Excel warning code.
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelWarning.CoordsSet">
+            <summary>
+            Gets whether the sheet, row, and column properties are set.
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelWarning.Name">
+            <summary>
+            Gets the custom or external name that caused the warning, or null.
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelWarning.Sheet">
+            <summary>
+            Gets the index of the applicable sheet where the warning pertains.
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelWarning.Row">
+            <summary>
+            Gets the index of the row where the warning pertains.
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelWarning.Column">
+            <summary>
+            Gets the index of the column where the warning pertains.
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelWarning.Message">
+            <summary>
+            Gets the string description of the warning.
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.ExcelWarningList">
+            <summary>
+            Represents the collection of warnings generated by loading or saving an Excel file.
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelWarningList.#ctor">
+            <summary>
+            Creates a list of warnings for Excel file operations.
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelWarningList.CopyTo(FarPoint.Excel.ExcelWarningList)">
+            <summary>
+            Copies the Excel file operation warning list to the specified ExcelWarningList object.
+            </summary>
+            <param name="warningList">warning list (ExcelWarningList object) to which to copy the list</param>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelWarningList.AddWarning(System.String,FarPoint.Excel.ExcelWarningCode)">
+            <summary>
+            internal use
+            </summary>
+            <param name="message"></param>
+            <param name="code"></param>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelWarningList.AddWarning(System.String,FarPoint.Excel.ExcelWarningCode,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            internal use
+            </summary>
+            <param name="message"></param>
+            <param name="code"></param>
+            <param name="sheet"></param>
+            <param name="row"></param>
+            <param name="column"></param>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelWarningList.AddWarning(System.String,FarPoint.Excel.ExcelWarningCode,System.String)">
+            <summary>
+            internal use
+            </summary>
+            <param name="message"></param>
+            <param name="code"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelWarningList.AddWarnings(FarPoint.Excel.ExcelWarningList)">
+            <summary>
+            internal use
+            </summary>
+            <param name="warningList"></param>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelWarningList.Item(System.Int32)">
+            <summary>
+            Gets a warning from a specific position in the list of Excel file operation warnings.
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelWarningList.WarningList">
+            <summary>
+            Gets a list of Excel file operation warnings.
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelWarningList.Count">
+            <summary>
+            Gets the number of warnings in the list of Excel file operation warnings. 
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelWarningList.FileName">
+            <summary>
+            Gets or sets the name of the file that contains the Excel file operation warnings.
+            </summary>
+        </member>
+        <member name="T:FarPoint.Excel.ExcelException">
+            <summary>
+            Represents the exceptions arising from loading or saving Excel files.
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelException.#ctor">
+            <summary>
+            Default constructor - internal use
+            </summary>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelException.#ctor(System.String)">
+            <summary>
+            Constructor - internal use
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelException.#ctor(System.String,System.Exception)">
+            <summary>
+            Constructor - internal use
+            </summary>
+            <param name="message"></param>
+            <param name="innerException"></param>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor - internal use
+            </summary>
+            <param name="info"></param>
+            <param name="context"></param>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelException.#ctor(System.String,FarPoint.Excel.ExcelExceptionCode)">
+            <summary>
+            Constructor - internal use
+            </summary>
+            <param name="message"></param>
+            <param name="code"></param>
+        </member>
+        <member name="M:FarPoint.Excel.ExcelException.#ctor(System.String,FarPoint.Excel.ExcelExceptionCode,System.Int64)">
+            <summary>
+            Constructor - internal use
+            </summary>
+            <param name="message"></param>
+            <param name="code"></param>
+            <param name="hr"></param>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelException.Message">
+            <summary>
+            Gets the text message associated with this Excel exception.
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelException.HResult">
+            <summary>
+            Gets the HRESULT, a coded numerical value that is associated with this Excel exception.
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelException.HRSet">
+            <summary>
+            Gets whether the <see cref="P:FarPoint.Excel.ExcelException.HResult"/> property is set.
+            </summary>
+        </member>
+        <member name="P:FarPoint.Excel.ExcelException.Code">
+            <summary>
+            Gets the ExcelExceptionCode enumeration member set for this Excel exception.
+            </summary>
+        </member>
+    </members>
+</doc>

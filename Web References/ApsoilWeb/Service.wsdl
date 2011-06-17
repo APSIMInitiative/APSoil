@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.apsim.info/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://www.apsim.info/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.apsim.info/">
+      <s:element name="SoilNames">
+        <s:complexType />
+      </s:element>
+      <s:element name="SoilNamesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SoilNamesResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="UpdateAllSoils">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Contents" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateAllSoilsResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="SoilXML">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SoilXMLResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SoilXMLResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PAW">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SoilName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SoilSampleXML" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CropName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PAWResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PAWResult" type="s:double" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PAWC">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SoilName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CropName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PAWCResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PAWCResult" type="s:double" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConvertSoilSampleXML">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SoilSampleXML" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConvertSoilSampleXMLResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConvertSoilSampleXMLResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateSoilSample1XML">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SampleDate" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepthStrings" type="tns:ArrayOfString" />
+            <s:element minOccurs="0" maxOccurs="1" name="SWUnits" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SW" type="tns:ArrayOfDouble" />
+            <s:element minOccurs="0" maxOccurs="1" name="NO3" type="tns:ArrayOfDouble" />
+            <s:element minOccurs="0" maxOccurs="1" name="NH4" type="tns:ArrayOfDouble" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDouble">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="double" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CreateSoilSample1XMLResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CreateSoilSample1XMLResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateSoilSample2XML">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SampleDate" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="DepthStrings" type="tns:ArrayOfString" />
+            <s:element minOccurs="0" maxOccurs="1" name="OC" type="tns:ArrayOfDouble" />
+            <s:element minOccurs="0" maxOccurs="1" name="EC" type="tns:ArrayOfDouble" />
+            <s:element minOccurs="0" maxOccurs="1" name="PH" type="tns:ArrayOfDouble" />
+            <s:element minOccurs="0" maxOccurs="1" name="CL" type="tns:ArrayOfDouble" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateSoilSample2XMLResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CreateSoilSample2XMLResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SoilChartPNG">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SoilName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SoilChartPNGResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SoilChartPNGResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SoilChartWithSamplePNG">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SoilName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SoilSampleXML" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SoilChartWithSamplePNGResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SoilChartWithSamplePNGResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="SoilNamesSoapIn">
+    <wsdl:part name="parameters" element="tns:SoilNames" />
+  </wsdl:message>
+  <wsdl:message name="SoilNamesSoapOut">
+    <wsdl:part name="parameters" element="tns:SoilNamesResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateAllSoilsSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateAllSoils" />
+  </wsdl:message>
+  <wsdl:message name="UpdateAllSoilsSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateAllSoilsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SoilXMLSoapIn">
+    <wsdl:part name="parameters" element="tns:SoilXML" />
+  </wsdl:message>
+  <wsdl:message name="SoilXMLSoapOut">
+    <wsdl:part name="parameters" element="tns:SoilXMLResponse" />
+  </wsdl:message>
+  <wsdl:message name="PAWSoapIn">
+    <wsdl:part name="parameters" element="tns:PAW" />
+  </wsdl:message>
+  <wsdl:message name="PAWSoapOut">
+    <wsdl:part name="parameters" element="tns:PAWResponse" />
+  </wsdl:message>
+  <wsdl:message name="PAWCSoapIn">
+    <wsdl:part name="parameters" element="tns:PAWC" />
+  </wsdl:message>
+  <wsdl:message name="PAWCSoapOut">
+    <wsdl:part name="parameters" element="tns:PAWCResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConvertSoilSampleXMLSoapIn">
+    <wsdl:part name="parameters" element="tns:ConvertSoilSampleXML" />
+  </wsdl:message>
+  <wsdl:message name="ConvertSoilSampleXMLSoapOut">
+    <wsdl:part name="parameters" element="tns:ConvertSoilSampleXMLResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateSoilSample1XMLSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateSoilSample1XML" />
+  </wsdl:message>
+  <wsdl:message name="CreateSoilSample1XMLSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateSoilSample1XMLResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateSoilSample2XMLSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateSoilSample2XML" />
+  </wsdl:message>
+  <wsdl:message name="CreateSoilSample2XMLSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateSoilSample2XMLResponse" />
+  </wsdl:message>
+  <wsdl:message name="SoilChartPNGSoapIn">
+    <wsdl:part name="parameters" element="tns:SoilChartPNG" />
+  </wsdl:message>
+  <wsdl:message name="SoilChartPNGSoapOut">
+    <wsdl:part name="parameters" element="tns:SoilChartPNGResponse" />
+  </wsdl:message>
+  <wsdl:message name="SoilChartWithSamplePNGSoapIn">
+    <wsdl:part name="parameters" element="tns:SoilChartWithSamplePNG" />
+  </wsdl:message>
+  <wsdl:message name="SoilChartWithSamplePNGSoapOut">
+    <wsdl:part name="parameters" element="tns:SoilChartWithSamplePNGResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ServiceSoap">
+    <wsdl:operation name="SoilNames">
+      <wsdl:input message="tns:SoilNamesSoapIn" />
+      <wsdl:output message="tns:SoilNamesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateAllSoils">
+      <wsdl:input message="tns:UpdateAllSoilsSoapIn" />
+      <wsdl:output message="tns:UpdateAllSoilsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SoilXML">
+      <wsdl:input message="tns:SoilXMLSoapIn" />
+      <wsdl:output message="tns:SoilXMLSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PAW">
+      <wsdl:input message="tns:PAWSoapIn" />
+      <wsdl:output message="tns:PAWSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PAWC">
+      <wsdl:input message="tns:PAWCSoapIn" />
+      <wsdl:output message="tns:PAWCSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConvertSoilSampleXML">
+      <wsdl:input message="tns:ConvertSoilSampleXMLSoapIn" />
+      <wsdl:output message="tns:ConvertSoilSampleXMLSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateSoilSample1XML">
+      <wsdl:input message="tns:CreateSoilSample1XMLSoapIn" />
+      <wsdl:output message="tns:CreateSoilSample1XMLSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateSoilSample2XML">
+      <wsdl:input message="tns:CreateSoilSample2XMLSoapIn" />
+      <wsdl:output message="tns:CreateSoilSample2XMLSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SoilChartPNG">
+      <wsdl:input message="tns:SoilChartPNGSoapIn" />
+      <wsdl:output message="tns:SoilChartPNGSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SoilChartWithSamplePNG">
+      <wsdl:input message="tns:SoilChartWithSamplePNGSoapIn" />
+      <wsdl:output message="tns:SoilChartWithSamplePNGSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ServiceSoap" type="tns:ServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SoilNames">
+      <soap:operation soapAction="http://www.apsim.info/SoilNames" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateAllSoils">
+      <soap:operation soapAction="http://www.apsim.info/UpdateAllSoils" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SoilXML">
+      <soap:operation soapAction="http://www.apsim.info/SoilXML" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PAW">
+      <soap:operation soapAction="http://www.apsim.info/PAW" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PAWC">
+      <soap:operation soapAction="http://www.apsim.info/PAWC" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConvertSoilSampleXML">
+      <soap:operation soapAction="http://www.apsim.info/ConvertSoilSampleXML" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateSoilSample1XML">
+      <soap:operation soapAction="http://www.apsim.info/CreateSoilSample1XML" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateSoilSample2XML">
+      <soap:operation soapAction="http://www.apsim.info/CreateSoilSample2XML" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SoilChartPNG">
+      <soap:operation soapAction="http://www.apsim.info/SoilChartPNG" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SoilChartWithSamplePNG">
+      <soap:operation soapAction="http://www.apsim.info/SoilChartWithSamplePNG" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ServiceSoap12" type="tns:ServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SoilNames">
+      <soap12:operation soapAction="http://www.apsim.info/SoilNames" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateAllSoils">
+      <soap12:operation soapAction="http://www.apsim.info/UpdateAllSoils" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SoilXML">
+      <soap12:operation soapAction="http://www.apsim.info/SoilXML" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PAW">
+      <soap12:operation soapAction="http://www.apsim.info/PAW" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PAWC">
+      <soap12:operation soapAction="http://www.apsim.info/PAWC" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConvertSoilSampleXML">
+      <soap12:operation soapAction="http://www.apsim.info/ConvertSoilSampleXML" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateSoilSample1XML">
+      <soap12:operation soapAction="http://www.apsim.info/CreateSoilSample1XML" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateSoilSample2XML">
+      <soap12:operation soapAction="http://www.apsim.info/CreateSoilSample2XML" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SoilChartPNG">
+      <soap12:operation soapAction="http://www.apsim.info/SoilChartPNG" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SoilChartWithSamplePNG">
+      <soap12:operation soapAction="http://www.apsim.info/SoilChartWithSamplePNG" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service">
+    <wsdl:port name="ServiceSoap" binding="tns:ServiceSoap">
+      <soap:address location="http://www.apsim.info/ApsoilWebService/Service.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ServiceSoap12" binding="tns:ServiceSoap12">
+      <soap12:address location="http://www.apsim.info/ApsoilWebService/Service.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
