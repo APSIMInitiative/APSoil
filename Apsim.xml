@@ -1,6 +1,6 @@
 <APSIM>
   <Version>
-    <apsim>6.20</apsim>
+    <apsim>6.30</apsim>
   </Version>
   <APSoil>
     <ActionFile>%apsim%\ApsoilActions.xml</ActionFile>
