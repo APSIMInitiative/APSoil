@@ -82,6 +82,7 @@
     <Content Include="Test.aspx" />
     <Content Include="UploadSoilsFile.aspx" />
     <Content Include="Water.xml" />
+    <Content Include="Apsoil.aspx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -92,7 +93,9 @@
     </None>
     <None Include="Web References\ApsoilWeb\Service.disco" />
     <None Include="Web References\ApsoilWeb\Service.wsdl" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApsoilKML.aspx.cs">
@@ -140,6 +143,13 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Apsoil.aspx.cs">
+      <DependentUpon>Apsoil.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Apsoil.aspx.designer.cs">
+      <DependentUpon>Apsoil.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

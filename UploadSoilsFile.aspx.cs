@@ -40,6 +40,8 @@ namespace Apsoil
             string Contents = In.ReadToEnd();
             Soils.UpdateAllSoils(Contents);
 
+            string[] AllSoils =  Soils.SoilNames();
+            SuccessLabel.Text = "Success. " + AllSoils.Length.ToString() + " soils in database.";
             SuccessLabel.Visible = true;
         }
 
