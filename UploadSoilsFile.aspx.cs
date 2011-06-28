@@ -15,33 +15,35 @@ using System.Web.UI.MobileControls;
 using System.Collections.Generic;
 
 namespace Apsoil
-   {
-   public partial class UploadSoilsFile : System.Web.UI.Page
-      {
-      protected void Page_Load(object sender, EventArgs e)
-         {
+{
+    public partial class UploadSoilsFile : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
 
-         }
+        }
 
-      protected override void OnLoad(EventArgs e)
-         {
-         base.OnLoad(e);
-         }
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+        }
 
-      /// <summary>
-      /// User has clicked on upload button.
-      /// </summary>
-      protected void UploadButton_Click(object sender, EventArgs e)
-         {
-         ApsoilWeb.Service Soils = new Apsoil.ApsoilWeb.Service();
+        /// <summary>
+        /// User has clicked on upload button.
+        /// </summary>
+        protected void UploadButton_Click(object sender, EventArgs e)
+        {
+            ApsoilWeb.Service Soils = new Apsoil.ApsoilWeb.Service();
 
-         // Insert all soils into database.
-         Soils.UpdateAllSoils(File1.FileContent.ToString());
+            // Insert all soils into database.
+            StreamReader In = new StreamReader(File1.FileContent);
+            string Contents = In.ReadToEnd();
+            Soils.UpdateAllSoils(Contents);
 
-         SuccessLabel.Visible = true;
-         }
+            SuccessLabel.Visible = true;
+        }
 
 
 
-      }
-   }
+    }
+}
