@@ -120,6 +120,9 @@ namespace Apsoil
         /// </summary>
         private void AddSoil(string Name, string XML)
         {
+            if (Name[Name.Length - 1] == '/')
+                Name = Name.Remove(Name.Length - 1);
+
             string SQL;
             if (SoilNames().Contains(Name))
                 SQL = "UPDATE Soils SET XML = @XML WHERE Name = @Name";
