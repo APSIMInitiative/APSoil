@@ -54,9 +54,10 @@ namespace Apsoil
         {
             get
             {
-                string URL = Request.Url.AbsoluteUri.Contains("?") ? Request.Url.AbsoluteUri.Remove(Request.Url.AbsoluteUri.IndexOf("?")) : Request.Url.AbsoluteUri;
-                URL = URL.Replace(Request.Url.AbsolutePath, "") + Request.ApplicationPath;
-
+                int PosOurName = Request.Url.AbsoluteUri.IndexOf("ApsoilKML.aspx");
+                if (PosOurName == -1)
+                    throw new Exception("Invalid request URL: " + Request.Url.AbsoluteUri);
+                string URL = Request.Url.AbsoluteUri.Remove(PosOurName);
                 return URL;
             }
         }
@@ -118,17 +119,13 @@ namespace Apsoil
                     if (double.TryParse(Soil.Get(SoilNode, "Latitude").Value, out Latitude) &&
                         double.TryParse(Soil.Get(SoilNode, "Longitude").Value, out Longitude))
                     {
-                        //string BalloonDescription = "<iframe src=\"http://localhost:56966/SoilChart.aspx?Name=" + Name + "\">No iframe support!</iframe>";
-                        string BalloonDescription = "<p><b>" + XmlHelper.Name(SoilNode) + "</b></p><p><i>" + XmlHelper.Value(SoilNode, "Comments") + "</i></p>";
+                        string BalloonDescription = "<p><b>" + XmlHelper.Name(SoilNode) + "</b></p><p><i>" 
+                                                  + XmlHelper.Value(SoilNode, "Comments") + "</i></p>";
 
-                        // For debugging replace: 
-                        //    http://www.apsim.info/ApsoilWeb/
-                        //    http://localhost:56966/
+                        BalloonDescription += "<img src=\"" + ourPath + "SoilChart.aspx?Name=" + Name + "\"/>";
 
-                        //BalloonDescription += "<img src=\"http://localhost:56966/SoilChart.aspx?Name=" + Name + "\"/>";
-                        BalloonDescription += "<img src=\"http://www.apsim.info/ApsoilWeb/SoilChart.aspx?Name=" + Name + "\"/>";
-
-                        BalloonDescription += "<p><a href=\"http://www.apsim.info/ApsoilWeb/GetSoil.aspx?Name=" + Name + "\">Download this soil.</a></p>";
+                        BalloonDescription += "<p><a href=\"" + ourPath + "GetSoil.aspx?Name=" + Name + "\">Download soil in APSIM format (copy and paste contents to your simulation).</a></p>";
+                        BalloonDescription += "<p><a name=\"link_id\" id=\"link_id\"  href=\"Download.html\" onclick=\"window.open('" + ourPath + "Excel.aspx?Name=" + Name + "');\">Download soil as an EXCEL spreadsheet</a></p>";
 
                         string SoilName = XmlHelper.Name(SoilNode);
                         Soil.Variable SoilNumber = Soil.Get(SoilNode, "ApsoilNumber");

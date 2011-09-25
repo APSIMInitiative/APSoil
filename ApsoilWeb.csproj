@@ -76,6 +76,8 @@
   <ItemGroup>
     <Content Include="Apsim.xml" />
     <Content Include="ApsoilKML.aspx" />
+    <Content Include="Download.html" />
+    <Content Include="Excel.aspx" />
     <Content Include="GetSoil.aspx" />
     <Content Include="shovel.png" />
     <Content Include="SoilChart.aspx" />
@@ -105,6 +107,13 @@
     <Compile Include="ApsoilKML.aspx.designer.cs">
       <DependentUpon>ApsoilKML.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Excel.aspx.cs">
+      <DependentUpon>Excel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Excel.aspx.designer.cs">
+      <DependentUpon>Excel.aspx</DependentUpon>
+    </Compile>
     <Compile Include="GetSoil.aspx.cs">
       <DependentUpon>GetSoil.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -125,6 +134,7 @@
     <Compile Include="SoilChart.aspx.designer.cs">
       <DependentUpon>SoilChart.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SoilSpreadsheet.cs" />
     <Compile Include="Test.aspx.cs">
       <DependentUpon>Test.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
