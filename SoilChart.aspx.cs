@@ -15,7 +15,6 @@ using Graph;
 using CSGeneral;
 using ApsimFile;
 using System.Collections.Generic;
-using Steema.TeeChart.Styles;
 
 namespace Apsoil
    {

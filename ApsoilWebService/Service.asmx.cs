@@ -48,7 +48,7 @@ namespace Apsoil
 
             // The first string is the debug version to run from Dean's computer.
             //string ConnectionString = "Server=www.apsim.info\\SQLEXPRESS;Database=APSoil;Trusted_Connection=True;";
-            string ConnectionString = "Server=APSRUNET2\\SQLEXPRESS;Database=APSoil;Trusted_Connection=True;User ID=APSRUNET2\\apsrunet;password=CsiroDMZ!";
+            string ConnectionString = "Server=www.apsim.info\\SQLEXPRESS;Database=APSoil;Trusted_Connection=False;User ID=sv-login-internal;password=P@ssword123";
 
             Connection = new SqlConnection(ConnectionString);
             Connection.Open();

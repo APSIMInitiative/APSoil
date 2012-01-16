@@ -15,7 +15,6 @@ using System.Xml;
 using CSGeneral;
 using Graph;
 using ApsimFile;
-using Steema.TeeChart.Styles;
 using System.IO;
 using System.Drawing;
 
