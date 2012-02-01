@@ -122,6 +122,10 @@ namespace Apsoil
                         string BalloonDescription = "<p><b>" + XmlHelper.Name(SoilNode) + "</b></p><p><i>" 
                                                   + XmlHelper.Value(SoilNode, "Comments") + "</i></p>";
 
+                        Soil.Variable DataSourceComments = Soil.Get(SoilNode, "DataSource");
+                        if (DataSourceComments.Value != null && DataSourceComments.Value != "")
+                            BalloonDescription += "<p><i>Data source: " + DataSourceComments.Value + "</i></p>";
+
                         BalloonDescription += "<img src=\"" + ourPath + "SoilChart.aspx?Name=" + Name + "\"/>";
 
                         BalloonDescription += "<p><a href=\"" + ourPath + "GetSoil.aspx?Name=" + Name + "\">Download soil in APSIM format (copy and paste contents to your simulation).</a></p>";
