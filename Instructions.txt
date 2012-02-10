@@ -13,3 +13,7 @@ To upload a new .soils file.
 1. Copy APSRU-Australia-Soils.soils to  http://www.apsim.info/Wiki/public/Upload/ApSoil
 2. Update the web site: http://www.apsim.info/Wiki/APSoil.ashx
 3. Upload APSRU-Australia-Soils.soils to http://www.apsim.info/ApsoilWeb/Apsoil.aspx
+
+To update the APSoil version included in APSIM.
+1. Modify the version number in Apsim.xml
+2. Copy the release notes from ApsoilRelease directory to %apsim%\UserInterface

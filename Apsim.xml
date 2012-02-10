@@ -1,7 +1,4 @@
 <APSIM>
-  <Version>
-    <apsim>6.50</apsim>
-  </Version>
   <APSoil>
     <ActionFile>%apsim%\ApsoilActions.xml</ActionFile>
     <ReleaseNotes>%apsim%\Release Notes.htm</ReleaseNotes>
@@ -12,6 +9,7 @@
     <SplashScreenButtonVisible>Yes</SplashScreenButtonVisible>
     <SplashScreenButtonText>Acknowledge</SplashScreenButtonText>
     <PlugIn enabled="yes">%apsim%/ApsoilPlugIn.xml</PlugIn>
+    <Version>6.5</Version>    
   </APSoil>
   <Soil>
      <PredictedKLCoeff>
