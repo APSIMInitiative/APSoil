@@ -280,6 +280,7 @@ namespace Apsoil
 
         /// <summary>
         /// Return the bytes of a soil chart in PNG format. Google Earth uses this.
+        /// YIELDPROPHET uses this call.
         /// </summary>
         [WebMethod]
         public byte[] SoilChartPNG(string SoilName)
@@ -326,9 +327,9 @@ namespace Apsoil
 
             if (WithSW)
                 VariableNames.Add("SW (mm/mm)");
-            else
-                foreach (string Crop in Soil.Crops(SoilNode))
-                    VariableNames.Add(Crop + " LL(mm/mm)");
+
+            foreach (string Crop in Soil.Crops(SoilNode))
+                VariableNames.Add(Crop + " LL(mm/mm)");
 
             Soil.WriteToTable(SoilNode, Table, VariableNames);
 
@@ -342,6 +343,7 @@ namespace Apsoil
 
         /// <summary>
         /// Return the bytes of a soil chart in PNG format. Google Earth uses this.
+        /// YIELDPROPHET uses this call.
         /// </summary>
         [WebMethod]
         public byte[] SoilChartWithSamplePNG(string SoilName, string SoilSampleXML)
@@ -358,10 +360,50 @@ namespace Apsoil
 
             SoilGraphUI Graph = CreateSoilGraph(SoilNode, WaterNode, true);
 
+            // Take the LL15 line off the chart.
+            foreach (Series S in Graph.Chart.Series)
+            {
+                if (S.Title == "LL15 (mm/mm)")
+                    S.Active = false;
+            }
+
+            // Add in the SW area.
+            HorizArea SW = new HorizArea();
+            SW.LinePen.Width = 2;
+            SW.Color = Color.FromArgb(0, 128, 192); // blue
+            SW.LinePen.Color = Color.FromArgb(0, 128, 192); // blue
+            SW.AreaLines.Visible = false;
+            Graph.AddSeries(Graph.DataSources[0], "SW (mm/mm)", SW);
+            SW.Active = true;
+            Graph.Chart.Series.MoveTo(SW, 2);
+
+            // Add in the Wheat CLL area.
+            HorizArea CLL = new HorizArea();
+            CLL.LinePen.Width = 2;
+            CLL.Color = Color.White;
+            CLL.LinePen.Color = Color.FromArgb(255, 128, 128); // pink
+            CLL.AreaLines.Visible = false;
+            Graph.AddSeries(Graph.DataSources[0], "wheat LL (mm/mm)", CLL);
+            CLL.Active = true;
+            CLL.ShowInLegend = false;
+            Graph.Chart.Series.MoveTo(CLL, 3);
+
+            // Add in the Wheat CLL line.
+            Line CLLLine = new Line();
+            CLLLine.LinePen.Width = 2;
+            CLLLine.Color = Color.FromArgb(255, 128, 128);         // pink
+            CLLLine.LinePen.Color = Color.FromArgb(255, 128, 128); // pink
+            Graph.AddSeries(Graph.DataSources[0], "wheat LL (mm/mm)", CLLLine);
+            CLLLine.Active = true;
+
             // Add in the SW line.
-            Series SWSeries = Graph.AddSeries(Graph.DataSources[0], "SW (mm/mm)");
-            SWSeries.Color = Color.Cyan;
-            SWSeries.Active = true;
+            Line SWLine = new Line();
+            SWLine.LinePen.Width = 2;
+            SWLine.Color = Color.Blue;     // blue
+            SWLine.LinePen.Color = Color.Blue; // blue
+            Graph.AddSeries(Graph.DataSources[0], "SW (mm/mm)", SWLine);
+            SWLine.Active = true;
+            SWLine.ShowInLegend = false;
 
             Graph.PopulateSeries();
             Graph.Chart.Legend.CheckBoxes = false;

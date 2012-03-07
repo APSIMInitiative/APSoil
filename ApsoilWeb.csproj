@@ -83,7 +83,6 @@
     <Content Include="SoilChart.aspx" />
     <Content Include="Test.aspx" />
     <Content Include="UploadSoilsFile.aspx" />
-    <Content Include="Water.xml" />
     <Content Include="Apsoil.aspx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -95,6 +94,7 @@
     </None>
     <None Include="Web References\ApsoilWeb\Service.disco" />
     <None Include="Web References\ApsoilWeb\Service.wsdl" />
+    <Content Include="UserInterface\Water.xml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
