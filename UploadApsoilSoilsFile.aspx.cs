@@ -16,7 +16,7 @@ using System.Collections.Generic;
 
 namespace Apsoil
 {
-    public partial class UploadSoilsFile : System.Web.UI.Page
+    public partial class UploadApsoilSoilsFile : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

@@ -15,17 +15,21 @@
     </div>
     <asp:ListBox ID="ListBox" runat="server" Height="410px" Width="776px">
     </asp:ListBox>
-    <asp:Button ID="Button4" runat="server" onclick="Button4_Click" 
-       Text="Import from .soils" />
-    <asp:Button ID="Button" runat="server" onclick="Button_Click" 
+    <div>
+    <asp:Button ID="Button4" runat="server" onclick="UploadClick" 
+       Text="Upload .soils file" />
+    <asp:Button ID="Button5" runat="server" onclick="DownloadClick" 
+       Text="Download .soils file" />
+    <asp:Button ID="Button" runat="server" onclick="ShowXMLClick" 
        Text="Show selected soil" />
-    <asp:Button ID="Button2" runat="server" onclick="Button2_Click" 
+    <asp:Button ID="Button2" runat="server" onclick="ShowInfoClick" 
        Text="ShowInfo" />
-    <asp:Button ID="Button3" runat="server" onclick="Button3_Click" 
+    <asp:Button ID="Button3" runat="server" onclick="KMLClick" 
        Text="GetKML for all soils" />
     <p>
        <asp:Label ID="InfoLabel" runat="server" Text=" "></asp:Label>
     </p>
+    </div>
     </form>
 </body>
 </html>

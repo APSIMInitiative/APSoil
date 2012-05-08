@@ -54,6 +54,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Apsim\Model\Graph.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\JSON.NET\Bin\Net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -76,13 +79,13 @@
   <ItemGroup>
     <Content Include="Apsim.xml" />
     <Content Include="ApsoilKML.aspx" />
+    <Content Include="Test.htm" />
     <Content Include="Download.html" />
     <Content Include="Excel.aspx" />
     <Content Include="GetSoil.aspx" />
     <Content Include="shovel.png" />
     <Content Include="SoilChart.aspx" />
-    <Content Include="Test.aspx" />
-    <Content Include="UploadSoilsFile.aspx" />
+    <Content Include="UploadApsoilSoilsFile.aspx" />
     <Content Include="Apsoil.aspx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -98,6 +101,9 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <None Include="Web References\ApsoilWeb\SoilInfo.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApsoilKML.aspx.cs">
@@ -134,20 +140,12 @@
     <Compile Include="SoilChart.aspx.designer.cs">
       <DependentUpon>SoilChart.aspx</DependentUpon>
     </Compile>
-    <Compile Include="SoilSpreadsheet.cs" />
-    <Compile Include="Test.aspx.cs">
-      <DependentUpon>Test.aspx</DependentUpon>
+    <Compile Include="UploadApsoilSoilsFile.aspx.cs">
+      <DependentUpon>UploadApsoilSoilsFile.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Test.aspx.designer.cs">
-      <DependentUpon>Test.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UploadSoilsFile.aspx.cs">
-      <DependentUpon>UploadSoilsFile.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UploadSoilsFile.aspx.designer.cs">
-      <DependentUpon>UploadSoilsFile.aspx</DependentUpon>
+    <Compile Include="UploadApsoilSoilsFile.aspx.designer.cs">
+      <DependentUpon>UploadApsoilSoilsFile.aspx</DependentUpon>
     </Compile>
     <Compile Include="Web References\ApsoilWeb\Reference.cs">
       <AutoGen>True</AutoGen>

@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Untitled Page</title>
+    <script type="text/javascript" src="http://localhost:59532/jquery-1.2.3.min.js"></script>
+
+    <script language="javascript" type="text/javascript">
+//       function Test() {
+//          jQuery.ajax({
+//             type: 'POST',
+//             url: 'http://localhost:59532/Service.asmx/SearchSoils',
+//             data: "{ 'Latitude': '-27.0', 'Longitude': '153.0', 'Radius': '150.0'  }",
+//             contentType: 'application/json; charset=utf-8',
+//             dataType: 'json',
+//             async: true,
+//             //beforeSend: function () { alert("before send"); },
+//             success: function (msg) { alert("Success:" + JSON.stringify(msg)); },
+//             //error: function (xhr, ajaxOptions, thrownError) { alert("_ERROR ::: " + xhr.toString()); }
+//             error: function (msg) { alert(msg); }
+//          });
+//         }
+
+
+       // the code below will return the JSON response to the call.
+       function Test() {
+          var req = new XMLHttpRequest();
+
+          var Params = {
+             Latitude: -27.0,
+             Longitude: 150.3,
+             Radius: 4000.0,
+             ASCOrder: "",
+             ASCSubOrder: ""
+          }
+          var value = "{Params: " + JSON.stringify(Params) + "}";
+          alert(value);
+
+          //req.open("POST", "http://www.apsim.info/ApsoilWebService/Service.asmx/SearchSoils?Latitude=-27&Longitude=153&Radius=150", true);
+          req.open("POST", "http://localhost:59532/Service.asmx/SearchSoils", true);
+          req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+          req.setRequestHeader('Content-Length', value.length);
+          req.onreadystatechange = function () {
+             if (req.readyState == 4/* && req.status == 200*/) {
+                alert(req.responseText);
+             }
+          }
+          req.send(value);
+       }
+
+       // the code below will return the JSON response to the call.
+       function Test2() {
+          var req = new XMLHttpRequest();
+
+          var value = "{SoilName: 'Soils/Australia/New South Wales/Upper Western/Clay (Wirracanna site 6 No563-YP)'}";
+          alert(value);
+
+          req.open("POST", "http://localhost:59532/Service.asmx/SoilChartPNG", true);
+          req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+          req.setRequestHeader('Content-Length', value.length);
+          req.onreadystatechange = function () {
+             if (req.readyState == 4/* && req.status == 200*/) {
+                alert(req.responseText);
+             }
+          }
+          req.send(value);
+       }
+
+       // the code below will return the JSON response to the call.
+       function Test3() {
+          var req = new XMLHttpRequest();
+
+          var value = "{'Soils/Australia/New South Wales/Upper Western/Clay (Wirracanna site 6 No563-YP)'}";
+          alert(value);
+
+          req.open("POST", "http://localhost:56966/SoilChartJSon.aspx", true);
+          req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+          req.setRequestHeader('Content-Length', value.length);
+          req.onreadystatechange = function () {
+             if (req.readyState == 4/* && req.status == 200*/) {
+                alert(req.responseText);
+             }
+          }
+          req.send(value);
+       }
+
+    </script>
+</head>
+<body>
+    <button onclick="javascript:Test2()">TEST 1</button>
+    <button onclick="javascript:Test2()">TEST 2</button>
+    <button onclick="javascript:Test3()">TEST 3</button>
+</body>
+</html>

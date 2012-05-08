@@ -32,10 +32,7 @@ namespace Apsoil
                 XmlDocument Doc = new XmlDocument();
                 Doc.LoadXml("<soils>" + SoilsDB.SoilXML(SoilName) + "</soils>");
 
-                DataTable Data = new DataTable("SoilData");
-                int RowNumber = 0;
-                SoilSpreadsheet.CreateTableFromData(Doc.DocumentElement, Data, "AllSoils", ref RowNumber);
-
+                DataTable Data = SoilDataTable.XMLToTable(Doc.DocumentElement, null);
                 Response.Write(DataTableUtility.DataTableToCSV(Data, 0));
                 Response.Flush();                 // send our content to the client browser.
                 Response.SuppressContent = true;  // stops .net from writing it's stuff.

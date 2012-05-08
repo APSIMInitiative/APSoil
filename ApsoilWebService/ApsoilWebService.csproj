@@ -54,6 +54,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Apsim\Model\Graph.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\JSON.NET\Bin\Net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -76,7 +79,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="jquery-1.2.3.min.js" />
     <Content Include="Service.asmx" />
+    <Content Include="Test.aspx" />
+    <Content Include="Test.htm" />
+    <Content Include="Test.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -87,6 +94,13 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test.aspx.cs">
+      <DependentUpon>Test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Test.aspx.designer.cs">
+      <DependentUpon>Test.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

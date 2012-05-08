@@ -15,6 +15,8 @@ using Graph;
 using CSGeneral;
 using ApsimFile;
 using System.Collections.Generic;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace Apsoil
    {
@@ -24,6 +26,22 @@ namespace Apsoil
          {
 
          }
+
+      /// <summary>
+      /// Returns the content of the POST buffer as string
+      /// </summary>
+      /// <returns></returns>
+      public static string FormBufferToString()
+      {
+
+          HttpRequest Request = HttpContext.Current.Request;
+
+          if (Request.TotalBytes > 0)
+              return Encoding.Default.GetString(Request.BinaryRead(Request.TotalBytes));
+
+          return string.Empty;
+
+      }
 
       protected void Page_PreRender(object sender, EventArgs e)
          {
@@ -36,16 +54,21 @@ namespace Apsoil
 
       private byte[] DrawChart()
          {
-         if (Request.QueryString["Name"] != null)
-            {
-            string SoilName = Request.QueryString["Name"];
-
-            ApsoilWeb.Service SoilsDB = new Apsoil.ApsoilWeb.Service();
-
-            return SoilsDB.SoilChartPNG(SoilName);
-            }
-         else
-            return null;
+             if (Request.QueryString["Name"] != null)
+             {
+                 // Google Earth passes in a soil name parameter.
+                 string SoilName = Request.QueryString["Name"];
+                 ApsoilWeb.Service SoilsDB = new Apsoil.ApsoilWeb.Service();
+                 return SoilsDB.SoilChartPNG(SoilName);
+             }
+             else
+             {
+                 // The iPad app passes in soil JSON rather than a name parameter.
+                 string json = FormBufferToString();
+                 XmlDocument doc = JsonConvert.DeserializeXmlNode(json);
+                 ApsoilWeb.Service SoilsDB = new Apsoil.ApsoilWeb.Service();
+                 return SoilsDB.SoilChartPNGFromXML(doc.OuterXml);
+             }
          }
 
 

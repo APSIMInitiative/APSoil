@@ -34,15 +34,15 @@ namespace Apsoil
       private byte[] DrawChart()
          {
          // Create an instance of the APSoil web service.
-         ApsoilWeb.Service SoilsDB = new Apsoil.ApsoilWeb.Service();
+         Service SoilsDB = new Service();
 
          // Get a list of all soil names from the web service.
          // These soil names are of the form:
          //   /Soils/Australia/Queensland/Borders and Western Downs/Red Chromosol (Billa Billa No066)
          // YP will have to parse these names into country, state and region. 
-         string[] SoilNames = SoilsDB.SoilNames();
+         List<string> SoilNames = SoilsDB.SoilNames();
 
-         if (SoilNames.Length > 0)
+         if (SoilNames.Count > 0)
             {
             string SoilName = SoilNames[0];
             string CropName = "wheat";
@@ -86,7 +86,7 @@ namespace Apsoil
 
             // Make sure we can create a soil sample 1.
             string[] Depths = new string[] { "0-10", "10-40", "40-70", "70-100" };
-            double[] SW = new double[] { 0.109, 0.156, 0.243, 0.210 };  // not % but mm/mm - divide percent by 100
+            double[] SW = new double[] { 0.15, 0.22, 0.24, 0.25 };  // not % but mm/mm - divide percent by 100
             double[] NO3 = new double[] { 9, 19, 9, 2 };
             double[] NH4 = new double[] { 6, 6, 6, 4 };
             string SWUnits = "mm/mm";   // This is volumetic - alternative units: "grav. mm/mm";
@@ -95,7 +95,8 @@ namespace Apsoil
             // Make sure we can create a soil sample 2.
             double[] OC = new double[] { 1.72, 0.54, 0.21, 0.16 };
             double[] EC = new double[] { 0.117, 0.242, 0.652, 0.908 };
-            double[] PH = new double[] { 7, 8, 8.8, 9 };
+            //double[] PH = new double[] { 7, 8, 8.8, 9 };
+            double[] PH = new double[] { 999999, 999999, 999999, 999999 };
             double[] CL = new double[] { 93.6, 147.5, 609.8, 891.8 };
             string SoilSample2XML = SoilsDB.CreateSoilSample2XML(new DateTime(2011, 12, 25), Depths, OC, EC, PH, CL);
 
@@ -103,8 +104,17 @@ namespace Apsoil
             double PAW = SoilsDB.PAW(SoilName, NewSoilSampleXML, CropName);
             double PAWC = SoilsDB.PAWC(SoilName, CropName);
 
-            // Get a soil sample graph in PNG format.
+            // Make sure the soil search method works. The lat/long below is for soil:Black Vertosol-Anchorfield (Brookstead No006)
+           // Apsoil.Service.SoilInfo[] JSONSoilNames = SoilsDB.SearchSoils(-27.733, 151.333, 50, "");
 
+            // Make sure the SearchSoilsReturnInfo method works. The lat/long below is for soil:Black Vertosol-Anchorfield (Brookstead No006)
+            Apsoil.Service.SoilInfo[] MatchingSoils = SoilsDB.SearchSoilsReturnInfo(-27.733, 151.333, 50, null);
+
+            // Make sure the SoilXMLAll works - SLOW
+            //string st = SoilsDB.SoilXMLAll();
+
+            // Get a soil sample graph in PNG format.
+            SoilName = "Soils/Australia/South Australia/Mid North/Clay loam over light-medium-heavy clays (Alma No611)";
             return SoilsDB.SoilChartWithSamplePNG(SoilName, SoilSample1XML);
             }
          else

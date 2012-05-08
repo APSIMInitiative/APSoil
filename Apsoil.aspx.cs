@@ -24,13 +24,13 @@ namespace Apsoil
             }
         }
 
-        protected void Button_Click(object sender, EventArgs e)
+        protected void ShowXMLClick(object sender, EventArgs e)
         {
             string SelectedName = ListBox.SelectedValue;
             Response.Redirect("http://www.apsim.info/ApsoilWeb/GetSoil.aspx?Name=" + SelectedName);
         }
 
-        protected void Button2_Click(object sender, EventArgs e)
+        protected void ShowInfoClick(object sender, EventArgs e)
         {
             string SelectedName = ListBox.SelectedValue;
 
@@ -55,14 +55,30 @@ namespace Apsoil
                 InfoLabel.Text = "Invalid soil XML";
         }
 
-        protected void Button3_Click(object sender, EventArgs e)
+        protected void KMLClick(object sender, EventArgs e)
         {
             Response.Redirect("http://www.apsim.info/ApsoilWeb/ApsoilKML.aspx?Mode=1");
         }
 
-        protected void Button4_Click(object sender, EventArgs e)
+        protected void UploadClick(object sender, EventArgs e)
         {
-            Response.Redirect("http://www.apsim.info/ApsoilWeb/UploadSoilsFile.aspx");
+            Response.Redirect("http://www.apsim.info/ApsoilWeb/UploadApsoilSoilsFile.aspx");
         }
+
+        protected void DownloadClick(object sender, EventArgs e)
+        {
+            Response.Clear();
+            Response.AppendHeader("Content-Disposition", "attachment; filename=" + "All.soils");
+            Response.Buffer = false;
+            Response.ContentType = "text/plain";
+
+            ApsoilWeb.Service SoilsDB = new Apsoil.ApsoilWeb.Service();
+            SoilsDB.Timeout = 360000;
+            Response.Write(SoilsDB.SoilXMLAll());
+            Response.Flush();                 // send our content to the client browser.
+            Response.SuppressContent = true;  // stops .net from writing it's stuff.
+            
+        }
+
     }
 }
