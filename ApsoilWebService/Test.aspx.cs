@@ -19,19 +19,19 @@ using System.IO;
 using System.Drawing;
 
 namespace Apsoil
-   {
-   public partial class Test : System.Web.UI.Page
-      {
-      protected void Page_PreRender(object sender, EventArgs e)
-         {
-         Response.ContentType = "image/png";
-         Response.Buffer = true;
-         byte[] ImageBytes = DrawChart();
-         if (ImageBytes != null)
-            Response.BinaryWrite(ImageBytes);
-         }
+{
+    public partial class Test : System.Web.UI.Page
+    {
+        protected void Page_PreRender(object sender, EventArgs e)
+        {
+            Response.ContentType = "image/png";
+            Response.Buffer = true;
+            byte[] ImageBytes = DrawChart();
+            if (ImageBytes != null)
+                Response.BinaryWrite(ImageBytes);
+        }
 
-      private byte[] DrawChart()
+        private byte[] DrawChart()
          {
          // Create an instance of the APSoil web service.
          Service SoilsDB = new Service();
@@ -108,10 +108,13 @@ namespace Apsoil
            // Apsoil.Service.SoilInfo[] JSONSoilNames = SoilsDB.SearchSoils(-27.733, 151.333, 50, "");
 
             // Make sure the SearchSoilsReturnInfo method works. The lat/long below is for soil:Black Vertosol-Anchorfield (Brookstead No006)
-            Apsoil.Service.SoilInfo[] MatchingSoils = SoilsDB.SearchSoilsReturnInfo(-27.733, 151.333, 50, null);
+            Apsoil.Service.SoilInfo[] MatchingSoils = SoilsDB.SearchSoilsReturnInfo(-35.884, 142.983, 50, null);
 
             // Make sure the SoilXMLAll works - SLOW
-            //string st = SoilsDB.SoilXMLAll();
+            Service.SearchSoilsParams Params = new Service.SearchSoilsParams() { Latitude = -35.884, Longitude = 142.983, Radius = 30 };
+            Service.SoilBasicInfo[] soils =  SoilsDB.AllAustralianSoils(Params);
+
+            Service.SoilInfo[] soils1 = SoilsDB.SearchSoils(Params);
 
             // Get a soil sample graph in PNG format.
             SoilName = "Soils/Australia/South Australia/Mid North/Clay loam over light-medium-heavy clays (Alma No611)";
@@ -123,5 +126,5 @@ namespace Apsoil
 
 
 
-      }
-   }
+    }
+}

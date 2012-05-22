@@ -103,7 +103,7 @@ namespace Apsoil
             Dictionary<string, Folder> Folders = new Dictionary<string, Folder>();
 
             ApsoilWeb.Service SoilsDB = new Apsoil.ApsoilWeb.Service();
-            foreach (string Name in SoilsDB.SoilNames())
+            foreach (string Name in SoilsDB.AllSoilNames(false))
             {
                 string FolderName = Name;
                 if (FolderName.Contains("/"))

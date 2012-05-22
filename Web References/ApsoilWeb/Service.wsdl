@@ -17,6 +17,20 @@
           <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
         </s:sequence>
       </s:complexType>
+      <s:element name="AllSoilNames">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IncludeUserSoils" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AllSoilNamesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AllSoilNamesResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="UpdateAllSoils">
         <s:complexType>
           <s:sequence>
@@ -30,12 +44,21 @@
       <s:element name="UpdateUserSoil">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="Contents" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Params" type="tns:JsonSoilParam" />
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:complexType name="JsonSoilParam">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="JSonSoil" type="s:string" />
+        </s:sequence>
+      </s:complexType>
       <s:element name="UpdateUserSoilResponse">
-        <s:complexType />
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdateUserSoilResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
       </s:element>
       <s:element name="SoilXML">
         <s:complexType>
@@ -48,6 +71,30 @@
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="SoilXMLResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SoilTypes">
+        <s:complexType />
+      </s:element>
+      <s:element name="SoilTypesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SoilTypesResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SoilAsJson">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SoilAsJsonResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SoilAsJsonResult" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -92,6 +139,41 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="PAWCJson">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Params" type="tns:PAWCJsonParams" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="PAWCJsonParams">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="JSonSoil" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="PAWCJsonResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PAWCJsonResult" type="tns:ArrayOfPAWCByCrop" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfPAWCByCrop">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PAWCByCrop" nillable="true" type="tns:PAWCByCrop" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PAWCByCrop">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CropName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PAWC" type="tns:ArrayOfDouble" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfDouble">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="double" type="s:double" />
+        </s:sequence>
+      </s:complexType>
       <s:element name="ConvertSoilSampleXML">
         <s:complexType>
           <s:sequence>
@@ -118,11 +200,6 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:complexType name="ArrayOfDouble">
-        <s:sequence>
-          <s:element minOccurs="0" maxOccurs="unbounded" name="double" type="s:double" />
-        </s:sequence>
-      </s:complexType>
       <s:element name="CreateSoilSample1XMLResponse">
         <s:complexType>
           <s:sequence>
@@ -195,20 +272,70 @@
       <s:element name="SearchSoils">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:double" />
-            <s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:double" />
-            <s:element minOccurs="1" maxOccurs="1" name="Radius" type="s:double" />
-            <s:element minOccurs="0" maxOccurs="1" name="ASC" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Params" type="tns:SearchSoilsParams" />
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:complexType name="SearchSoilsParams">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Radius" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="ASCOrder" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ASCSubOrder" type="s:string" />
+        </s:sequence>
+      </s:complexType>
       <s:element name="SearchSoilsResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="SearchSoilsResult" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SearchSoilsResult" type="tns:ArrayOfSoilInfo" />
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:complexType name="ArrayOfSoilInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SoilInfo" nillable="true" type="tns:SoilInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SoilInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SoilType" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Distance" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="ASCOrder" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ASCSubOrder" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Site" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AllAustralianSoils">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Params" type="tns:SearchSoilsParams" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AllAustralianSoilsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AllAustralianSoilsResult" type="tns:ArrayOfSoilBasicInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfSoilBasicInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SoilBasicInfo" nillable="true" type="tns:SoilBasicInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SoilBasicInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:double" />
+        </s:sequence>
+      </s:complexType>
       <s:element name="SearchSoilsReturnInfo">
         <s:complexType>
           <s:sequence>
@@ -226,20 +353,6 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:complexType name="ArrayOfSoilInfo">
-        <s:sequence>
-          <s:element minOccurs="0" maxOccurs="unbounded" name="SoilInfo" nillable="true" type="tns:SoilInfo" />
-        </s:sequence>
-      </s:complexType>
-      <s:complexType name="SoilInfo">
-        <s:sequence>
-          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
-          <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:double" />
-          <s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:double" />
-          <s:element minOccurs="1" maxOccurs="1" name="Distance" type="s:double" />
-        </s:sequence>
-      </s:complexType>
       <s:element name="ArrayOfString" nillable="true" type="tns:ArrayOfString" />
       <s:element name="string" nillable="true" type="s:string" />
       <s:element name="double" type="s:double" />
@@ -265,6 +378,12 @@
   <wsdl:message name="SoilNamesSoapOut">
     <wsdl:part name="parameters" element="tns:SoilNamesResponse" />
   </wsdl:message>
+  <wsdl:message name="AllSoilNamesSoapIn">
+    <wsdl:part name="parameters" element="tns:AllSoilNames" />
+  </wsdl:message>
+  <wsdl:message name="AllSoilNamesSoapOut">
+    <wsdl:part name="parameters" element="tns:AllSoilNamesResponse" />
+  </wsdl:message>
   <wsdl:message name="UpdateAllSoilsSoapIn">
     <wsdl:part name="parameters" element="tns:UpdateAllSoils" />
   </wsdl:message>
@@ -283,6 +402,18 @@
   <wsdl:message name="SoilXMLSoapOut">
     <wsdl:part name="parameters" element="tns:SoilXMLResponse" />
   </wsdl:message>
+  <wsdl:message name="SoilTypesSoapIn">
+    <wsdl:part name="parameters" element="tns:SoilTypes" />
+  </wsdl:message>
+  <wsdl:message name="SoilTypesSoapOut">
+    <wsdl:part name="parameters" element="tns:SoilTypesResponse" />
+  </wsdl:message>
+  <wsdl:message name="SoilAsJsonSoapIn">
+    <wsdl:part name="parameters" element="tns:SoilAsJson" />
+  </wsdl:message>
+  <wsdl:message name="SoilAsJsonSoapOut">
+    <wsdl:part name="parameters" element="tns:SoilAsJsonResponse" />
+  </wsdl:message>
   <wsdl:message name="SoilXMLAllSoapIn">
     <wsdl:part name="parameters" element="tns:SoilXMLAll" />
   </wsdl:message>
@@ -300,6 +431,12 @@
   </wsdl:message>
   <wsdl:message name="PAWCSoapOut">
     <wsdl:part name="parameters" element="tns:PAWCResponse" />
+  </wsdl:message>
+  <wsdl:message name="PAWCJsonSoapIn">
+    <wsdl:part name="parameters" element="tns:PAWCJson" />
+  </wsdl:message>
+  <wsdl:message name="PAWCJsonSoapOut">
+    <wsdl:part name="parameters" element="tns:PAWCJsonResponse" />
   </wsdl:message>
   <wsdl:message name="ConvertSoilSampleXMLSoapIn">
     <wsdl:part name="parameters" element="tns:ConvertSoilSampleXML" />
@@ -343,6 +480,12 @@
   <wsdl:message name="SearchSoilsSoapOut">
     <wsdl:part name="parameters" element="tns:SearchSoilsResponse" />
   </wsdl:message>
+  <wsdl:message name="AllAustralianSoilsSoapIn">
+    <wsdl:part name="parameters" element="tns:AllAustralianSoils" />
+  </wsdl:message>
+  <wsdl:message name="AllAustralianSoilsSoapOut">
+    <wsdl:part name="parameters" element="tns:AllAustralianSoilsResponse" />
+  </wsdl:message>
   <wsdl:message name="SearchSoilsReturnInfoSoapIn">
     <wsdl:part name="parameters" element="tns:SearchSoilsReturnInfo" />
   </wsdl:message>
@@ -353,18 +496,30 @@
   <wsdl:message name="SoilNamesHttpGetOut">
     <wsdl:part name="Body" element="tns:ArrayOfString" />
   </wsdl:message>
+  <wsdl:message name="AllSoilNamesHttpGetIn">
+    <wsdl:part name="IncludeUserSoils" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AllSoilNamesHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfString" />
+  </wsdl:message>
   <wsdl:message name="UpdateAllSoilsHttpGetIn">
     <wsdl:part name="Contents" type="s:string" />
   </wsdl:message>
   <wsdl:message name="UpdateAllSoilsHttpGetOut" />
-  <wsdl:message name="UpdateUserSoilHttpGetIn">
-    <wsdl:part name="Contents" type="s:string" />
-  </wsdl:message>
-  <wsdl:message name="UpdateUserSoilHttpGetOut" />
   <wsdl:message name="SoilXMLHttpGetIn">
     <wsdl:part name="Name" type="s:string" />
   </wsdl:message>
   <wsdl:message name="SoilXMLHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SoilTypesHttpGetIn" />
+  <wsdl:message name="SoilTypesHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="SoilAsJsonHttpGetIn">
+    <wsdl:part name="Name" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SoilAsJsonHttpGetOut">
     <wsdl:part name="Body" element="tns:string" />
   </wsdl:message>
   <wsdl:message name="SoilXMLAllHttpGetIn" />
@@ -433,15 +588,6 @@
   <wsdl:message name="SoilChartWithSamplePNGHttpGetOut">
     <wsdl:part name="Body" element="tns:base64Binary" />
   </wsdl:message>
-  <wsdl:message name="SearchSoilsHttpGetIn">
-    <wsdl:part name="Latitude" type="s:string" />
-    <wsdl:part name="Longitude" type="s:string" />
-    <wsdl:part name="Radius" type="s:string" />
-    <wsdl:part name="ASC" type="s:string" />
-  </wsdl:message>
-  <wsdl:message name="SearchSoilsHttpGetOut">
-    <wsdl:part name="Body" element="tns:string" />
-  </wsdl:message>
   <wsdl:message name="SearchSoilsReturnInfoHttpGetIn">
     <wsdl:part name="Latitude" type="s:string" />
     <wsdl:part name="Longitude" type="s:string" />
@@ -455,18 +601,30 @@
   <wsdl:message name="SoilNamesHttpPostOut">
     <wsdl:part name="Body" element="tns:ArrayOfString" />
   </wsdl:message>
+  <wsdl:message name="AllSoilNamesHttpPostIn">
+    <wsdl:part name="IncludeUserSoils" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AllSoilNamesHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfString" />
+  </wsdl:message>
   <wsdl:message name="UpdateAllSoilsHttpPostIn">
     <wsdl:part name="Contents" type="s:string" />
   </wsdl:message>
   <wsdl:message name="UpdateAllSoilsHttpPostOut" />
-  <wsdl:message name="UpdateUserSoilHttpPostIn">
-    <wsdl:part name="Contents" type="s:string" />
-  </wsdl:message>
-  <wsdl:message name="UpdateUserSoilHttpPostOut" />
   <wsdl:message name="SoilXMLHttpPostIn">
     <wsdl:part name="Name" type="s:string" />
   </wsdl:message>
   <wsdl:message name="SoilXMLHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SoilTypesHttpPostIn" />
+  <wsdl:message name="SoilTypesHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="SoilAsJsonHttpPostIn">
+    <wsdl:part name="Name" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SoilAsJsonHttpPostOut">
     <wsdl:part name="Body" element="tns:string" />
   </wsdl:message>
   <wsdl:message name="SoilXMLAllHttpPostIn" />
@@ -535,15 +693,6 @@
   <wsdl:message name="SoilChartWithSamplePNGHttpPostOut">
     <wsdl:part name="Body" element="tns:base64Binary" />
   </wsdl:message>
-  <wsdl:message name="SearchSoilsHttpPostIn">
-    <wsdl:part name="Latitude" type="s:string" />
-    <wsdl:part name="Longitude" type="s:string" />
-    <wsdl:part name="Radius" type="s:string" />
-    <wsdl:part name="ASC" type="s:string" />
-  </wsdl:message>
-  <wsdl:message name="SearchSoilsHttpPostOut">
-    <wsdl:part name="Body" element="tns:string" />
-  </wsdl:message>
   <wsdl:message name="SearchSoilsReturnInfoHttpPostIn">
     <wsdl:part name="Latitude" type="s:string" />
     <wsdl:part name="Longitude" type="s:string" />
@@ -558,6 +707,10 @@
       <wsdl:input message="tns:SoilNamesSoapIn" />
       <wsdl:output message="tns:SoilNamesSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="AllSoilNames">
+      <wsdl:input message="tns:AllSoilNamesSoapIn" />
+      <wsdl:output message="tns:AllSoilNamesSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="UpdateAllSoils">
       <wsdl:input message="tns:UpdateAllSoilsSoapIn" />
       <wsdl:output message="tns:UpdateAllSoilsSoapOut" />
@@ -570,6 +723,14 @@
       <wsdl:input message="tns:SoilXMLSoapIn" />
       <wsdl:output message="tns:SoilXMLSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="SoilTypes">
+      <wsdl:input message="tns:SoilTypesSoapIn" />
+      <wsdl:output message="tns:SoilTypesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SoilAsJson">
+      <wsdl:input message="tns:SoilAsJsonSoapIn" />
+      <wsdl:output message="tns:SoilAsJsonSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="SoilXMLAll">
       <wsdl:input message="tns:SoilXMLAllSoapIn" />
       <wsdl:output message="tns:SoilXMLAllSoapOut" />
@@ -581,6 +742,10 @@
     <wsdl:operation name="PAWC">
       <wsdl:input message="tns:PAWCSoapIn" />
       <wsdl:output message="tns:PAWCSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PAWCJson">
+      <wsdl:input message="tns:PAWCJsonSoapIn" />
+      <wsdl:output message="tns:PAWCJsonSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="ConvertSoilSampleXML">
       <wsdl:input message="tns:ConvertSoilSampleXMLSoapIn" />
@@ -610,6 +775,10 @@
       <wsdl:input message="tns:SearchSoilsSoapIn" />
       <wsdl:output message="tns:SearchSoilsSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="AllAustralianSoils">
+      <wsdl:input message="tns:AllAustralianSoilsSoapIn" />
+      <wsdl:output message="tns:AllAustralianSoilsSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="SearchSoilsReturnInfo">
       <wsdl:input message="tns:SearchSoilsReturnInfoSoapIn" />
       <wsdl:output message="tns:SearchSoilsReturnInfoSoapOut" />
@@ -620,17 +789,25 @@
       <wsdl:input message="tns:SoilNamesHttpGetIn" />
       <wsdl:output message="tns:SoilNamesHttpGetOut" />
     </wsdl:operation>
+    <wsdl:operation name="AllSoilNames">
+      <wsdl:input message="tns:AllSoilNamesHttpGetIn" />
+      <wsdl:output message="tns:AllSoilNamesHttpGetOut" />
+    </wsdl:operation>
     <wsdl:operation name="UpdateAllSoils">
       <wsdl:input message="tns:UpdateAllSoilsHttpGetIn" />
       <wsdl:output message="tns:UpdateAllSoilsHttpGetOut" />
     </wsdl:operation>
-    <wsdl:operation name="UpdateUserSoil">
-      <wsdl:input message="tns:UpdateUserSoilHttpGetIn" />
-      <wsdl:output message="tns:UpdateUserSoilHttpGetOut" />
-    </wsdl:operation>
     <wsdl:operation name="SoilXML">
       <wsdl:input message="tns:SoilXMLHttpGetIn" />
       <wsdl:output message="tns:SoilXMLHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SoilTypes">
+      <wsdl:input message="tns:SoilTypesHttpGetIn" />
+      <wsdl:output message="tns:SoilTypesHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SoilAsJson">
+      <wsdl:input message="tns:SoilAsJsonHttpGetIn" />
+      <wsdl:output message="tns:SoilAsJsonHttpGetOut" />
     </wsdl:operation>
     <wsdl:operation name="SoilXMLAll">
       <wsdl:input message="tns:SoilXMLAllHttpGetIn" />
@@ -668,10 +845,6 @@
       <wsdl:input message="tns:SoilChartWithSamplePNGHttpGetIn" />
       <wsdl:output message="tns:SoilChartWithSamplePNGHttpGetOut" />
     </wsdl:operation>
-    <wsdl:operation name="SearchSoils">
-      <wsdl:input message="tns:SearchSoilsHttpGetIn" />
-      <wsdl:output message="tns:SearchSoilsHttpGetOut" />
-    </wsdl:operation>
     <wsdl:operation name="SearchSoilsReturnInfo">
       <wsdl:input message="tns:SearchSoilsReturnInfoHttpGetIn" />
       <wsdl:output message="tns:SearchSoilsReturnInfoHttpGetOut" />
@@ -682,17 +855,25 @@
       <wsdl:input message="tns:SoilNamesHttpPostIn" />
       <wsdl:output message="tns:SoilNamesHttpPostOut" />
     </wsdl:operation>
+    <wsdl:operation name="AllSoilNames">
+      <wsdl:input message="tns:AllSoilNamesHttpPostIn" />
+      <wsdl:output message="tns:AllSoilNamesHttpPostOut" />
+    </wsdl:operation>
     <wsdl:operation name="UpdateAllSoils">
       <wsdl:input message="tns:UpdateAllSoilsHttpPostIn" />
       <wsdl:output message="tns:UpdateAllSoilsHttpPostOut" />
     </wsdl:operation>
-    <wsdl:operation name="UpdateUserSoil">
-      <wsdl:input message="tns:UpdateUserSoilHttpPostIn" />
-      <wsdl:output message="tns:UpdateUserSoilHttpPostOut" />
-    </wsdl:operation>
     <wsdl:operation name="SoilXML">
       <wsdl:input message="tns:SoilXMLHttpPostIn" />
       <wsdl:output message="tns:SoilXMLHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SoilTypes">
+      <wsdl:input message="tns:SoilTypesHttpPostIn" />
+      <wsdl:output message="tns:SoilTypesHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SoilAsJson">
+      <wsdl:input message="tns:SoilAsJsonHttpPostIn" />
+      <wsdl:output message="tns:SoilAsJsonHttpPostOut" />
     </wsdl:operation>
     <wsdl:operation name="SoilXMLAll">
       <wsdl:input message="tns:SoilXMLAllHttpPostIn" />
@@ -730,10 +911,6 @@
       <wsdl:input message="tns:SoilChartWithSamplePNGHttpPostIn" />
       <wsdl:output message="tns:SoilChartWithSamplePNGHttpPostOut" />
     </wsdl:operation>
-    <wsdl:operation name="SearchSoils">
-      <wsdl:input message="tns:SearchSoilsHttpPostIn" />
-      <wsdl:output message="tns:SearchSoilsHttpPostOut" />
-    </wsdl:operation>
     <wsdl:operation name="SearchSoilsReturnInfo">
       <wsdl:input message="tns:SearchSoilsReturnInfoHttpPostIn" />
       <wsdl:output message="tns:SearchSoilsReturnInfoHttpPostOut" />
@@ -743,6 +920,15 @@
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="SoilNames">
       <soap:operation soapAction="http://www.apsim.info/SoilNames" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AllSoilNames">
+      <soap:operation soapAction="http://www.apsim.info/AllSoilNames" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -777,6 +963,24 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="SoilTypes">
+      <soap:operation soapAction="http://www.apsim.info/SoilTypes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SoilAsJson">
+      <soap:operation soapAction="http://www.apsim.info/SoilAsJson" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="SoilXMLAll">
       <soap:operation soapAction="http://www.apsim.info/SoilXMLAll" style="document" />
       <wsdl:input>
@@ -797,6 +1001,15 @@
     </wsdl:operation>
     <wsdl:operation name="PAWC">
       <soap:operation soapAction="http://www.apsim.info/PAWC" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PAWCJson">
+      <soap:operation soapAction="http://www.apsim.info/PAWCJson" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -867,6 +1080,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="AllAustralianSoils">
+      <soap:operation soapAction="http://www.apsim.info/AllAustralianSoils" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="SearchSoilsReturnInfo">
       <soap:operation soapAction="http://www.apsim.info/SearchSoilsReturnInfo" style="document" />
       <wsdl:input>
@@ -881,6 +1103,15 @@
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="SoilNames">
       <soap12:operation soapAction="http://www.apsim.info/SoilNames" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AllSoilNames">
+      <soap12:operation soapAction="http://www.apsim.info/AllSoilNames" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -915,6 +1146,24 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="SoilTypes">
+      <soap12:operation soapAction="http://www.apsim.info/SoilTypes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SoilAsJson">
+      <soap12:operation soapAction="http://www.apsim.info/SoilAsJson" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="SoilXMLAll">
       <soap12:operation soapAction="http://www.apsim.info/SoilXMLAll" style="document" />
       <wsdl:input>
@@ -935,6 +1184,15 @@
     </wsdl:operation>
     <wsdl:operation name="PAWC">
       <soap12:operation soapAction="http://www.apsim.info/PAWC" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PAWCJson">
+      <soap12:operation soapAction="http://www.apsim.info/PAWCJson" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1005,6 +1263,15 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="AllAustralianSoils">
+      <soap12:operation soapAction="http://www.apsim.info/AllAustralianSoils" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="SearchSoilsReturnInfo">
       <soap12:operation soapAction="http://www.apsim.info/SearchSoilsReturnInfo" style="document" />
       <wsdl:input>
@@ -1026,6 +1293,15 @@
         <mime:mimeXml part="Body" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="AllSoilNames">
+      <http:operation location="/AllSoilNames" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="UpdateAllSoils">
       <http:operation location="/UpdateAllSoils" />
       <wsdl:input>
@@ -1033,15 +1309,26 @@
       </wsdl:input>
       <wsdl:output />
     </wsdl:operation>
-    <wsdl:operation name="UpdateUserSoil">
-      <http:operation location="/UpdateUserSoil" />
+    <wsdl:operation name="SoilXML">
+      <http:operation location="/SoilXML" />
       <wsdl:input>
         <http:urlEncoded />
       </wsdl:input>
-      <wsdl:output />
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="SoilXML">
-      <http:operation location="/SoilXML" />
+    <wsdl:operation name="SoilTypes">
+      <http:operation location="/SoilTypes" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SoilAsJson">
+      <http:operation location="/SoilAsJson" />
       <wsdl:input>
         <http:urlEncoded />
       </wsdl:input>
@@ -1123,15 +1410,6 @@
     </wsdl:operation>
     <wsdl:operation name="SoilChartWithSamplePNG">
       <http:operation location="/SoilChartWithSamplePNG" />
-      <wsdl:input>
-        <http:urlEncoded />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="SearchSoils">
-      <http:operation location="/SearchSoils" />
       <wsdl:input>
         <http:urlEncoded />
       </wsdl:input>
@@ -1160,6 +1438,15 @@
         <mime:mimeXml part="Body" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="AllSoilNames">
+      <http:operation location="/AllSoilNames" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="UpdateAllSoils">
       <http:operation location="/UpdateAllSoils" />
       <wsdl:input>
@@ -1167,15 +1454,26 @@
       </wsdl:input>
       <wsdl:output />
     </wsdl:operation>
-    <wsdl:operation name="UpdateUserSoil">
-      <http:operation location="/UpdateUserSoil" />
+    <wsdl:operation name="SoilXML">
+      <http:operation location="/SoilXML" />
       <wsdl:input>
         <mime:content type="application/x-www-form-urlencoded" />
       </wsdl:input>
-      <wsdl:output />
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="SoilXML">
-      <http:operation location="/SoilXML" />
+    <wsdl:operation name="SoilTypes">
+      <http:operation location="/SoilTypes" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SoilAsJson">
+      <http:operation location="/SoilAsJson" />
       <wsdl:input>
         <mime:content type="application/x-www-form-urlencoded" />
       </wsdl:input>
@@ -1257,15 +1555,6 @@
     </wsdl:operation>
     <wsdl:operation name="SoilChartWithSamplePNG">
       <http:operation location="/SoilChartWithSamplePNG" />
-      <wsdl:input>
-        <mime:content type="application/x-www-form-urlencoded" />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="SearchSoils">
-      <http:operation location="/SearchSoils" />
       <wsdl:input>
         <mime:content type="application/x-www-form-urlencoded" />
       </wsdl:input>

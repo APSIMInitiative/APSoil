@@ -59,7 +59,7 @@ namespace Apsoil
         }
 
         /// <summary>
-        /// Get a list of names from table.
+        /// Get a list of names from table. YieldProphet calls this.
         /// </summary>
         [WebMethod]
         public List<string> SoilNames()
@@ -70,6 +70,38 @@ namespace Apsoil
             try
             {
                 SqlCommand Command = new SqlCommand("SELECT Name FROM Soils", Connection);
+                Reader = Command.ExecuteReader();
+                while (Reader.Read())
+                    _SoilNames.Add(Reader["Name"].ToString());
+                Reader.Close();
+            }
+            catch (Exception err)
+            {
+                Reader.Close();
+                Connection.Close();
+                throw err;
+            }
+            Connection.Close();
+            return _SoilNames;
+        }
+
+        /// <summary>
+        /// Get a list of names from table. Google Earth calls this.
+        /// </summary>
+        [WebMethod]
+        public List<string> AllSoilNames(bool IncludeUserSoils)
+        {
+            SqlConnection Connection = Open();
+            List<string> _SoilNames = new List<string>();
+            SqlDataReader Reader = null;
+            try
+            {
+                SqlCommand Command;
+                if (IncludeUserSoils)
+                    Command = new SqlCommand("SELECT Name FROM Soils", Connection);
+                else
+                    Command = new SqlCommand("SELECT Name FROM Soils WHERE IsApsoil=1", Connection);
+
                 Reader = Command.ExecuteReader();
                 while (Reader.Read())
                     _SoilNames.Add(Reader["Name"].ToString());
@@ -645,6 +677,18 @@ namespace Apsoil
 
         private static int CompareSoilLocations(SoilInfo x, SoilInfo y)
         {
+            if (x == null || y == null)
+                return 0;
+            if (x.Description != null && x.Description.ToLower().Contains("generic"))
+            {
+                if (y.Description != null && !y.Description.ToLower().Contains("generic"))
+                    return 1;  // X is generic but Y is NOT generic
+            }
+            else
+            {
+                if (y.Description != null && y.Description.ToLower().Contains("generic"))
+                    return -1;  // X is NOT generic but T is generic
+            }
             if (x.Distance == y.Distance) 
                 return 0;
             else if (x.Distance < y.Distance) 
@@ -696,6 +740,7 @@ namespace Apsoil
                                 if (Double.TryParse(XmlHelper.Value(Doc.DocumentElement, "Longitude"), out Long))
                                 {
                                     double SoilDistance = distance(Params.Latitude, Params.Longitude, Lat, Long, 'K');
+
                                     if (SoilDistance < Params.Radius)
                                     {
                                         SoilInfo NewSoil = new SoilInfo();
@@ -726,6 +771,11 @@ namespace Apsoil
 
             // Sort the soils and return them.
             Soils.Sort(CompareSoilLocations);
+
+            //StreamWriter Out = new StreamWriter("D:\\Websites\\FILES\\Transfer\\ApsoilWeb.txt", true);
+            //Out.WriteLine("Number of soils added:" + Soils.Count.ToString());
+            //Out.Close();
+
             return Soils.ToArray();
         }
 
@@ -744,7 +794,7 @@ namespace Apsoil
             {
                 XmlDocument Doc = new XmlDocument();
 
-                SqlCommand Command = new SqlCommand("SELECT Name, XML FROM Soils", Connection);
+                SqlCommand Command = new SqlCommand("SELECT Name, XML FROM Soils WHERE IsApsoil=1", Connection);
                 Reader = Command.ExecuteReader();
                 while (Reader.Read())
                 {
