@@ -9,7 +9,7 @@
     <SplashScreenButtonVisible>Yes</SplashScreenButtonVisible>
     <SplashScreenButtonText>Acknowledge</SplashScreenButtonText>
     <PlugIn enabled="yes">%apsim%/ApsoilPlugIn.xml</PlugIn>
-    <Version>6.70</Version>    
+    <Version>6.80</Version>    
   </APSoil>
   <Soil>
      <PredictedKLCoeff>
