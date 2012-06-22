@@ -326,6 +326,12 @@ namespace Apsoil
         [WebMethod]
         public double PAW(string SoilName, string SoilSampleXML, string CropName)
         {
+            //StreamWriter Out = new StreamWriter("D:\\Websites\\FILES\\Transfer\\ApsoilWeb.txt", true);
+            //Out.WriteLine(DateTime.Now.ToString());
+            //Out.WriteLine(SoilSampleXML);
+            //Out.WriteLine();
+            //Out.Close();
+
             // Load in the soil XML
             XmlDocument SoilDoc = new XmlDocument();
             SoilDoc.LoadXml(SoilXML(SoilName));
@@ -725,7 +731,7 @@ namespace Apsoil
             {
                 XmlDocument Doc = new XmlDocument();
 
-                SqlCommand Command = new SqlCommand("SELECT Name, XML FROM Soils", Connection);
+                SqlCommand Command = new SqlCommand("SELECT Name, XML FROM Soils WHERE IsApsoil=1", Connection);
                 Reader = Command.ExecuteReader();
                 while (Reader.Read())
                 {

@@ -89,7 +89,7 @@ namespace Apsoil
             double[] SW = new double[] { 0.15, 0.22, 0.24, 0.25 };  // not % but mm/mm - divide percent by 100
             double[] NO3 = new double[] { 9, 19, 9, 2 };
             double[] NH4 = new double[] { 6, 6, 6, 4 };
-            string SWUnits = "mm/mm";   // This is volumetic - alternative units: "grav. mm/mm";
+            string SWUnits = "grav. mm/mm";   // This is volumetic - alternative units: "grav. mm/mm";
             string SoilSample1XML = SoilsDB.CreateSoilSample1XML(new DateTime(2011, 12, 25), Depths, SWUnits, SW, NO3, NH4);
 
             // Make sure we can create a soil sample 2.
@@ -101,7 +101,7 @@ namespace Apsoil
             string SoilSample2XML = SoilsDB.CreateSoilSample2XML(new DateTime(2011, 12, 25), Depths, OC, EC, PH, CL);
 
             // Make sure paw and pawc work.
-            double PAW = SoilsDB.PAW(SoilName, NewSoilSampleXML, CropName);
+            double PAW = SoilsDB.PAW(SoilName, SoilSample1XML, CropName);
             double PAWC = SoilsDB.PAWC(SoilName, CropName);
 
             // Make sure the soil search method works. The lat/long below is for soil:Black Vertosol-Anchorfield (Brookstead No006)
