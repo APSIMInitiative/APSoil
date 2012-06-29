@@ -345,6 +345,14 @@ namespace Apsoil
             Soil.Variable PAW = Soil.Get(SoilDoc.DocumentElement, CropName + " PAW");
             PAW.Units = "mm";
             return MathUtility.Sum(PAW.Doubles);
+
+            Soil.Variable SW = Soil.Get(SoilDoc.DocumentElement, "SW");
+            SW.Units = "mm/mm";
+            SW.Units = "mm";
+
+            Soil.Variable LL = Soil.Get(SoilDoc.DocumentElement, CropName + " LL");
+            LL.Units = "mm";
+            return MathUtility.Sum(SW.Doubles) - MathUtility.Sum(LL.Doubles);
         }
 
         /// <summary>
