@@ -32,98 +32,124 @@ namespace Apsoil
         }
 
         private byte[] DrawChart()
-         {
-         // Create an instance of the APSoil web service.
-         Service SoilsDB = new Service();
+        {
+            // Create an instance of the APSoil web service.
+            Service SoilsDB = new Service();
 
-         // Get a list of all soil names from the web service.
-         // These soil names are of the form:
-         //   /Soils/Australia/Queensland/Borders and Western Downs/Red Chromosol (Billa Billa No066)
-         // YP will have to parse these names into country, state and region. 
-         List<string> SoilNames = SoilsDB.SoilNames();
+            Test1(SoilsDB);
 
-         if (SoilNames.Count > 0)
+            // Get a list of all soil names from the web service.
+            // These soil names are of the form:
+            //   /Soils/Australia/Queensland/Borders and Western Downs/Red Chromosol (Billa Billa No066)
+            // YP will have to parse these names into country, state and region. 
+            List<string> SoilNames = SoilsDB.SoilNames();
+
+            if (SoilNames.Count > 0)
             {
-            string SoilName = SoilNames[0];
-            string CropName = "wheat";
+                string SoilName = "Soils/Australia/Victoria/Mallee/Clay Loam (Jil Jil No729)"; // SoilNames[0];
+                string CropName = "wheat";
 
-            // Make sure we can convert from old sample xml to new sample xml.
-            string OldSoilSampleXML = "<soilsample name=\"Soil sample 1\">" +
-                                   "<profile>" +
-                                   "  <layer>" +
-                                   "    <thickness>100</thickness>" +
-                                   "    <no3>10.33</no3>" +
-                                   "    <nh4>2</nh4>" +
-                                   "    <sw>0.0689</sw>" +
-                                   "  </layer>" +
-                                   "  <layer>" +
-                                   "    <thickness>100</thickness>" +
-                                   "    <no3>9</no3>" +
-                                   "    <nh4>0</nh4>" +
-                                   "    <sw>0.1311</sw>" +
-                                   "  </layer>" +
-                                   "  <layer>" +
-                                   "    <thickness>200</thickness>" +
-                                   "    <no3>9</no3>" +
-                                   "    <nh4>0</nh4>" +
-                                   "    <sw>0.19</sw>" +
-                                   "  </layer>" +
-                                   "  <layer>" +
-                                   "    <thickness>200</thickness>" +
-                                   "    <no3>9</no3>" +
-                                   "    <nh4>0</nh4>" +
-                                   "    <sw>0.225</sw>" +
-                                   "  </layer>" +
-                                   "  <layer>" +
-                                   "    <thickness>200</thickness>" +
-                                   "    <no3>2.67</no3>" +
-                                   "    <nh4>0</nh4>" +
-                                   "    <sw>0.1726</sw>" +
-                                   "  </layer>" +
-                                   "</profile>" +
-                                   "</soilsample>";
-            string NewSoilSampleXML = SoilsDB.ConvertSoilSampleXML(OldSoilSampleXML);
+                // Make sure we can convert from old sample xml to new sample xml.
+                string OldSoilSampleXML = "<soilsample name=\"Soil sample 1\">" +
+                                       "<profile>" +
+                                       "  <layer>" +
+                                       "    <thickness>100</thickness>" +
+                                       "    <no3>10.33</no3>" +
+                                       "    <nh4>2</nh4>" +
+                                       "    <sw>0.0689</sw>" +
+                                       "  </layer>" +
+                                       "  <layer>" +
+                                       "    <thickness>100</thickness>" +
+                                       "    <no3>9</no3>" +
+                                       "    <nh4>0</nh4>" +
+                                       "    <sw>0.1311</sw>" +
+                                       "  </layer>" +
+                                       "  <layer>" +
+                                       "    <thickness>200</thickness>" +
+                                       "    <no3>9</no3>" +
+                                       "    <nh4>0</nh4>" +
+                                       "    <sw>0.19</sw>" +
+                                       "  </layer>" +
+                                       "  <layer>" +
+                                       "    <thickness>200</thickness>" +
+                                       "    <no3>9</no3>" +
+                                       "    <nh4>0</nh4>" +
+                                       "    <sw>0.225</sw>" +
+                                       "  </layer>" +
+                                       "  <layer>" +
+                                       "    <thickness>200</thickness>" +
+                                       "    <no3>2.67</no3>" +
+                                       "    <nh4>0</nh4>" +
+                                       "    <sw>0.1726</sw>" +
+                                       "  </layer>" +
+                                       "</profile>" +
+                                       "</soilsample>";
+                string NewSoilSampleXML = SoilsDB.ConvertSoilSampleXML(OldSoilSampleXML);
 
-            // Make sure we can create a soil sample 1.
+                // Make sure we can create a soil sample 1.
+                string[] Depths = new string[] { "0-10", "10-40", "40-70", "70-100" };
+                double[] SW = new double[] { 0.139, 0.215, 0.179, 0.213 };  // not % but mm/mm - divide percent by 100
+                double[] NO3 = new double[] { 9, 19, 9, 2 };
+                double[] NH4 = new double[] { 6, 6, 6, 4 };
+                string SWUnits = "grav. mm/mm";   // This is volumetic - alternative units: "grav. mm/mm";
+                string SoilSample1XML = SoilsDB.CreateSoilSample1XML(new DateTime(2011, 12, 25), Depths, SWUnits, SW, NO3, NH4);
+
+                // Make sure we can create a soil sample 2.
+                double[] OC = new double[] { 1.72, 0.54, 0.21, 0.16 };
+                double[] EC = new double[] { 0.117, 0.242, 0.652, 0.908 };
+                //double[] PH = new double[] { 7, 8, 8.8, 9 };
+                double[] PH = new double[] { 999999, 999999, 999999, 999999 };
+                double[] CL = new double[] { 93.6, 147.5, 609.8, 891.8 };
+                string SoilSample2XML = SoilsDB.CreateSoilSample2XML(new DateTime(2011, 12, 25), Depths, OC, EC, PH, CL);
+
+                // Make sure paw and pawc work.
+                double PAW = SoilsDB.PAW(SoilName, SoilSample1XML, CropName);
+                double PAWC = SoilsDB.PAWC(SoilName, CropName);
+
+                // Make sure the soil search method works. The lat/long below is for soil:Black Vertosol-Anchorfield (Brookstead No006)
+                // Apsoil.Service.SoilInfo[] JSONSoilNames = SoilsDB.SearchSoils(-27.733, 151.333, 50, "");
+
+                // Make sure the SearchSoilsReturnInfo method works. The lat/long below is for soil:Black Vertosol-Anchorfield (Brookstead No006)
+                Apsoil.Service.SoilInfo[] MatchingSoils = SoilsDB.SearchSoilsReturnInfo(-35.884, 142.983, 50, null);
+
+                // Make sure the SoilXMLAll works - SLOW
+                Service.SearchSoilsParams Params = new Service.SearchSoilsParams() { Latitude = -35.884, Longitude = 142.983, Radius = 30 };
+                Service.SoilBasicInfo[] soils = SoilsDB.AllAustralianSoils(Params);
+
+                Service.SoilInfo[] soils1 = SoilsDB.SearchSoils(Params);
+
+                // Get a soil sample graph in PNG format.
+                SoilName = "Soils/Australia/South Australia/Mid North/Clay loam over light-medium-heavy clays (Alma No611)";
+                return SoilsDB.SoilChartWithSamplePNG(SoilName, SoilSample1XML);
+            }
+            else
+                return null;
+        }
+
+
+        public static void Test1(Service SoilsDB)
+        {
             string[] Depths = new string[] { "0-10", "10-40", "40-70", "70-100" };
-            double[] SW = new double[] { 0.15, 0.22, 0.24, 0.25 };  // not % but mm/mm - divide percent by 100
+            double[] SW = new double[] { 0.139, 0.215, 0.179, 0.213 };  // not % but mm/mm - divide percent by 100
             double[] NO3 = new double[] { 9, 19, 9, 2 };
             double[] NH4 = new double[] { 6, 6, 6, 4 };
             string SWUnits = "grav. mm/mm";   // This is volumetic - alternative units: "grav. mm/mm";
             string SoilSample1XML = SoilsDB.CreateSoilSample1XML(new DateTime(2011, 12, 25), Depths, SWUnits, SW, NO3, NH4);
 
-            // Make sure we can create a soil sample 2.
-            double[] OC = new double[] { 1.72, 0.54, 0.21, 0.16 };
-            double[] EC = new double[] { 0.117, 0.242, 0.652, 0.908 };
-            //double[] PH = new double[] { 7, 8, 8.8, 9 };
-            double[] PH = new double[] { 999999, 999999, 999999, 999999 };
-            double[] CL = new double[] { 93.6, 147.5, 609.8, 891.8 };
-            string SoilSample2XML = SoilsDB.CreateSoilSample2XML(new DateTime(2011, 12, 25), Depths, OC, EC, PH, CL);
+            XmlDocument SoilDoc = new XmlDocument();
+            SoilDoc.Load("C:\\Users\\hol353\\Work\\ApsoilWeb\\ApsoilWebService\\test.soil");
 
-            // Make sure paw and pawc work.
-            double PAW = SoilsDB.PAW(SoilName, SoilSample1XML, CropName);
-            double PAWC = SoilsDB.PAWC(SoilName, CropName);
+            // Load the sample XML into the Soil XML
+            XmlDocument SampleDoc = new XmlDocument();
+            SampleDoc.LoadXml(SoilSample1XML);
+            SoilDoc.DocumentElement.AppendChild(SoilDoc.ImportNode(SampleDoc.DocumentElement, true));
 
-            // Make sure the soil search method works. The lat/long below is for soil:Black Vertosol-Anchorfield (Brookstead No006)
-           // Apsoil.Service.SoilInfo[] JSONSoilNames = SoilsDB.SearchSoils(-27.733, 151.333, 50, "");
-
-            // Make sure the SearchSoilsReturnInfo method works. The lat/long below is for soil:Black Vertosol-Anchorfield (Brookstead No006)
-            Apsoil.Service.SoilInfo[] MatchingSoils = SoilsDB.SearchSoilsReturnInfo(-35.884, 142.983, 50, null);
-
-            // Make sure the SoilXMLAll works - SLOW
-            Service.SearchSoilsParams Params = new Service.SearchSoilsParams() { Latitude = -35.884, Longitude = 142.983, Radius = 30 };
-            Service.SoilBasicInfo[] soils =  SoilsDB.AllAustralianSoils(Params);
-
-            Service.SoilInfo[] soils1 = SoilsDB.SearchSoils(Params);
-
-            // Get a soil sample graph in PNG format.
-            SoilName = "Soils/Australia/South Australia/Mid North/Clay loam over light-medium-heavy clays (Alma No611)";
-            return SoilsDB.SoilChartWithSamplePNG(SoilName, SoilSample1XML);
-            }
-         else
-            return null;
-         }
-
+            // Return the PAW in mm
+            string CropName = "barley";
+            Soil.Variable PAW = Soil.Get(SoilDoc.DocumentElement, CropName + " PAW");
+            PAW.Units = "mm";
+            double paw = MathUtility.Sum(PAW.Doubles);
+        }
 
 
     }
