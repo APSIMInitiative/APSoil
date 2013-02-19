@@ -382,6 +382,7 @@ namespace Apsoil
         {
             public string CropName;
             public double[] PAWC;
+            public double PAWCTotal;
         }
 
         /// <summary>
@@ -399,7 +400,7 @@ namespace Apsoil
             {
                 Soil.Variable PAWC = Soil.Get(SoilDoc.DocumentElement, CropName + " PAWC");
                 PAWC.Units = "mm";
-                PAWCs.Add(new PAWCByCrop() {CropName = CropName, PAWC = PAWC.Doubles});
+                PAWCs.Add(new PAWCByCrop() {CropName = CropName, PAWC = PAWC.Doubles, PAWCTotal = MathUtility.Sum(PAWC.Doubles) });
             }
             return PAWCs.ToArray();
         }

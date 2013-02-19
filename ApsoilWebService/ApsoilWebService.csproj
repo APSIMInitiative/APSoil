@@ -38,21 +38,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ApsimFile, Version=3.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Apsim\Model\ApsimFile.dll</HintPath>
+    <Reference Include="ApsimFile">
+      <HintPath>..\ApsimFile.dll</HintPath>
     </Reference>
-    <Reference Include="Controllers, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Apsim\Model\Controllers.dll</HintPath>
+    <Reference Include="Controllers">
+      <HintPath>..\Controllers.dll</HintPath>
     </Reference>
-    <Reference Include="CSGeneral, Version=3.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Apsim\Model\CSGeneral.dll</HintPath>
+    <Reference Include="CSGeneral">
+      <HintPath>..\CSGeneral.dll</HintPath>
     </Reference>
-    <Reference Include="Graph, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Apsim\Model\Graph.dll</HintPath>
+    <Reference Include="Graph">
+      <HintPath>..\Graph.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\JSON.NET\Bin\Net40\Newtonsoft.Json.dll</HintPath>
@@ -75,7 +71,7 @@
     <Reference Include="System.Web.Mobile" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="TeeChart.Client">
-      <HintPath>..\bin\TeeChart.Client.dll</HintPath>
+      <HintPath>..\TeeChart.Client.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
