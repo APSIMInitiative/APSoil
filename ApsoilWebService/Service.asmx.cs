@@ -31,58 +31,13 @@ namespace Apsoil
     [ScriptService]
     public class Service : System.Web.Services.WebService
     {
-        //public Service()
-        //{
-        //    Open();
-        //}
-
-        //protected override void Dispose(bool disposing)
-        //{
-        //    base.Dispose(disposing);
-        //    Close();
-        //}
-
-        /// <summary>
-        /// Open the SoilsDB ready for use.
-        /// </summary>
-        private SqlConnection Open()
-        {
-            // Create a connection to the database.
-
-            // The first string is the debug version to run from Dean's computer.
-            //string ConnectionString = "Server=www.apsim.info\\SQLEXPRESS;Database=APSoil;Trusted_Connection=True;";
-            string ConnectionString = "Server=www.apsim.info\\SQLEXPRESS;Database=APSoil;Trusted_Connection=False;User ID=sv-login-internal;password=P@ssword123";
-
-            SqlConnection Connection = new SqlConnection(ConnectionString);
-            Connection.Open();
-            return Connection;
-        }
-
         /// <summary>
         /// Get a list of names from table. YieldProphet calls this.
         /// </summary>
         [WebMethod]
         public List<string> SoilNames()
         {
-            SqlConnection Connection  = Open();
-            List<string> _SoilNames = new List<string>();
-            SqlDataReader Reader = null;
-            try
-            {
-                SqlCommand Command = new SqlCommand("SELECT Name FROM Soils", Connection);
-                Reader = Command.ExecuteReader();
-                while (Reader.Read())
-                    _SoilNames.Add(Reader["Name"].ToString());
-                Reader.Close();
-            }
-            catch (Exception err)
-            {
-                Reader.Close();
-                Connection.Close();
-                throw err;
-            }
-            Connection.Close();
-            return _SoilNames;
+            return AllSoilNames(true);
         }
 
         /// <summary>
@@ -146,75 +101,6 @@ namespace Apsoil
             Connection.Close();
         }
 
-        public class JsonSoilParam
-        {
-            public string JSonSoil;
-        }
-        /// <summary>
-        /// Update all soils to the specified .soils content. Called from iPAD soil app.
-        /// </summary>
-        [WebMethod]
-        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public bool UpdateUserSoil(JsonSoilParam Params)
-        {
-            SqlConnection Connection = Open();
-            try
-            {
-                // Load in the XML
-                XmlDocument SoilDoc = JsonConvert.DeserializeXmlNode(Params.JSonSoil);
-
-                string Name = "/UserSoils/" + XmlHelper.Name(SoilDoc.DocumentElement);
-
-                // Delete the existing soil if it exists
-                SqlCommand Cmd = new SqlCommand("DELETE FROM Soils WHERE Name = @Name", Connection);
-                Cmd.Parameters.Add(new SqlParameter("@Name", Name));
-                Cmd.ExecuteNonQuery();
-
-                // Add soil to DB
-                AddSoil(Connection, Name, SoilDoc.OuterXml, false);
-            }
-            catch (Exception err)
-            {
-                Connection.Close();
-                return false;
-            }
-            Connection.Close();
-            return true;
-        }
-
-        /// <summary>
-        /// Recursively insert all soils into database.
-        /// </summary>
-        private void InsertFolderIntoDB(SqlConnection Connection, XmlNode FolderNode)
-        {
-            foreach (XmlNode SoilNode in XmlHelper.ChildNodes(FolderNode, "Soil"))
-                AddSoil(Connection, XmlHelper.FullPath(SoilNode), SoilNode.OuterXml, true);
-
-            foreach (XmlNode ChildFolderNode in XmlHelper.ChildNodes(FolderNode, "Folder"))
-                InsertFolderIntoDB(Connection, ChildFolderNode);
-        }
-
-        /// <summary>
-        /// Add a soil to the DB, updating the existing one if necessary.
-        /// </summary>
-        private void AddSoil(SqlConnection Connection, string Name, string XML, bool IsApsoil)
-        {
-            if (Name[Name.Length - 1] == '/')
-                Name = Name.Remove(Name.Length - 1);
-
-            string SQL;
-            if (SoilNames().Contains(Name))
-                SQL = "UPDATE Soils SET XML = @XML, IsApsoil = @IsApsoil WHERE Name = @Name";
-            else
-                SQL = "INSERT INTO Soils (Name, XML, IsApsoil) VALUES (@Name, @XML, @IsApsoil)";
-
-            SqlCommand Cmd = new SqlCommand(SQL, Connection);
-            Cmd.Parameters.Add(new SqlParameter("@Name", Name));
-            Cmd.Parameters.Add(new SqlParameter("@XML", XML));
-            Cmd.Parameters.Add(new SqlParameter("@IsApsoil", IsApsoil));
-            Cmd.ExecuteNonQuery();
-        }
-
         /// <summary>
         /// Return the soil node for the specified soil. Will return
         /// null if soil was found.
@@ -265,42 +151,6 @@ namespace Apsoil
                     Types.Add(SoilType);
             }
             return Types.ToArray();
-        }
-
-        /// <summary>
-        /// Return the soil as a JSON string. Called from iPAD app.
-        /// </summary>
-        [WebMethod]
-        [ScriptMethod(ResponseFormat = ResponseFormat.Xml)] 
-        public string SoilAsJson(string Name)
-        {
-            SqlConnection Connection = Open();
-            SqlDataReader Reader = null;
-            string ReturnJSon = "";
-            try
-            {
-                // This method is marked as ResponseFormat.Xml to stop .NET from serialising the return string.
-                // The return string is already in JSON format so no need for .NET to do it as well.
-                SqlCommand Command = new SqlCommand("SELECT XML FROM Soils WHERE Name = @Name", Connection);
-                Command.Parameters.Add(new SqlParameter("@Name", Name));
-                Reader = Command.ExecuteReader();
-                if (Reader.Read())
-                {
-                    XmlDocument Doc = new XmlDocument();
-                    Doc.LoadXml(Reader["XML"].ToString());
-                    ReturnJSon = JsonConvert.SerializeXmlNode(Doc.DocumentElement);
-                }
-            }
-            catch (Exception err)
-            {
-                Reader.Close();
-                Connection.Close();
-                throw err;
-            }
-
-            Reader.Close();
-            Connection.Close();
-            return ReturnJSon;
         }
 
         [WebMethod]
@@ -369,40 +219,6 @@ namespace Apsoil
             Soil.Variable PAWC = Soil.Get(SoilDoc.DocumentElement, CropName + " PAWC");
             PAWC.Units = "mm";
             return MathUtility.Sum(PAWC.Doubles);
-        }
-
-
-        public class PAWCJsonParams
-        {
-            public string JSonSoil;
-        }
-
-
-        public class PAWCByCrop
-        {
-            public string CropName;
-            public double[] PAWC;
-            public double PAWCTotal;
-        }
-
-        /// <summary>
-        /// Return the PAWC (DUL - CropLL) for the specified soil. Called from iPAD app
-        /// </summary>
-        [WebMethod]
-        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public PAWCByCrop[] PAWCJson(PAWCJsonParams Params)
-        {
-            // Load in the soil XML
-            XmlDocument SoilDoc = JsonConvert.DeserializeXmlNode(Params.JSonSoil);
-
-            List<PAWCByCrop> PAWCs = new List<PAWCByCrop>();
-            foreach (string CropName in Soil.CropsMeasured(SoilDoc.DocumentElement))
-            {
-                Soil.Variable PAWC = Soil.Get(SoilDoc.DocumentElement, CropName + " PAWC");
-                PAWC.Units = "mm";
-                PAWCs.Add(new PAWCByCrop() {CropName = CropName, PAWC = PAWC.Doubles, PAWCTotal = MathUtility.Sum(PAWC.Doubles) });
-            }
-            return PAWCs.ToArray();
         }
 
         /// <summary>
@@ -524,72 +340,6 @@ namespace Apsoil
 
         /// <summary>
         /// Return the bytes of a soil chart in PNG format. Google Earth uses this.
-        /// iPad soil app uses this call.
-        /// </summary>
-        [WebMethod]
-        public byte[] SoilChartPNGFromXML(string XML)
-        {
-            XmlDocument Doc = new XmlDocument();
-            Doc.LoadXml(XML);
-
-
-            XmlNode SoilNode = Doc.DocumentElement;
-            XmlNode WaterNode = XmlHelper.Find(SoilNode, "Water");
-
-            SoilGraphUI Graph = CreateSoilGraph(SoilNode, WaterNode, false);
-
-            // Make first 3 LL series active.
-            int Count = 0;
-            foreach (Series S in Graph.Chart.Series)
-            {
-                if (S.Title.Contains(" LL"))
-                {
-                    S.Active = true;
-                    Count++;
-                    if (Count == 3)
-                        break;
-                }
-            }
-            Graph.Chart.Legend.CheckBoxes = false;
-
-            MemoryStream MemStream = new MemoryStream(10000);
-            Graph.Chart.Export.Image.PNG.Height = 450;
-            Graph.Chart.Export.Image.PNG.Width = 350;
-            Graph.Chart.Export.Image.PNG.Save(MemStream);
-
-            Context.Response.ContentType = "image/png";
-            return MemStream.ToArray();
-        }
-
-        /// <summary>
-        /// Create and return a soil graph
-        /// </summary>
-        private static SoilGraphUI CreateSoilGraph(XmlNode SoilNode, XmlNode WaterNode, bool WithSW)
-        {
-            DataTable Table = new DataTable();
-            Table.TableName = "Water";
-            List<string> VariableNames = Soil.ValidVariablesForProfileNode(WaterNode);
-            VariableNames.RemoveAt(0);
-            VariableNames.Insert(0, "DepthMidPoints (mm)");
-
-            if (WithSW)
-                VariableNames.Add("SW (mm/mm)");
-
-            foreach (string Crop in Soil.Crops(SoilNode))
-                VariableNames.Add(Crop + " LL(mm/mm)");
-
-            Soil.WriteToTable(SoilNode, Table, VariableNames);
-
-            SoilGraphUI Graph = new SoilGraphUI();
-            Graph.SoilNode = SoilNode;
-            Graph.OnLoad(null, "", WaterNode.OuterXml);
-            Graph.DataSources.Add(Table);
-            Graph.OnRefresh();
-            return Graph;
-        }
-
-        /// <summary>
-        /// Return the bytes of a soil chart in PNG format. Google Earth uses this.
         /// YIELDPROPHET uses this call.
         /// </summary>
         [WebMethod]
@@ -669,7 +419,82 @@ namespace Apsoil
             return MemStream.ToArray();
         }
 
+        /// <summary>
+        /// Return information about all soils that are within a given search radius of the specified lat and long.
+        /// If SoilType is not null then only those soils that match the specified 
+        /// SoilType are returned. The returned array is a list of soils that match the search criteria.
+        /// Called by YieldProphet.
+        /// </summary>
+        [WebMethod]
+        public SoilInfo[] SearchSoilsReturnInfo(double Latitude, double Longitude, double Radius, string SoilType)
+        {
+            List<SoilInfo> Soils = new List<SoilInfo>();
+            SqlConnection Connection = Open();
+            SqlDataReader Reader = null;
+            try
+            {
+                XmlDocument Doc = new XmlDocument();
 
+                SqlCommand Command = new SqlCommand("SELECT Name, XML FROM Soils", Connection);
+                Reader = Command.ExecuteReader();
+                while (Reader.Read())
+                {
+                    Doc.LoadXml(Reader["XML"].ToString());
+                    double Lat, Long;
+                    if (Double.TryParse(XmlHelper.Value(Doc.DocumentElement, "Latitude"), out Lat))
+                    {
+                        if (Double.TryParse(XmlHelper.Value(Doc.DocumentElement, "Longitude"), out Long))
+                        {
+                            double SoilDistance = distance(Latitude, Longitude, Lat, Long, 'K');
+                            if (SoilDistance < Radius)
+                            {
+                                if (SoilType == null || SoilType.ToLower() == XmlHelper.Value(Doc.DocumentElement, "SoilType").ToLower())
+                                {
+                                    SoilInfo NewSoil = new SoilInfo();
+                                    NewSoil.Name = Reader["Name"].ToString();
+                                    NewSoil.Latitude = Convert.ToDouble(XmlHelper.Value(Doc.DocumentElement, "Latitude"));
+                                    NewSoil.Longitude = Convert.ToDouble(XmlHelper.Value(Doc.DocumentElement, "Longitude"));
+                                    NewSoil.SoilType = XmlHelper.Value(Doc.DocumentElement, "SoilType");
+                                    NewSoil.Description = XmlHelper.Value(Doc.DocumentElement, "Description");
+                                    NewSoil.Distance = SoilDistance;
+                                    NewSoil.Site = XmlHelper.Value(Doc.DocumentElement, "Site");
+                                    Soils.Add(NewSoil);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                Reader.Close();
+                Connection.Close();
+                throw err;
+            }
+            Reader.Close();
+            Connection.Close();
+
+            // Sort the soils and return them.
+            Soils.Sort(CompareSoilLocations);
+            return Soils.ToArray();
+        }
+
+        #region iPad app methods
+
+        public class JsonSoilParam
+        {
+            public string JSonSoil;
+        }
+        public class PAWCJsonParams
+        {
+            public string JSonSoil;
+        }
+        public class PAWCByCrop
+        {
+            public string CropName;
+            public double[] PAWC;
+            public double PAWCTotal;
+        }
         public class SoilInfo
         {
             public string Name;
@@ -682,36 +507,12 @@ namespace Apsoil
             public string ASCSubOrder;
             public string Site;
         }
-
         public class SoilBasicInfo
         {
             public string Name;
             public double Latitude;
             public double Longitude;
         }
-
-        private static int CompareSoilLocations(SoilInfo x, SoilInfo y)
-        {
-            if (x == null || y == null)
-                return 0;
-            if (x.Description != null && x.Description.ToLower().Contains("generic"))
-            {
-                if (y.Description != null && !y.Description.ToLower().Contains("generic"))
-                    return 1;  // X is generic but Y is NOT generic
-            }
-            else
-            {
-                if (y.Description != null && y.Description.ToLower().Contains("generic"))
-                    return -1;  // X is NOT generic but T is generic
-            }
-            if (x.Distance == y.Distance) 
-                return 0;
-            else if (x.Distance < y.Distance) 
-                return -1;
-            else 
-                return 1;
-        }
-
         public class SearchSoilsParams
         {
             public double Latitude;
@@ -721,6 +522,93 @@ namespace Apsoil
             public string ASCSubOrder;
         }
 
+        /// <summary>
+        /// Return the soil as a JSON string. Called from iPAD app.
+        /// </summary>
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Xml)]
+        public string SoilAsJson(string Name)
+        {
+            SqlConnection Connection = Open();
+            SqlDataReader Reader = null;
+            string ReturnJSon = "";
+            try
+            {
+                // This method is marked as ResponseFormat.Xml to stop .NET from serialising the return string.
+                // The return string is already in JSON format so no need for .NET to do it as well.
+                SqlCommand Command = new SqlCommand("SELECT XML FROM Soils WHERE Name = @Name", Connection);
+                Command.Parameters.Add(new SqlParameter("@Name", Name));
+                Reader = Command.ExecuteReader();
+                if (Reader.Read())
+                {
+                    XmlDocument Doc = new XmlDocument();
+                    Doc.LoadXml(Reader["XML"].ToString());
+                    ReturnJSon = JsonConvert.SerializeXmlNode(Doc.DocumentElement);
+                }
+            }
+            catch (Exception err)
+            {
+                Reader.Close();
+                Connection.Close();
+                throw err;
+            }
+
+            Reader.Close();
+            Connection.Close();
+            return ReturnJSon;
+        }
+
+        /// <summary>
+        /// Update all soils to the specified .soils content. Called from iPAD soil app.
+        /// </summary>
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public bool UpdateUserSoil(JsonSoilParam Params)
+        {
+            SqlConnection Connection = Open();
+            try
+            {
+                // Load in the XML
+                XmlDocument SoilDoc = JsonConvert.DeserializeXmlNode(Params.JSonSoil);
+
+                string Name = "/UserSoils/" + XmlHelper.Name(SoilDoc.DocumentElement);
+
+                // Delete the existing soil if it exists
+                SqlCommand Cmd = new SqlCommand("DELETE FROM Soils WHERE Name = @Name", Connection);
+                Cmd.Parameters.Add(new SqlParameter("@Name", Name));
+                Cmd.ExecuteNonQuery();
+
+                // Add soil to DB
+                AddSoil(Connection, Name, SoilDoc.OuterXml, false);
+            }
+            catch (Exception err)
+            {
+                Connection.Close();
+                return false;
+            }
+            Connection.Close();
+            return true;
+        }
+
+        /// <summary>
+        /// Return the PAWC (DUL - CropLL) for the specified soil. Called from iPAD app
+        /// </summary>
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public PAWCByCrop[] PAWCJson(PAWCJsonParams Params)
+        {
+            // Load in the soil XML
+            XmlDocument SoilDoc = JsonConvert.DeserializeXmlNode(Params.JSonSoil);
+
+            List<PAWCByCrop> PAWCs = new List<PAWCByCrop>();
+            foreach (string CropName in Soil.CropsMeasured(SoilDoc.DocumentElement))
+            {
+                Soil.Variable PAWC = Soil.Get(SoilDoc.DocumentElement, CropName + " PAWC");
+                PAWC.Units = "mm";
+                PAWCs.Add(new PAWCByCrop() { CropName = CropName, PAWC = PAWC.Doubles, PAWCTotal = MathUtility.Sum(PAWC.Doubles) });
+            }
+            return PAWCs.ToArray();
+        }
 
         /// <summary>
         /// Return the names of all soils that are within a given search radius of the specified lat and long.
@@ -842,50 +730,97 @@ namespace Apsoil
         }
 
         /// <summary>
-        /// Return information about all soils that are within a given search radius of the specified lat and long.
-        /// If SoilType is not null then only those soils that match the specified 
-        /// SoilType are returned. The returned array is a list of soils that match the search criteria.
-        /// Called by YieldProphet.
+        /// Return the bytes of a soil chart in PNG format. Google Earth uses this.
+        /// iPad soil app uses this call. It is actually called via SoilChart.aspx rather
+        /// than directly from the soil app - hence the XML argument.
         /// </summary>
         [WebMethod]
-        public SoilInfo[] SearchSoilsReturnInfo(double Latitude, double Longitude, double Radius, string SoilType)
+        public byte[] SoilChartPNGFromXML(string XML)
         {
-            List<SoilInfo> Soils = new List<SoilInfo>();
+            XmlDocument Doc = new XmlDocument();
+            Doc.LoadXml(XML);
+
+
+            XmlNode SoilNode = Doc.DocumentElement;
+            XmlNode WaterNode = XmlHelper.Find(SoilNode, "Water");
+
+            SoilGraphUI Graph = CreateSoilGraph(SoilNode, WaterNode, false);
+
+            // Make first 3 LL series active.
+            int Count = 0;
+            foreach (Series S in Graph.Chart.Series)
+            {
+                if (S.Title.Contains(" LL"))
+                {
+                    S.Active = true;
+                    Count++;
+                    if (Count == 3)
+                        break;
+                }
+            }
+            Graph.Chart.Legend.CheckBoxes = false;
+
+            MemoryStream MemStream = new MemoryStream(10000);
+            Graph.Chart.Export.Image.PNG.Height = 450;
+            Graph.Chart.Export.Image.PNG.Width = 350;
+            Graph.Chart.Export.Image.PNG.Save(MemStream);
+
+            return MemStream.ToArray();
+        }
+
+        #endregion
+
+        #region Privates
+
+        /// <summary>
+        /// Open the SoilsDB ready for use.
+        /// </summary>
+        private SqlConnection Open()
+        {
+            // Create a connection to the database.
+
+            // The first string is the debug version to run from Dean's computer.
+            //string ConnectionString = "Server=www.apsim.info\\SQLEXPRESS;Database=APSoil;Trusted_Connection=True;";
+            string ConnectionString = "Server=www.apsim.info\\SQLEXPRESS;Database=APSoil;Trusted_Connection=False;User ID=sv-login-internal;password=P@ssword123";
+
+            SqlConnection Connection = new SqlConnection(ConnectionString);
+            Connection.Open();
+            return Connection;
+        }
+
+        public void ConvertOldSoilsToNewSoils()
+        {
+            // To copy a table run this:
+            // SELECT * INTO AllSoils FROM Soils
+
             SqlConnection Connection = Open();
             SqlDataReader Reader = null;
             try
             {
-                XmlDocument Doc = new XmlDocument();
+                SqlCommand Command;
+                Command = new SqlCommand("SELECT * FROM AllSoils", Connection);
 
-                SqlCommand Command = new SqlCommand("SELECT Name, XML FROM Soils", Connection);
                 Reader = Command.ExecuteReader();
                 while (Reader.Read())
                 {
-                    Doc.LoadXml(Reader["XML"].ToString());
-                    double Lat, Long;
-                    if (Double.TryParse(XmlHelper.Value(Doc.DocumentElement, "Latitude"), out Lat))
-                    {
-                        if (Double.TryParse(XmlHelper.Value(Doc.DocumentElement, "Longitude"), out Long))
-                        {
-                            double SoilDistance = distance(Latitude, Longitude, Lat, Long, 'K');
-                            if (SoilDistance < Radius)
-                            {
-                                if (SoilType == null || SoilType.ToLower() == XmlHelper.Value(Doc.DocumentElement, "SoilType").ToLower())
-                                {
-                                    SoilInfo NewSoil = new SoilInfo();
-                                    NewSoil.Name = Reader["Name"].ToString();
-                                    NewSoil.Latitude = Convert.ToDouble(XmlHelper.Value(Doc.DocumentElement, "Latitude"));
-                                    NewSoil.Longitude = Convert.ToDouble(XmlHelper.Value(Doc.DocumentElement, "Longitude"));
-                                    NewSoil.SoilType = XmlHelper.Value(Doc.DocumentElement, "SoilType");
-                                    NewSoil.Description = XmlHelper.Value(Doc.DocumentElement, "Description");
-                                    NewSoil.Distance = SoilDistance;
-                                    NewSoil.Site = XmlHelper.Value(Doc.DocumentElement, "Site");
-                                    Soils.Add(NewSoil);
-                                }
-                            }
-                        }
-                    }
+                    string Name = Reader["Name"].ToString();
+                    string XML = Reader["XML"].ToString();
+                    bool IsApsoil = Convert.ToBoolean(Reader["IsApsoil"]);
+
+                    XmlDocument Doc = new XmlDocument();
+                    Doc.LoadXml(XML);
+                    APSIMChangeTool.UpgradeToVersion(Doc.DocumentElement, 34);
+                    XML = Doc.OuterXml;
+
+                    string SQL = "UPDATE AllSoils SET XML = @XML, IsApsoil = @IsApsoil WHERE Name = @Name";
+                    SqlCommand Cmd = new SqlCommand(SQL, Connection);
+                    Cmd.Parameters.Add(new SqlParameter("@Name", Name));
+                    Cmd.Parameters.Add(new SqlParameter("@XML", XML));
+                    Cmd.Parameters.Add(new SqlParameter("@IsApsoil", IsApsoil));
+                    Cmd.ExecuteNonQuery();
+
                 }
+                Reader.Close();
             }
             catch (Exception err)
             {
@@ -893,12 +828,89 @@ namespace Apsoil
                 Connection.Close();
                 throw err;
             }
-            Reader.Close();
             Connection.Close();
+        }
 
-            // Sort the soils and return them.
-            Soils.Sort(CompareSoilLocations);
-            return Soils.ToArray();
+        /// <summary>
+        /// Create and return a soil graph
+        /// </summary>
+        private static SoilGraphUI CreateSoilGraph(XmlNode SoilNode, XmlNode WaterNode, bool WithSW)
+        {
+            DataTable Table = new DataTable();
+            Table.TableName = "Water";
+            List<string> VariableNames = Soil.ValidVariablesForProfileNode(WaterNode);
+            VariableNames.RemoveAt(0);
+            VariableNames.Insert(0, "DepthMidPoints (mm)");
+
+            if (WithSW)
+                VariableNames.Add("SW (mm/mm)");
+
+            foreach (string Crop in Soil.Crops(SoilNode))
+                VariableNames.Add(Crop + " LL(mm/mm)");
+
+            Soil.WriteToTable(SoilNode, Table, VariableNames);
+
+            SoilGraphUI Graph = new SoilGraphUI();
+            Graph.SoilNode = SoilNode;
+            Graph.OnLoad(null, "", WaterNode.OuterXml);
+            Graph.DataSources.Add(Table);
+            Graph.OnRefresh();
+            return Graph;
+        }
+
+        /// <summary>
+        /// Recursively insert all soils into database.
+        /// </summary>
+        private void InsertFolderIntoDB(SqlConnection Connection, XmlNode FolderNode)
+        {
+            foreach (XmlNode SoilNode in XmlHelper.ChildNodes(FolderNode, "Soil"))
+                AddSoil(Connection, XmlHelper.FullPath(SoilNode), SoilNode.OuterXml, true);
+
+            foreach (XmlNode ChildFolderNode in XmlHelper.ChildNodes(FolderNode, "Folder"))
+                InsertFolderIntoDB(Connection, ChildFolderNode);
+        }
+
+        /// <summary>
+        /// Add a soil to the DB, updating the existing one if necessary.
+        /// </summary>
+        private void AddSoil(SqlConnection Connection, string Name, string XML, bool IsApsoil)
+        {
+            if (Name[Name.Length - 1] == '/')
+                Name = Name.Remove(Name.Length - 1);
+
+            string SQL;
+            if (SoilNames().Contains(Name))
+                SQL = "UPDATE Soils SET XML = @XML, IsApsoil = @IsApsoil WHERE Name = @Name";
+            else
+                SQL = "INSERT INTO Soils (Name, XML, IsApsoil) VALUES (@Name, @XML, @IsApsoil)";
+
+            SqlCommand Cmd = new SqlCommand(SQL, Connection);
+            Cmd.Parameters.Add(new SqlParameter("@Name", Name));
+            Cmd.Parameters.Add(new SqlParameter("@XML", XML));
+            Cmd.Parameters.Add(new SqlParameter("@IsApsoil", IsApsoil));
+            Cmd.ExecuteNonQuery();
+        }
+
+        private static int CompareSoilLocations(SoilInfo x, SoilInfo y)
+        {
+            if (x == null || y == null)
+                return 0;
+            if (x.Description != null && x.Description.ToLower().Contains("generic"))
+            {
+                if (y.Description != null && !y.Description.ToLower().Contains("generic"))
+                    return 1;  // X is generic but Y is NOT generic
+            }
+            else
+            {
+                if (y.Description != null && y.Description.ToLower().Contains("generic"))
+                    return -1;  // X is NOT generic but T is generic
+            }
+            if (x.Distance == y.Distance)
+                return 0;
+            else if (x.Distance < y.Distance)
+                return -1;
+            else
+                return 1;
         }
 
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -963,8 +975,7 @@ namespace Apsoil
             return (rad / Math.PI * 180.0);
         }
 
-
-
+        #endregion
 
     }
 }

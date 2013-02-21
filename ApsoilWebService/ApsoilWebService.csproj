@@ -73,6 +73,9 @@
     <Reference Include="TeeChart.Client">
       <HintPath>..\TeeChart.Client.dll</HintPath>
     </Reference>
+    <Reference Include="UIUtility">
+      <HintPath>..\UIUtility.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="jquery-1.2.3.min.js" />
@@ -85,6 +88,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SoilToOldXml.cs" />
     <Compile Include="Service.asmx.cs">
       <DependentUpon>Service.asmx</DependentUpon>
       <SubType>Component</SubType>
