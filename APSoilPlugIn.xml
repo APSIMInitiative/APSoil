@@ -1,7 +1,7 @@
 <PlugIn>
    <Type name="folder">
       <MetaData>
-         <UItype>VBUserInterface.AreaUI</UItype>
+         <UItype>CSUserInterface.AreaUI</UItype>
          <ShowInMainTree>Yes</ShowInMainTree>
          <LargeIcon>%apsim%\folder_closed32.png</LargeIcon>
          <SmallIcon>%apsim%\folder_closed16.png</SmallIcon>
@@ -15,7 +15,7 @@
    </Type>
 <Type name="soil">
   <MetaData>
-    <UItype>VBUserInterface.GenericUI</UItype>
+    <UItype>CSUserInterface.GenericUI</UItype>
     <ShowInMainTree>Yes</ShowInMainTree>
     <LargeIcon>%apsim%\shovel32.bmp</LargeIcon>
     <SmallIcon>%apsim%\shovel16.bmp</SmallIcon>
@@ -67,7 +67,7 @@
     </ApsimToSim>         
   </MetaData>
 </Type>
-   <Type name="SoilWat">
+   <Type name="SoilWater">
      <MetaData>
        <UItype>CSUserInterface.ProfileUI</UItype>
        <ShowInMainTree>Yes</ShowInMainTree>
@@ -117,16 +117,6 @@
        </drops>
      </MetaData>
    </Type>
-   <Type name="SoilCrop">
-     <MetaData>
-       <UItype>CSUserInterface.ProfileUI</UItype>
-       <ShowInMainTree>Yes</ShowInMainTree>
-       <SmallIcon>%apsim%\wheat16.gif</SmallIcon>
-       <drops>
-         <drop>water</drop>
-       </drops>
-     </MetaData>
-   </Type>
    <Type name="Phosphorus">
      <MetaData>
        <UItype>CSUserInterface.ProfileUI</UItype>
@@ -134,17 +124,6 @@
        <SmallIcon>%apsim%\phosphorus16.png</SmallIcon>
        <drops>
          <drop>soil</drop>
-       </drops>
-     </MetaData>
-   </Type>
-   <Type name="Thickness">
-     <MetaData>
-       <UItype>VBUserInterface.GenericUI</UItype>
-       <ShowInMainTree>Yes</ShowInMainTree>
-       <SmallIcon>%apsim%\thickness16.png</SmallIcon>
-       <drops>
-         <drop>soil</drop>
-         <drop>folder</drop>
        </drops>
      </MetaData>
    </Type>
