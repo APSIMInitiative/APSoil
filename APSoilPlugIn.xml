@@ -15,7 +15,7 @@
    </Type>
 <Type name="soil">
   <MetaData>
-    <UItype>CSUserInterface.GenericUI</UItype>
+    <UItype>CSUserInterface.SoilPropertyUI</UItype>
     <ShowInMainTree>Yes</ShowInMainTree>
     <LargeIcon>%apsim%\shovel32.bmp</LargeIcon>
     <SmallIcon>%apsim%\shovel16.bmp</SmallIcon>
