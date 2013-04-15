@@ -17,6 +17,7 @@ namespace Apsoil
         protected void Page_Load(object sender, EventArgs e)
         {
             string[] AllSoils = SoilsDB.SoilNames();
+            Array.Sort(AllSoils);
             Label.Text = "Number of soils: " + AllSoils.Length.ToString();
             foreach (string SoilName in AllSoils)
             {
@@ -34,22 +35,12 @@ namespace Apsoil
         {
             string SelectedName = ListBox.SelectedValue;
 
-            XmlDocument Doc = new XmlDocument();
-            Doc.LoadXml(SoilsDB.SoilXML(SelectedName));
-            XmlNode SoilNode = Doc.DocumentElement;
+            Soil Soil = Soil.Create(SoilsDB.SoilXML(SelectedName));
 
-            if (SoilNode != null)
+            if (Soil != null)
             {
-                double Latitude;
-                double Longitude;
-                if (double.TryParse(Soil.Get(SoilNode, "Latitude").Value, out Latitude) &&
-                    double.TryParse(Soil.Get(SoilNode, "Longitude").Value, out Longitude))
-                {
-                    InfoLabel.Text = "Latitude: " + Soil.Get(SoilNode, "Latitude").Value +
-                                     " Longitude: " + Soil.Get(SoilNode, "Longitude").Value;
-                }
-                else
-                    InfoLabel.Text = "Invalid latitude or longitude";
+                InfoLabel.Text = "Latitude: " + Soil.Latitude +
+                                 " Longitude: " + Soil.Longitude;
             }
             else
                 InfoLabel.Text = "Invalid soil XML";

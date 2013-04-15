@@ -19,6 +19,7 @@ using System.Web.Script.Services;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Xml.Serialization;
 
 namespace Apsoil
 {
@@ -31,6 +32,8 @@ namespace Apsoil
     [ScriptService]
     public class Service : System.Web.Services.WebService
     {
+        private string TableName = "AllSoils";
+
         /// <summary>
         /// Get a list of names from table. YieldProphet calls this.
         /// </summary>
@@ -53,9 +56,9 @@ namespace Apsoil
             {
                 SqlCommand Command;
                 if (IncludeUserSoils)
-                    Command = new SqlCommand("SELECT Name FROM Soils", Connection);
+                    Command = new SqlCommand("SELECT Name FROM " + TableName, Connection);
                 else
-                    Command = new SqlCommand("SELECT Name FROM Soils WHERE IsApsoil=1", Connection);
+                    Command = new SqlCommand("SELECT Name FROM " + TableName + " WHERE IsApsoil=1", Connection);
 
                 Reader = Command.ExecuteReader();
                 while (Reader.Read())
@@ -83,7 +86,7 @@ namespace Apsoil
             {
 
             // Delete all soils.
-            SqlCommand Cmd = new SqlCommand("DELETE FROM Soils WHERE IsApsoil = 1", Connection);
+            SqlCommand Cmd = new SqlCommand("DELETE FROM " + TableName + " WHERE IsApsoil = 1", Connection);
             Cmd.ExecuteNonQuery();
 
             // Load in the XML
@@ -113,7 +116,7 @@ namespace Apsoil
             SqlDataReader Reader = null;
             try
             {
-                SqlCommand Command = new SqlCommand("SELECT XML FROM Soils WHERE Name = @Name", Connection);
+                SqlCommand Command = new SqlCommand("SELECT XML FROM " + TableName + " WHERE Name = @Name", Connection);
                 Command.Parameters.Add(new SqlParameter("@Name", Name));
                 Reader = Command.ExecuteReader();
                 if (Reader.Read())
@@ -135,6 +138,28 @@ namespace Apsoil
         }
 
         /// <summary>
+        /// Return info about a soil.
+        /// </summary>
+        [WebMethod]
+        public SoilInfo GetSoilInfo(string SoilName)
+        {
+            Soil Soil = Soil.Create(SoilXML(SoilName));
+
+            SoilInfo SoilInfo = new SoilInfo();
+            SoilInfo.Name = Soil.Name;
+            SoilInfo.Description = Soil.DataSource;
+            SoilInfo.SoilType = Soil.SoilType;
+            SoilInfo.Latitude = Soil.Latitude;
+            SoilInfo.Longitude = Soil.Longitude;
+            SoilInfo.ASCOrder = Soil.ASCOrder;
+            SoilInfo.ASCSubOrder = Soil.ASCSubOrder;
+            SoilInfo.Site = Soil.Site;
+            SoilInfo.Region = Soil.Region;
+            SoilInfo.NearestTown = Soil.NearestTown;
+            return SoilInfo;
+        }
+
+        /// <summary>
         /// Returns a list of all soil types in the APSoil repository.
         /// </summary>
         /// <returns></returns>
@@ -145,64 +170,80 @@ namespace Apsoil
             XmlDocument Doc = new XmlDocument();
             foreach (string SoilName in SoilNames())
             {
-                Doc.LoadXml(SoilXML(SoilName));
-                string SoilType = Soil.Get(Doc.DocumentElement, "SoilType").Value;
+                Soil Soil = Soil.Create(SoilXML(SoilName));
+                string SoilType = Soil.SoilType;
                 if (SoilType != "" && SoilType != null)
                     Types.Add(SoilType);
             }
             return Types.ToArray();
         }
 
-        [WebMethod]
-        public string SoilXMLAll()
-        {
-            StringBuilder XML = new StringBuilder(100000);
-
-            foreach (string SoilName in SoilNames())
-                XML.Append(SoilXML(SoilName));
-
-            // The XML to this point is a flat list of <soil> nodes. We need to create <folder> noes
-            // with hierarchy.
-            XmlDocument Doc = new XmlDocument();
-            Doc.LoadXml("<folder>" + XML.ToString() + "</folder>");
-            DataTable Data = SoilDataTable.XMLToTable(Doc.DocumentElement, null);
-            XmlNode NewXML = SoilDataTable.TableToXML(Data, null);
-            return NewXML.OuterXml;
-        }
-
         /// <summary>
         /// Return the PAW (SW - CropLL) for the specified soil.
         /// </summary>
         [WebMethod]
-        public double PAW(string SoilName, string SoilSampleXML, string CropName)
+        public double PAW(string SoilName, double[] Thickness, double[] SW, bool IsGravimetric, string CropName)
         {
-            //StreamWriter Out = new StreamWriter("D:\\Websites\\FILES\\Transfer\\ApsoilWeb.txt", true);
-            //Out.WriteLine(DateTime.Now.ToString());
-            //Out.WriteLine(SoilSampleXML);
-            //Out.WriteLine();
-            //Out.Close();
+            Soil Soil = Soil.Create(SoilXML(SoilName));
 
-            // Load in the soil XML
-            XmlDocument SoilDoc = new XmlDocument();
-            SoilDoc.LoadXml(SoilXML(SoilName));
+            RemoveMissingValues(ref Thickness, ref SW);
+            Soil.Samples.Add(new Sample() { Thickness = Thickness, SW = SW });
+            if (IsGravimetric)
+                Soil.Samples[0].SWUnits = Sample.SWUnitsEnum.Gravimetric;
 
-            // Load the sample XML into the Soil XML
-            XmlDocument SampleDoc = new XmlDocument();
-            SampleDoc.LoadXml(SoilSampleXML);
-            SoilDoc.DocumentElement.AppendChild(SoilDoc.ImportNode(SampleDoc.DocumentElement, true));
+            try
+            {
+                double[] PAWCmm = MathUtility.Multiply(Soil.PAWCrop(CropName), Soil.Thickness);
+                double PAWmm = MathUtility.Sum(PAWCmm);
+                return PAWmm;
+            }
+            catch (Exception)
+            {
+                // Crop doesn't exist.
+                return 0.0;
+            }
+        }
 
-            // Return the PAW in mm
-            Soil.Variable PAW = Soil.Get(SoilDoc.DocumentElement, CropName + " PAW");
-            PAW.Units = "mm";
-            return MathUtility.Sum(PAW.Doubles);
+        /// <summary>
+        /// This method parses the sample xml passed in and extracts an array of numbers from it.
+        /// </summary>
+        private void GetSWFromSampleXML(string Xml, string VariableName, 
+                                        out double[] Values, out string Units)
+        {
+            // Load in the sample XML
+            XmlDocument Doc = new XmlDocument();
+            Doc.LoadXml(Xml);
 
-            Soil.Variable SW = Soil.Get(SoilDoc.DocumentElement, "SW");
-            SW.Units = "mm/mm";
-            SW.Units = "mm";
+            // Find sample child.
+            XmlNode Node = Doc.DocumentElement;
+            if (Node.Name != "Sample")
+                Node = XmlHelper.Find(Doc.DocumentElement, "Sample");
+            if (Node == null)
+                throw new Exception("Cannot find a <Sample> node in: " + Xml);
 
-            Soil.Variable LL = Soil.Get(SoilDoc.DocumentElement, CropName + " LL");
-            LL.Units = "mm";
-            return MathUtility.Sum(SW.Doubles) - MathUtility.Sum(LL.Doubles);
+            // Loop through all <Layer> nodes and get each SW value.
+            Units = "";
+            List<double> AllValues = new List<double>();
+            foreach (XmlNode Layer in XmlHelper.ChildNodes(Node, "Layer"))
+            {
+                XmlNode ValueNode = XmlHelper.Find(Layer, VariableName);
+
+                string Value = "";
+                string Code = "";
+                if (ValueNode != null)
+                {
+                    Value = ValueNode.InnerText;
+                    Code = XmlHelper.Attribute(ValueNode, "code");
+                }
+                if (Value == "")
+                    Value = MathUtility.MissingValue.ToString();
+                
+                AllValues.Add(Convert.ToDouble(Value));
+                if (ValueNode != null &&
+                    XmlHelper.Attribute(ValueNode, "units") != "")
+                    Units = XmlHelper.Attribute(ValueNode, "units");
+            }
+            Values = AllValues.ToArray();
         }
 
         /// <summary>
@@ -211,14 +252,9 @@ namespace Apsoil
         [WebMethod]
         public double PAWC(string SoilName, string CropName)
         {
-            // Load in the soil XML
-            XmlDocument SoilDoc = new XmlDocument();
-            SoilDoc.LoadXml(SoilXML(SoilName));
-
-            // Return the PAWC in mm
-            Soil.Variable PAWC = Soil.Get(SoilDoc.DocumentElement, CropName + " PAWC");
-            PAWC.Units = "mm";
-            return MathUtility.Sum(PAWC.Doubles);
+            Soil Soil = Soil.Create(SoilXML(SoilName));
+            double[] PAWCmm = MathUtility.Multiply(Soil.PAWCCrop(CropName), Soil.Thickness);
+            return MathUtility.Sum(PAWCmm);
         }
 
         /// <summary>
@@ -240,94 +276,6 @@ namespace Apsoil
         }
 
         /// <summary>
-        /// Create soil sample 1 XML
-        /// </summary>
-        [WebMethod]
-        public string CreateSoilSample1XML(DateTime SampleDate, string[] DepthStrings, string SWUnits, double[] SW, double[] NO3, double[] NH4)
-        {
-            string SoilXML = "<soil name=\"test\">" +
-                             "<Sample name=\"Soil sample 1\">" +
-                                 "<Date type=\"date\" description=\"Sample date:\" />" +
-                                 "<Layer>" +
-                                 "   <Thickness units=\"mm\"></Thickness>" +
-                                 "   <NO3 units=\"ppm\"></NO3>" +
-                                 "   <NH4 units=\"ppm\"></NH4>" +
-                                 "   <SW units=\"mm/mm\"></SW>" +
-                                 "</Layer>" +
-                              "</Sample>" +
-                              "</soil>";
-            XmlDocument Doc = new XmlDocument();
-            Doc.LoadXml(SoilXML);
-
-            double[] ThicknessMM = SoilUtility.ToThickness(DepthStrings);
-            ThicknessMM = MathUtility.Multiply_Value(ThicknessMM, 10);
-            Soil.Set(Doc.DocumentElement, new Soil.Variable("SW", SWUnits, SW, ThicknessMM, Doc.DocumentElement));
-            Soil.Set(Doc.DocumentElement, new Soil.Variable("NO3", "ppm", NO3, ThicknessMM, Doc.DocumentElement));
-            Soil.Set(Doc.DocumentElement, new Soil.Variable("NH4", "ppm", NH4, ThicknessMM, Doc.DocumentElement));
-
-            // Set the sample date.
-            XmlNode SampleNode = XmlHelper.Find(Doc.DocumentElement, "Soil sample 1");
-            XmlHelper.SetValue(SampleNode, "Date", SampleDate.ToString("dd/MM/yyyy"));
-            return SampleNode.OuterXml;
-        }
-
-        /// <summary>
-        /// Create soil sample 2 XML
-        /// </summary>
-        [WebMethod]
-        public string CreateSoilSample2XML(DateTime SampleDate, string[] DepthStrings, double[] OC, double[] EC, double[] PH, double[] CL)
-        {
-            string SoilXML = "<soil name=\"test\">" +
-                             "<Sample name=\"Soil sample 2\">" +
-                                 "<Date type=\"date\" description=\"Sample date:\" />" +
-                                 "<Layer>" +
-                                 "   <Thickness units=\"mm\"></Thickness>" +
-                                 //"   <OC units=\"Walkley Black %\"></OC>" +
-                                 //"   <EC units=\"1:5 dS/m\"></EC>" +
-                                 //"   <PH units=\"1:5 water\"></PH>" +
-                                 //"   <CL units=\"mg/kg\"></CL>" +
-                                 "</Layer>" +
-                              "</Sample>" +
-                              "</soil>";
-            XmlDocument Doc = new XmlDocument();
-            Doc.LoadXml(SoilXML);
-
-            double[] ThicknessMM = SoilUtility.ToThickness(DepthStrings);
-            ThicknessMM = MathUtility.Multiply_Value(ThicknessMM, 10);
-            if (MathUtility.ValuesInArray(OC))
-            {
-                XmlNode Node = XmlHelper.EnsureNodeExists(Doc.DocumentElement, "Soil sample 2/Layer/OC");
-                //XmlHelper.SetAttribute(Node, "units", "Walkley Black %");
-                Soil.Set(Doc.DocumentElement, new Soil.Variable("OC", "Walkley Black %", OC, ThicknessMM, Doc.DocumentElement));
-            }
-
-            if (MathUtility.ValuesInArray(EC))
-            {
-                XmlNode Node = XmlHelper.EnsureNodeExists(Doc.DocumentElement, "Soil sample 2/Layer/EC");
-                //XmlHelper.SetAttribute(Node, "units", "1:5 dS/m");
-                Soil.Set(Doc.DocumentElement, new Soil.Variable("EC", "1:5 dS/m", EC, ThicknessMM, Doc.DocumentElement));
-            }
-
-            if (MathUtility.ValuesInArray(PH))
-            {
-                XmlNode Node = XmlHelper.EnsureNodeExists(Doc.DocumentElement, "Soil sample 2/Layer/PH");
-                //XmlHelper.SetAttribute(Node, "units", "1:5 water");
-                Soil.Set(Doc.DocumentElement, new Soil.Variable("PH", "1:5 water", PH, ThicknessMM, Doc.DocumentElement));
-            }
-
-            if (MathUtility.ValuesInArray(CL))
-            {
-                XmlNode Node = XmlHelper.EnsureNodeExists(Doc.DocumentElement, "Soil sample 2/Layer/CL");
-                //XmlHelper.SetAttribute(Node, "units", "mg/kg");
-                Soil.Set(Doc.DocumentElement, new Soil.Variable("CL", "mg/kg", CL, ThicknessMM, Doc.DocumentElement));
-            }
-            // Set the sample date.
-            XmlNode SampleNode = XmlHelper.Find(Doc.DocumentElement, "Soil sample 2");
-            XmlHelper.SetValue(SampleNode, "Date", SampleDate.ToString("dd/MM/yyyy"));
-            return SampleNode.OuterXml;
-        }
-
-        /// <summary>
         /// Return the bytes of a soil chart in PNG format. Google Earth uses this.
         /// YIELDPROPHET uses this call.
         /// </summary>
@@ -343,25 +291,17 @@ namespace Apsoil
         /// YIELDPROPHET uses this call.
         /// </summary>
         [WebMethod]
-        public byte[] SoilChartWithSamplePNG(string SoilName, string SoilSampleXML)
+        public byte[] SoilChartWithSamplePNG(string SoilName, double[] Thickness, double[] SW, bool IsGravimetric)
         {
-            //StreamWriter Out = new StreamWriter("D:\\Websites\\FILES\\Transfer\\ApsoilWeb.txt", true);
-            //Out.WriteLine(DateTime.Now.ToString());
-            //Out.WriteLine(SoilSampleXML);
-            //Out.WriteLine();
-            //Out.Close();
+            Soil Soil = Soil.Create(SoilXML(SoilName));
 
-            XmlDocument Doc = new XmlDocument();
-            Doc.LoadXml(SoilXML(SoilName));
-            XmlNode SoilNode = Doc.DocumentElement;
-            XmlNode WaterNode = XmlHelper.Find(SoilNode, "Water");
+            RemoveMissingValues(ref Thickness, ref SW);
 
-            // Add in the soil sample.
-            XmlDocument SampleDoc = new XmlDocument();
-            SampleDoc.LoadXml(SoilSampleXML);
-            Doc.DocumentElement.AppendChild(Doc.ImportNode(SampleDoc.DocumentElement, true));
+            Soil.Samples.Add(new Sample() { Thickness = Thickness, SW = SW });
+            if (IsGravimetric)
+                Soil.Samples[0].SWUnits = Sample.SWUnitsEnum.Gravimetric;
 
-            SoilGraphUI Graph = CreateSoilGraph(SoilNode, WaterNode, true);
+            SoilGraphUI Graph = CreateSoilGraph(Soil, true);
 
             // Take the LL15 line off the chart.
             foreach (Series S in Graph.Chart.Series)
@@ -370,36 +310,45 @@ namespace Apsoil
                     S.Active = false;
             }
 
+            // Find the wheat CLL data column
+            string WheatCLLColumnName = null;
+            foreach (DataColumn Column in Graph.DataSources[0].Columns)
+                if (Column.ColumnName.Contains("wheat LL") || Column.ColumnName.Contains("Wheat LL"))
+                    WheatCLLColumnName = Column.ColumnName;
+
             // Add in the SW area.
-            HorizArea SW = new HorizArea();
-            SW.LinePen.Width = 2;
-            SW.Color = Color.FromArgb(0, 128, 192); // blue
-            SW.LinePen.Color = Color.FromArgb(0, 128, 192); // blue
-            SW.AreaLines.Visible = false;
-            Graph.AddSeries(Graph.DataSources[0], "SW (mm/mm)", SW);
-            SW.Active = true;
-            Graph.Chart.Series.MoveTo(SW, 2);
+            HorizArea SWSeries = new HorizArea();
+            SWSeries.LinePen.Width = 2;
+            SWSeries.Color = Color.FromArgb(0, 128, 192); // blue
+            SWSeries.LinePen.Color = Color.FromArgb(0, 128, 192); // blue
+            SWSeries.AreaLines.Visible = false;
+            Graph.AddSeries(Graph.DataSources[0], "SW (mm/mm)", SWSeries);
+            SWSeries.Active = true;
+            Graph.Chart.Series.MoveTo(SWSeries, 2);
 
-            // Add in the Wheat CLL area.
-            HorizArea CLL = new HorizArea();
-            CLL.LinePen.Width = 2;
-            CLL.Color = Color.White;
-            CLL.LinePen.Color = Color.FromArgb(255, 128, 128); // pink
-            CLL.AreaLines.Visible = false;
-            Graph.AddSeries(Graph.DataSources[0], "wheat LL (mm/mm)", CLL);
-            CLL.Active = true;
-            CLL.ShowInLegend = false;
-            Graph.Chart.Series.MoveTo(CLL, 3);
+            if (WheatCLLColumnName != null)
+            {
+                //// Add in the Wheat CLL area.
+                HorizArea CLL = new HorizArea();
+                CLL.LinePen.Width = 2;
+                CLL.Color = Color.White;
+                CLL.LinePen.Color = Color.FromArgb(255, 128, 128); // pink
+                CLL.AreaLines.Visible = false;
+                Graph.AddSeries(Graph.DataSources[0], WheatCLLColumnName, CLL);
+                CLL.Active = true;
+                CLL.ShowInLegend = false;
+                Graph.Chart.Series.MoveTo(CLL, 3);
 
-            // Add in the Wheat CLL line.
-            Line CLLLine = new Line();
-            CLLLine.LinePen.Width = 2;
-            CLLLine.Color = Color.FromArgb(255, 128, 128);         // pink
-            CLLLine.LinePen.Color = Color.FromArgb(255, 128, 128); // pink
-            Graph.AddSeries(Graph.DataSources[0], "wheat LL (mm/mm)", CLLLine);
-            CLLLine.Active = true;
+                //// Add in the Wheat CLL line.
+                Line CLLLine = new Line();
+                CLLLine.LinePen.Width = 2;
+                CLLLine.Color = Color.FromArgb(255, 128, 128);         // pink
+                CLLLine.LinePen.Color = Color.FromArgb(255, 128, 128); // pink
+                Graph.AddSeries(Graph.DataSources[0], WheatCLLColumnName, CLLLine);
+                CLLLine.Active = true;
+            }
 
-            // Add in the SW line.
+            //// Add in the SW line.
             Line SWLine = new Line();
             SWLine.LinePen.Width = 2;
             SWLine.Color = Color.Blue;     // blue
@@ -420,6 +369,27 @@ namespace Apsoil
         }
 
         /// <summary>
+        /// Resize the Thickness and Values array to ensure they don't contain missing values.
+        /// </summary>
+        /// <param name="Thickness"></param>
+        /// <param name="Values"></param>
+        private void RemoveMissingValues(ref double[] Thickness, ref double[] Values)
+        {
+            if (Thickness.Length != Values.Length)
+                return;
+            for (int i = 0; i < Thickness.Length; i++)
+            {
+                if (Values[i] == double.NaN || Values[i] == MathUtility.MissingValue)
+                {
+                    if (i == 0) return;
+                    Array.Resize(ref Thickness, i);
+                    Array.Resize(ref Values, i);
+                    return;
+                }
+            }
+        }
+
+        /// <summary>
         /// Return information about all soils that are within a given search radius of the specified lat and long.
         /// If SoilType is not null then only those soils that match the specified 
         /// SoilType are returned. The returned array is a list of soils that match the search criteria.
@@ -435,7 +405,7 @@ namespace Apsoil
             {
                 XmlDocument Doc = new XmlDocument();
 
-                SqlCommand Command = new SqlCommand("SELECT Name, XML FROM Soils", Connection);
+                SqlCommand Command = new SqlCommand("SELECT Name, XML FROM " + TableName, Connection);
                 Reader = Command.ExecuteReader();
                 while (Reader.Read())
                 {
@@ -506,6 +476,8 @@ namespace Apsoil
             public string ASCOrder;
             public string ASCSubOrder;
             public string Site;
+            public string Region;
+            public string NearestTown;
         }
         public class SoilBasicInfo
         {
@@ -536,14 +508,13 @@ namespace Apsoil
             {
                 // This method is marked as ResponseFormat.Xml to stop .NET from serialising the return string.
                 // The return string is already in JSON format so no need for .NET to do it as well.
-                SqlCommand Command = new SqlCommand("SELECT XML FROM Soils WHERE Name = @Name", Connection);
+                SqlCommand Command = new SqlCommand("SELECT XML FROM " + TableName + " WHERE Name = @Name", Connection);
                 Command.Parameters.Add(new SqlParameter("@Name", Name));
                 Reader = Command.ExecuteReader();
                 if (Reader.Read())
                 {
-                    XmlDocument Doc = new XmlDocument();
-                    Doc.LoadXml(Reader["XML"].ToString());
-                    ReturnJSon = JsonConvert.SerializeXmlNode(Doc.DocumentElement);
+                    XmlNode OldNode = ConvertSoilToOldFormat(Reader["XML"].ToString());
+                    ReturnJSon = JsonConvert.SerializeXmlNode(OldNode);
                 }
             }
             catch (Exception err)
@@ -574,14 +545,14 @@ namespace Apsoil
                 string Name = "/UserSoils/" + XmlHelper.Name(SoilDoc.DocumentElement);
 
                 // Delete the existing soil if it exists
-                SqlCommand Cmd = new SqlCommand("DELETE FROM Soils WHERE Name = @Name", Connection);
+                SqlCommand Cmd = new SqlCommand("DELETE FROM " + TableName + " WHERE Name = @Name", Connection);
                 Cmd.Parameters.Add(new SqlParameter("@Name", Name));
                 Cmd.ExecuteNonQuery();
 
                 // Add soil to DB
                 AddSoil(Connection, Name, SoilDoc.OuterXml, false);
             }
-            catch (Exception err)
+            catch (Exception)
             {
                 Connection.Close();
                 return false;
@@ -600,12 +571,22 @@ namespace Apsoil
             // Load in the soil XML
             XmlDocument SoilDoc = JsonConvert.DeserializeXmlNode(Params.JSonSoil);
 
+            // Convert from old XML format to new.
+            string NewXML = ConvertOldXmlToNew(SoilDoc.DocumentElement.OuterXml);
+
+            Soil Soil = Soil.Create(NewXML);
+
             List<PAWCByCrop> PAWCs = new List<PAWCByCrop>();
-            foreach (string CropName in Soil.CropsMeasured(SoilDoc.DocumentElement))
+            foreach (string CropName in Soil.CropNames)
             {
-                Soil.Variable PAWC = Soil.Get(SoilDoc.DocumentElement, CropName + " PAWC");
-                PAWC.Units = "mm";
-                PAWCs.Add(new PAWCByCrop() { CropName = CropName, PAWC = PAWC.Doubles, PAWCTotal = MathUtility.Sum(PAWC.Doubles) });
+                if (Array.IndexOf(Soil.PredictedCropNames, CropName) == -1)
+                {
+                    double[] PAWCmm = MathUtility.Multiply(Soil.PAWCCrop(CropName), Soil.Thickness);
+                    PAWCs.Add(new PAWCByCrop() { CropName = CropName, 
+                                                 PAWC = PAWCmm,
+                                                 PAWCTotal = MathUtility.Sum(PAWCmm) 
+                                               });
+                }
             }
             return PAWCs.ToArray();
         }
@@ -628,15 +609,15 @@ namespace Apsoil
             {
                 XmlDocument Doc = new XmlDocument();
 
-                SqlCommand Command = new SqlCommand("SELECT Name, XML FROM Soils WHERE IsApsoil=1", Connection);
+                SqlCommand Command = new SqlCommand("SELECT Name, XML FROM " + TableName + " WHERE IsApsoil=1", Connection);
                 Reader = Command.ExecuteReader();
                 while (Reader.Read())
                 {
                     Doc.LoadXml(Reader["XML"].ToString());
                     double Lat, Long;
-                    if (Params.ASCOrder == null || Params.ASCOrder == "" || Params.ASCOrder == XmlHelper.Value(Doc.DocumentElement, "ASC_Order"))
+                    if (Params.ASCOrder == null || Params.ASCOrder == "" || Params.ASCOrder == XmlHelper.Value(Doc.DocumentElement, "ASCOrder"))
                     {
-                        if (Params.ASCSubOrder == null || Params.ASCSubOrder == "" || Params.ASCSubOrder == XmlHelper.Value(Doc.DocumentElement, "ASC_Sub-order"))
+                        if (Params.ASCSubOrder == null || Params.ASCSubOrder == "" || Params.ASCSubOrder == XmlHelper.Value(Doc.DocumentElement, "ASCSubOrder"))
                         {
                             if (Double.TryParse(XmlHelper.Value(Doc.DocumentElement, "Latitude"), out Lat))
                             {
@@ -652,8 +633,8 @@ namespace Apsoil
                                         NewSoil.Description = XmlHelper.Value(Doc.DocumentElement, "SoilType");
                                         NewSoil.Latitude = Convert.ToDouble(XmlHelper.Value(Doc.DocumentElement, "Latitude"));
                                         NewSoil.Longitude = Convert.ToDouble(XmlHelper.Value(Doc.DocumentElement, "Longitude"));
-                                        NewSoil.ASCOrder = XmlHelper.Value(Doc.DocumentElement, "ASC_Order");
-                                        NewSoil.ASCSubOrder = XmlHelper.Value(Doc.DocumentElement, "ASC_Sub-order");
+                                        NewSoil.ASCOrder = XmlHelper.Value(Doc.DocumentElement, "ASCOrder");
+                                        NewSoil.ASCSubOrder = XmlHelper.Value(Doc.DocumentElement, "ASCSubOrder");
                                         NewSoil.Site = XmlHelper.Value(Doc.DocumentElement, "Site");
                                         Soils.Add(NewSoil);
                                     }
@@ -690,6 +671,11 @@ namespace Apsoil
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public SoilBasicInfo[] AllAustralianSoils(SearchSoilsParams Params)
         {
+            //StreamWriter Out = new StreamWriter("D:\\Websites\\FILES\\Transfer\\ApsoilWeb.txt", true);
+            //Out.WriteLine(DateTime.Now.ToString());
+            //Out.WriteLine("AllAustralianSoils");
+            //Out.Close();
+
             List<SoilBasicInfo> Soils = new List<SoilBasicInfo>();
             SqlConnection Connection = Open();
             SqlDataReader Reader = null;
@@ -697,7 +683,7 @@ namespace Apsoil
             {
                 XmlDocument Doc = new XmlDocument();
 
-                SqlCommand Command = new SqlCommand("SELECT Name, XML FROM Soils WHERE IsApsoil=1", Connection);
+                SqlCommand Command = new SqlCommand("SELECT Name, XML FROM " + TableName + " WHERE IsApsoil=1", Connection);
                 Reader = Command.ExecuteReader();
                 while (Reader.Read())
                 {
@@ -713,7 +699,9 @@ namespace Apsoil
                         NewSoil.Name = Reader["Name"].ToString();
                         NewSoil.Latitude = Convert.ToDouble(XmlHelper.Value(Doc.DocumentElement, "Latitude"));
                         NewSoil.Longitude = Convert.ToDouble(XmlHelper.Value(Doc.DocumentElement, "Longitude"));
-                        Soils.Add(NewSoil);
+                        if (!double.IsNaN(NewSoil.Latitude) && !double.IsNaN(NewSoil.Longitude))
+                            Soils.Add(NewSoil);
+
                     }
                 }
             }
@@ -726,6 +714,7 @@ namespace Apsoil
             Reader.Close();
             Connection.Close();
 
+
             return Soils.ToArray();
         }
 
@@ -737,14 +726,11 @@ namespace Apsoil
         [WebMethod]
         public byte[] SoilChartPNGFromXML(string XML)
         {
-            XmlDocument Doc = new XmlDocument();
-            Doc.LoadXml(XML);
+            string NewXML = ConvertOldXmlToNew(XML);
 
+            Soil Soil = Soil.Create(NewXML);
 
-            XmlNode SoilNode = Doc.DocumentElement;
-            XmlNode WaterNode = XmlHelper.Find(SoilNode, "Water");
-
-            SoilGraphUI Graph = CreateSoilGraph(SoilNode, WaterNode, false);
+            SoilGraphUI Graph = CreateSoilGraph(Soil, false);
 
             // Make first 3 LL series active.
             int Count = 0;
@@ -777,10 +763,6 @@ namespace Apsoil
         /// </summary>
         private SqlConnection Open()
         {
-            // Create a connection to the database.
-
-            // The first string is the debug version to run from Dean's computer.
-            //string ConnectionString = "Server=www.apsim.info\\SQLEXPRESS;Database=APSoil;Trusted_Connection=True;";
             string ConnectionString = "Server=www.apsim.info\\SQLEXPRESS;Database=APSoil;Trusted_Connection=False;User ID=sv-login-internal;password=P@ssword123";
 
             SqlConnection Connection = new SqlConnection(ConnectionString);
@@ -788,16 +770,24 @@ namespace Apsoil
             return Connection;
         }
 
+        /// <summary>
+        /// Used once to convert all soils to new format.
+        /// </summary>
         public void ConvertOldSoilsToNewSoils()
         {
-            // To copy a table run this:
-            // SELECT * INTO AllSoils FROM Soils
 
             SqlConnection Connection = Open();
+            SqlConnection Connection2 = Open();
             SqlDataReader Reader = null;
             try
             {
                 SqlCommand Command;
+                Command = new SqlCommand("DROP TABLE AllSoils", Connection);
+                Command.ExecuteNonQuery();
+
+                Command = new SqlCommand("SELECT * INTO AllSoils FROM Soils", Connection);
+                Command.ExecuteNonQuery();
+
                 Command = new SqlCommand("SELECT * FROM AllSoils", Connection);
 
                 Reader = Command.ExecuteReader();
@@ -807,15 +797,12 @@ namespace Apsoil
                     string XML = Reader["XML"].ToString();
                     bool IsApsoil = Convert.ToBoolean(Reader["IsApsoil"]);
 
-                    XmlDocument Doc = new XmlDocument();
-                    Doc.LoadXml(XML);
-                    APSIMChangeTool.UpgradeToVersion(Doc.DocumentElement, 34);
-                    XML = Doc.OuterXml;
+                    string NewXML = ConvertOldXmlToNew(XML);                    
 
                     string SQL = "UPDATE AllSoils SET XML = @XML, IsApsoil = @IsApsoil WHERE Name = @Name";
-                    SqlCommand Cmd = new SqlCommand(SQL, Connection);
+                    SqlCommand Cmd = new SqlCommand(SQL, Connection2);
                     Cmd.Parameters.Add(new SqlParameter("@Name", Name));
-                    Cmd.Parameters.Add(new SqlParameter("@XML", XML));
+                    Cmd.Parameters.Add(new SqlParameter("@XML", NewXML));
                     Cmd.Parameters.Add(new SqlParameter("@IsApsoil", IsApsoil));
                     Cmd.ExecuteNonQuery();
 
@@ -826,34 +813,202 @@ namespace Apsoil
             {
                 Reader.Close();
                 Connection.Close();
+                Connection2.Close();
                 throw err;
             }
             Connection.Close();
+            Connection2.Close();
+        }
+
+        private static string ConvertOldXmlToNew(string XML)
+        {
+            XmlDocument Doc = new XmlDocument();
+            Doc.LoadXml("<dummy><folder>" + XML + "</folder></dummy>");
+            XmlHelper.SetAttribute(Doc.DocumentElement, "version", "31");
+            APSIMChangeTool.UpgradeToVersion(Doc.DocumentElement, 34);
+            return  XmlHelper.Find(Doc.DocumentElement, "folder").InnerXml;
+        }
+
+
+        /// <summary>
+        /// Converts a new soil XML to the old format for the iPad app.
+        /// Old format:
+        ///    <soil name="Soil">
+        ///       <Comment type="multiedit" description="Comments" />
+        ///       <ASC_Order description="Australian Soil Classification Order" />
+        ///       <ASC_Sub-order description="Australian Soil Classification Sub-Order" />
+        ///       <SoilType description="Soil description">Black Vertosol</SoilType>
+        ///       <LocalName>Waco</LocalName>
+        ///       ...
+        ///       <Water>
+        ///         <Layer>
+        ///           <Thickness units="mm">150</Thickness>
+        ///           <KS units="mm/day" />
+        ///           <BD units="g/cc">1.02</BD>
+        ///           <AirDry units="mm/mm">0.15</AirDry>
+        ///           <LL15 units="mm/mm">0.29</LL15>
+        ///           <DUL units="mm/mm">0.54</DUL>
+        ///           <SAT units="mm/mm">0.59</SAT>
+        ///         </Layer>
+        ///         ...
+        /// </summary>
+        private static XmlNode ConvertSoilToOldFormat(string NewXML)
+        {
+            Soil Soil = Soil.Create(NewXML);
+
+            XmlDocument Doc = new XmlDocument();
+            XmlNode SoilNode = Doc.AppendChild(Doc.CreateElement("soil"));
+            XmlHelper.SetName(SoilNode, Soil.Name);
+            SetValue(SoilNode, "ASC_Order", Soil.ASCOrder);
+            SetValue(SoilNode, "ASC_Sub-order", Soil.ASCSubOrder);
+            SetValue(SoilNode, "SoilType", Soil.SoilType);
+            SetValue(SoilNode, "LocalName", Soil.LocalName);
+            SetValue(SoilNode, "Site", Soil.Site, false);
+            SetValue(SoilNode, "NearestTown", Soil.NearestTown);
+            SetValue(SoilNode, "Region", Soil.Region, false);
+            SetValue(SoilNode, "State", Soil.State, false);
+            SetValue(SoilNode, "Country", Soil.Country, false);
+            SetValue(SoilNode, "NaturalVegetation", Soil.NaturalVegetation);
+            SetValue(SoilNode, "ApsoilNumber", Soil.ApsoilNumber);
+            SetValue(SoilNode, "Latitude", Soil.Latitude.ToString());
+            SetValue(SoilNode, "Longitude", Soil.Longitude.ToString());
+            SetValue(SoilNode, "LocationAccuracy", Soil.LocationAccuracy);
+            SetValue(SoilNode, "DataSource", Soil.DataSource);
+            SetValue(SoilNode, "Comments", Soil.Comments);
+
+            XmlNode WaterNode = SoilNode.AppendChild(Doc.CreateElement("Water"));
+            WriteLayeredData(WaterNode, "Thickness", "mm", null, Soil.Thickness, Soil.Thickness.Length);
+            WriteLayeredData(WaterNode, "KS", "mm/day", Soil.Water.KSMetadata, Soil.Water.KS, Soil.Thickness.Length);
+            WriteLayeredData(WaterNode, "BD", "g/cc", Soil.Water.BDMetadata, Soil.Water.BD, Soil.Thickness.Length);
+            WriteLayeredData(WaterNode, "Airdry", "mm/mm", Soil.Water.AirDryMetadata, Soil.AirDry, Soil.Thickness.Length);
+            WriteLayeredData(WaterNode, "LL15", "mm/mm", Soil.Water.LL15Metadata, Soil.LL15, Soil.Thickness.Length);
+            WriteLayeredData(WaterNode, "DUL", "mm/mm", Soil.Water.DULMetadata, Soil.DUL, Soil.Thickness.Length);
+            WriteLayeredData(WaterNode, "SAT", "mm/mm", Soil.Water.SATMetadata, Soil.SAT, Soil.Thickness.Length);
+
+            foreach (string CropName in Soil.CropNames)
+            {
+                XmlNode CropNode = WaterNode.AppendChild(Doc.CreateElement("SoilCrop"));
+                XmlHelper.SetName(CropNode, CropName);
+                WriteLayeredData(CropNode, "Thickness", "mm", null, Soil.Crop(CropName).Thickness, Soil.Thickness.Length);
+                WriteLayeredData(CropNode, "ll", "mm/mm", Soil.Crop(CropName).LLMetadata, Soil.Crop(CropName).LL, Soil.Thickness.Length);
+                WriteLayeredData(CropNode, "kl", "/day", null, Soil.Crop(CropName).KL, Soil.Thickness.Length);
+                WriteLayeredData(CropNode, "xf", "0-1", null, Soil.Crop(CropName).XF, Soil.Thickness.Length);
+            }
+
+            XmlNode SoilOrganicMatter = SoilNode.AppendChild(Doc.CreateElement("SoilOrganicMatter"));
+            SetValue(SoilOrganicMatter, "RootCn", Soil.SoilOrganicMatter.RootCN.ToString(), false);
+            SetValue(SoilOrganicMatter, "RootWt", Soil.SoilOrganicMatter.RootWt.ToString(), false);
+            SetValue(SoilOrganicMatter, "SoilCn", Soil.SoilOrganicMatter.SoilCN.ToString(), false);
+            SetValue(SoilOrganicMatter, "EnrACoeff", Soil.SoilOrganicMatter.EnrACoeff.ToString(), false);
+            SetValue(SoilOrganicMatter, "EnrBCoeff", Soil.SoilOrganicMatter.EnrBCoeff.ToString(), false);
+            WriteLayeredData(SoilOrganicMatter, "Thickness", "mm", null, Soil.SoilOrganicMatter.Thickness, Soil.SoilOrganicMatter.Thickness.Length);
+            WriteLayeredData(SoilOrganicMatter, "OC", Soil.SoilOrganicMatter.OCUnits.ToString(), Soil.SoilOrganicMatter.OCMetadata, Soil.SoilOrganicMatter.OC, Soil.SoilOrganicMatter.Thickness.Length);
+            WriteLayeredData(SoilOrganicMatter, "FBIOM", "0-1", null, Soil.SoilOrganicMatter.FBiom, Soil.SoilOrganicMatter.Thickness.Length);
+            WriteLayeredData(SoilOrganicMatter, "FINERT", "0-1", null, Soil.SoilOrganicMatter.FInert, Soil.SoilOrganicMatter.Thickness.Length);
+
+            XmlNode Analysis = SoilNode.AppendChild(Doc.CreateElement("Analysis"));
+            WriteLayeredData(Analysis, "Thickness", "mm", null, Soil.Analysis.Thickness, Soil.Analysis.Thickness.Length);
+            WriteLayeredData(Analysis, "Rocks", "%", null, Soil.Analysis.Rocks, Soil.Analysis.Thickness.Length);
+            WriteLayeredData(Analysis, "Texture", "", null, Soil.Analysis.Texture, Soil.Analysis.Thickness.Length);
+            WriteLayeredData(Analysis, "MunsellColour", "", null, Soil.Analysis.MunsellColour, Soil.Analysis.Thickness.Length);
+            WriteLayeredData(Analysis, "EC", "1:5 dS/m", Soil.Analysis.ECMetadata, Soil.Analysis.EC, Soil.Analysis.Thickness.Length);
+            WriteLayeredData(Analysis, "PH", "1:5 water", Soil.Analysis.PHMetadata, Soil.Analysis.PH, Soil.Analysis.Thickness.Length);
+            WriteLayeredData(Analysis, "CL", "mg/kg", Soil.Analysis.CLMetadata, Soil.Analysis.CL, Soil.Analysis.Thickness.Length);
+            WriteLayeredData(Analysis, "Boron", Soil.Analysis.BoronUnits.ToString(), Soil.Analysis.BoronMetadata, Soil.Analysis.Boron, Soil.Analysis.Thickness.Length);
+            WriteLayeredData(Analysis, "CEC", "cmol+/kg", Soil.Analysis.CECMetadata, Soil.Analysis.CEC, Soil.Analysis.Thickness.Length);
+            WriteLayeredData(Analysis, "Ca", "cmol+/kg", Soil.Analysis.CaMetadata, Soil.Analysis.Ca, Soil.Analysis.Thickness.Length);
+            WriteLayeredData(Analysis, "Mg", "cmol+/kg", Soil.Analysis.MgMetadata, Soil.Analysis.Mg, Soil.Analysis.Thickness.Length);
+            WriteLayeredData(Analysis, "Na", "cmol+/kg", Soil.Analysis.NaMetadata, Soil.Analysis.Na, Soil.Analysis.Thickness.Length);
+            WriteLayeredData(Analysis, "K", "cmol+/kg", Soil.Analysis.KMetadata, Soil.Analysis.K, Soil.Analysis.Thickness.Length);
+            WriteLayeredData(Analysis, "ESP", "%", Soil.Analysis.ESPMetadata, Soil.Analysis.ESP, Soil.Analysis.Thickness.Length);
+            WriteLayeredData(Analysis, "Mn", "mg/kg", Soil.Analysis.MnMetadata, Soil.Analysis.Mn, Soil.Analysis.Thickness.Length);
+            WriteLayeredData(Analysis, "Al", "cmol+/kg", Soil.Analysis.AlMetadata, Soil.Analysis.Al, Soil.Analysis.Thickness.Length);
+            WriteLayeredData(Analysis, "ParticleSizeSand", "%", Soil.Analysis.ParticleSizeSandMetadata, Soil.Analysis.ParticleSizeSand, Soil.Analysis.Thickness.Length);
+            WriteLayeredData(Analysis, "ParticleSizeSilt", "%", Soil.Analysis.ParticleSizeSiltMetadata, Soil.Analysis.ParticleSizeSilt, Soil.Analysis.Thickness.Length);
+            WriteLayeredData(Analysis, "ParticleSizeClay", "%", Soil.Analysis.ParticleSizeClayMetadata, Soil.Analysis.ParticleSizeClay, Soil.Analysis.Thickness.Length);
+
+            return Doc.DocumentElement;
+        }
+
+        /// <summary>
+        /// Write old style parameter to the specified SoilNode. e.g.
+        ///     <ASC_Order description="Australian Soil Classification Order" />       
+        /// </summary>
+        private static void SetValue(XmlNode SoilNode, string Name, string Value, bool AddDescription=true)
+        {
+            XmlNode ValueNode = SoilNode.AppendChild(SoilNode.OwnerDocument.CreateElement(Name));
+            if (AddDescription)
+                XmlHelper.SetAttribute(ValueNode, "description", Name);
+            if (Value != "" && Value != null)
+                ValueNode.InnerText = Value;
+        }
+
+        /// <summary>
+        /// Write old style layered data to the specified node. e.g.
+        /// <Layer>
+        ///    <Thickness units="mm">150</Thickness>
+        ///    <KS units="mm/day" />
+        ///    <BD units="g/cc">1.02</BD>
+        ///    <AirDry units="mm/mm">0.15</AirDry>
+        ///    <LL15 units="mm/mm">0.29</LL15>
+        ///    <DUL units="mm/mm">0.54</DUL>
+        ///    <SAT units="mm/mm">0.59</SAT>
+        ///  </Layer>
+        /// </summary>
+        private static void WriteLayeredData(XmlNode Node, string VariableName, string Units, string[] Codes, double[] Values, int NumValuesToWrite)
+        {
+            string[] StringValues = null;
+            if (Values != null)
+                StringValues = MathUtility.DoublesToStrings(Values);
+            WriteLayeredData(Node, VariableName, Units, Codes, StringValues, NumValuesToWrite);
+        }
+        private static void WriteLayeredData(XmlNode Node, string VariableName, string Units, string[] Codes, string[] Values, int NumValuesToWrite)
+        {
+            XmlHelper.EnsureNumberOfChildren(Node, "Layer", "Layer", NumValuesToWrite);
+            List<XmlNode> Layers = XmlHelper.ChildNodes(Node, "Layer");
+            for (int i = 0; i < Layers.Count; i++)
+            {
+                XmlHelper.DeleteAttribute(Layers[i], "name");
+
+                // Get value.
+                string Value = "";
+                if (Values != null && i < Values.Length)
+                    Value = Values[i].ToString();
+
+                //Get units
+                string UnitsToWrite = "";
+                if (i == 0 && Units != "")
+                    UnitsToWrite = Units;
+
+                // Get code
+                string CodeToWrite = "";
+                if (Codes != null && i < Codes.Length)
+                    CodeToWrite = Codes[i];
+
+                // Create a node.
+                XmlNode ValueNode = XmlHelper.EnsureNodeExists(Layers[i], VariableName);
+
+                // Write units and code
+                if (UnitsToWrite != "")
+                    XmlHelper.SetAttribute(ValueNode, "units", UnitsToWrite);
+                if (CodeToWrite != "")
+                    XmlHelper.SetAttribute(ValueNode, "code", CodeToWrite);
+
+                // Write value
+                bool SomethingHasBeenWritten = UnitsToWrite != "" || CodeToWrite != "";
+                if (Value != "")
+                    XmlHelper.SetValue(Layers[i], VariableName, Value);
+                
+            }
         }
 
         /// <summary>
         /// Create and return a soil graph
         /// </summary>
-        private static SoilGraphUI CreateSoilGraph(XmlNode SoilNode, XmlNode WaterNode, bool WithSW)
+        private static SoilGraphUI CreateSoilGraph(Soil Soil, bool WithSW)
         {
-            DataTable Table = new DataTable();
-            Table.TableName = "Water";
-            List<string> VariableNames = Soil.ValidVariablesForProfileNode(WaterNode);
-            VariableNames.RemoveAt(0);
-            VariableNames.Insert(0, "DepthMidPoints (mm)");
-
-            if (WithSW)
-                VariableNames.Add("SW (mm/mm)");
-
-            foreach (string Crop in Soil.Crops(SoilNode))
-                VariableNames.Add(Crop + " LL(mm/mm)");
-
-            Soil.WriteToTable(SoilNode, Table, VariableNames);
-
             SoilGraphUI Graph = new SoilGraphUI();
-            Graph.SoilNode = SoilNode;
-            Graph.OnLoad(null, "", WaterNode.OuterXml);
-            Graph.DataSources.Add(Table);
+            Graph.Populate(Soil, "Water", WithSW);
             Graph.OnRefresh();
             return Graph;
         }
@@ -880,9 +1035,9 @@ namespace Apsoil
 
             string SQL;
             if (SoilNames().Contains(Name))
-                SQL = "UPDATE Soils SET XML = @XML, IsApsoil = @IsApsoil WHERE Name = @Name";
+                SQL = "UPDATE " + TableName + " SET XML = @XML, IsApsoil = @IsApsoil WHERE Name = @Name";
             else
-                SQL = "INSERT INTO Soils (Name, XML, IsApsoil) VALUES (@Name, @XML, @IsApsoil)";
+                SQL = "INSERT INTO " + TableName + " (Name, XML, IsApsoil) VALUES (@Name, @XML, @IsApsoil)";
 
             SqlCommand Cmd = new SqlCommand(SQL, Connection);
             Cmd.Parameters.Add(new SqlParameter("@Name", Name));

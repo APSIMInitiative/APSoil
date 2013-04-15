@@ -109,44 +109,35 @@ namespace Apsoil
                 if (FolderName.Contains("/"))
                     FolderName = FolderName.Substring(0, FolderName.LastIndexOf('/'));
 
-                XmlDocument Doc = new XmlDocument();
-                Doc.LoadXml(SoilsDB.SoilXML(Name));
-                XmlNode SoilNode = Doc.DocumentElement;
-                if (SoilNode != null)
+                Soil Soil = Soil.Create(SoilsDB.SoilXML(Name));
+                if (Soil != null)
                 {
-                    double Latitude;
-                    double Longitude;
-                    if (double.TryParse(Soil.Get(SoilNode, "Latitude").Value, out Latitude) &&
-                        double.TryParse(Soil.Get(SoilNode, "Longitude").Value, out Longitude))
-                    {
-                        string BalloonDescription = "<p><b>" + XmlHelper.Name(SoilNode) + "</b></p><p><i>" 
-                                                  + XmlHelper.Value(SoilNode, "Comments") + "</i></p>";
+                    string BalloonDescription = "<p><b>" + Soil.Name + "</b></p><p><i>"
+                                              + Soil.Comments + "</i></p>";
 
-                        Soil.Variable DataSourceComments = Soil.Get(SoilNode, "DataSource");
-                        if (DataSourceComments.Value != null && DataSourceComments.Value != "")
-                            BalloonDescription += "<p><i>Data source: " + DataSourceComments.Value + "</i></p>";
+                    string DataSourceComments = Soil.DataSource;
+                    if (DataSourceComments != null && DataSourceComments != "")
+                        BalloonDescription += "<p><i>Data source: " + DataSourceComments + "</i></p>";
 
-                        BalloonDescription += "<img src=\"" + ourPath + "SoilChart.aspx?Name=" + Name + "\"/>";
+                    BalloonDescription += "<img src=\"" + ourPath + "SoilChart.aspx?Name=" + Name + "\"/>";
 
-                        BalloonDescription += "<p><a href=\"" + ourPath + "GetSoil.aspx?Name=" + Name + "\">Download soil in APSIM format (copy and paste contents to your simulation).</a></p>";
-                        BalloonDescription += "<p><a name=\"link_id\" id=\"link_id\"  href=\"Download.html\" onclick=\"window.open('" + ourPath + "Excel.aspx?Name=" + Name + "');\">Download soil as an EXCEL spreadsheet</a></p>";
+                    BalloonDescription += "<p><a href=\"" + ourPath + "GetSoil.aspx?Name=" + Name + "\">Download soil in APSIM format (copy and paste contents to your simulation).</a></p>";
+                    BalloonDescription += "<p><a name=\"link_id\" id=\"link_id\"  href=\"Download.html\" onclick=\"window.open('" + ourPath + "Excel.aspx?Name=" + Name + "');\">Download soil as an EXCEL spreadsheet</a></p>";
 
-                        string SoilName = XmlHelper.Name(SoilNode);
-                        Soil.Variable SoilNumber = Soil.Get(SoilNode, "ApsoilNumber");
-                        if (SoilNumber.Value != "")
-                            SoilName = SoilNumber.Value;
-                        Placemark plmMyPlaceMark = new Placemark(SoilName,
-                                                                 BalloonDescription,
-                                                                 Latitude,
-                                                                 Longitude,
-                                                                 0, altitudeModeEnum.clampToGround);
-                        plmMyPlaceMark.Description.UseCDATA = true;
-                        plmMyPlaceMark.Description.Text = BalloonDescription;
-                        plmMyPlaceMark.StyleUrl.Text = "#APSRUIconID";
+                    string SoilName = Soil.Name;
+                    if (Soil.ApsoilNumber != "")
+                        SoilName = Soil.ApsoilNumber;
+                    Placemark plmMyPlaceMark = new Placemark(SoilName,
+                                                             BalloonDescription,
+                                                             Soil.Latitude,
+                                                             Soil.Longitude,
+                                                             0, altitudeModeEnum.clampToGround);
+                    plmMyPlaceMark.Description.UseCDATA = true;
+                    plmMyPlaceMark.Description.Text = BalloonDescription;
+                    plmMyPlaceMark.StyleUrl.Text = "#APSRUIconID";
 
-                        Folder F = GetFolder(FolderName, Folders, KmlDoc);
-                        F.Features.Placemarks.Add(plmMyPlaceMark);
-                    }
+                    Folder F = GetFolder(FolderName, Folders, KmlDoc);
+                    F.Features.Placemarks.Add(plmMyPlaceMark);
                 }
             }
 

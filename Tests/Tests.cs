@@ -26,10 +26,11 @@ public class Tests
         }
     }
 
+    //[Test]
     public void UpgradeSoils()
     {
-        //Service S = new Service();
-        //S.ConvertOldSoilsToNewSoils();
+        Service S = new Service();
+        S.ConvertOldSoilsToNewSoils();
     }
 
 
@@ -132,44 +133,6 @@ public class Tests
     }
 
     /// <summary>
-    /// Usecase: Yield Prophet needs to create a <sample> 1 node from some data.
-    /// </summary>
-    [Test]
-    public void YPGetSoilSample1XML()
-    {
-        Service S = new Service();
-        // Make sure we can create a soil sample 1.
-        string[] Depths = new string[] { "0-10", "10-40", "40-70", "70-100" };
-        double[] SW = new double[] { 0.139, 0.215, 0.179, 0.213 };  // not % but mm/mm - divide percent by 100
-        double[] NO3 = new double[] { 9, 19, 9, 2 };
-        double[] NH4 = new double[] { 6, 6, 6, 4 };
-        string SWUnits = "grav. mm/mm";   // This is volumetic - alternative units: "grav. mm/mm";
-        string SoilSample1XML = S.CreateSoilSample1XML(new DateTime(2011, 12, 25), Depths, SWUnits, SW, NO3, NH4);
-        // Make sure we can parse the XML
-        XmlDocument Doc = new XmlDocument();
-        Doc.LoadXml(SoilSample1XML);
-    }
-
-    /// <summary>
-    /// Usecase: Yield Prophet needs to create a <sample> 2 node from some data.
-    /// </summary>
-    [Test]
-    public void YPGetSoilSample2XML()
-    {
-        Service S = new Service();
-        // Make sure we can create a soil sample 1.
-        string[] Depths = new string[] { "0-10", "10-40" };
-        double[] OC = new double[] { 1.0, 0.8 };  
-        double[] EC = new double[] { 9, 19 };
-        double[] PH = new double[] { 6, 6 };
-        double[] Cl = new double[] { 6, 6 };
-        string SoilSample2XML = S.CreateSoilSample2XML(new DateTime(2011, 12, 25), Depths, OC, EC, PH, Cl);
-        // Make sure we can parse the XML
-        XmlDocument Doc = new XmlDocument();
-        Doc.LoadXml(SoilSample2XML);
-    }
-
-    /// <summary>
     /// Usecase: Yield Prophet user selects a soil and displays a chart.
     /// </summary>
     [Test]
@@ -177,7 +140,9 @@ public class Tests
     {
         Service S = new Service();
         byte[] ChartBytes = S.SoilChartPNG("Soils/Australia/Queensland/Central Highlands/Black Vertosol-Orion (Capella No049)");
-        Assert.AreEqual(ChartBytes.Length, 22314);
+        ImageForm F = new ImageForm();
+        F.SetImage(ChartBytes);
+        F.ShowDialog();
     }
 
     /// <summary>
@@ -188,16 +153,16 @@ public class Tests
     {
         Service S = new Service();
 
-        string[] Depths = new string[] { "0-10", "10-40", "40-70", "70-100" };
+        double[] Thickness = new double[] { 100, 300, 300, 300 };
         double[] SW = new double[] { 0.139, 0.215, 0.179, 0.213 };  // not % but mm/mm - divide percent by 100
         double[] NO3 = new double[] { 9, 19, 9, 2 };
         double[] NH4 = new double[] { 6, 6, 6, 4 };
-        string SWUnits = "grav. mm/mm";   // This is volumetic - alternative units: "grav. mm/mm";
-        string SoilSample1XML = S.CreateSoilSample1XML(new DateTime(2011, 12, 25), Depths, SWUnits, SW, NO3, NH4);
-
         byte[] ChartBytes = S.SoilChartWithSamplePNG("Soils/Australia/Queensland/Central Highlands/Black Vertosol-Orion (Capella No049)",
-                                                     SoilSample1XML);
-        Assert.AreEqual(ChartBytes.Length, 32533);
+            Thickness, SW, IsGravimetric:true);
+
+        ImageForm F = new ImageForm();
+        F.SetImage(ChartBytes);
+        F.ShowDialog();
     }
 
     /// <summary>
@@ -219,18 +184,15 @@ public class Tests
     {
         Service S = new Service();
 
-        string[] Depths = new string[] { "0-10", "10-40", "40-70", "70-100" };
-        double[] SW = new double[] { 0.139, 0.215, 0.179, 0.213 };  // not % but mm/mm - divide percent by 100
+        double[] Thickness = new double[] { 100, 300, 300, 300 };
+        double[] SW = new double[] { 0.056, 0.141, 0.209, 0.245 };  // not % but mm/mm - divide percent by 100
         double[] NO3 = new double[] { 9, 19, 9, 2 };
         double[] NH4 = new double[] { 6, 6, 6, 4 };
-        string SWUnits = "grav. mm/mm";   // This is volumetic - alternative units: "grav. mm/mm";
-        string SoilSample1XML = S.CreateSoilSample1XML(new DateTime(2011, 12, 25), Depths, SWUnits, SW, NO3, NH4);
 
-
-        double PAW = S.PAW("Soils/Australia/Queensland/Central Highlands/Black Vertosol-Orion (Capella No049)", 
-                           SoilSample1XML,
-                           "Wheat");
-        Assert.AreEqual(PAW, 6.48, 0.01);
+        double PAW = S.PAW("Soils/Australia/Victoria/Mallee/Clay Loam (Jil Jil No728)", 
+                           Thickness, SW, IsGravimetric:true,
+                           CropName:"Wheat");
+        Assert.AreEqual(PAW, 145.5, 0.01);
     }
 
     /// <summary>
@@ -246,7 +208,38 @@ public class Tests
 
         // Now filter on clay loams
         MatchingSoils = S.SearchSoilsReturnInfo(-35.884, 142.983, 50, "Clay Loam");
-        Assert.AreEqual(MatchingSoils.Count(), 14);
+        Assert.AreEqual(MatchingSoils.Count(), 15);
+    }
+
+    [Test]
+    public void YPGetInfo()
+    {
+        Service S = new Service();
+
+        Apsoil.Service.SoilInfo Info = S.GetSoilInfo("Soils/Australia/Queensland/Central Highlands/Black Vertosol-Orion (Capella No049)");
+
+        Assert.AreEqual(Info.Name, "Black Vertosol-Orion (Capella No049)");
+        Assert.AreEqual(Info.ASCOrder, "Vertosol");
+        Assert.AreEqual(Info.ASCSubOrder, "Black");
+        Assert.AreEqual(Info.Latitude, -22.962);
+        Assert.AreEqual(Info.Longitude, 147.801);
+        Assert.AreEqual(Info.NearestTown, "Capella, Q 4723");
+        Assert.AreEqual(Info.Region, "Central Highlands");
+        Assert.AreEqual(Info.Site, "Capella");
+        Assert.AreEqual(Info.SoilType, "Clay");
+    }
+
+    [Test]
+    public void YPMissingSampleData()
+    {
+        Service S = new Service();
+
+        double[] Thickness = new double[] { 100, 300, 300, 3000 };
+        double[] SW = new double[] { 0.139, 0.315, 999999, 999999 };  // not % but mm/mm - divide percent by 100
+
+        double PAW = S.PAW("Soils/Australia/Queensland/Central Highlands/Black Vertosol-Orion (Capella No049)",
+                           Thickness, SW, true, "wheat");
+        Assert.AreEqual(PAW, 25.8, 0.01);
     }
 
     #endregion
@@ -263,9 +256,6 @@ public class Tests
         Service S = new Service();
         Service.SoilBasicInfo[] Soils = S.AllAustralianSoils(new Service.SearchSoilsParams());
         Assert.Greater(Soils.Count(), 800);
-        Assert.AreEqual(Soils[0].Name, "Soils/Australia/Queensland/Darling Downs and Granite Belt/Red Chromosol (Billa Billa No066)");
-        Assert.AreEqual(Soils[0].Latitude, -28.162);
-        Assert.AreEqual(Soils[0].Longitude, 150.201);
     }
 
     /// <summary>
@@ -307,9 +297,23 @@ public class Tests
         Assert.AreEqual(o["soil"]["ASC_Order"]["text"].ToString(), "Vertosol");
         Assert.AreEqual(o["soil"]["Latitude"]["text"].ToString(), "-22.962");
         Assert.AreEqual(o["soil"]["Longitude"]["text"].ToString(), "147.801");
-
+        Assert.AreEqual(o["soil"]["ApsoilNumber"]["text"].ToString(), "49");
+        Assert.AreEqual(o["soil"]["ASC_Sub-order"]["text"].ToString(), "Black");
+        Assert.AreEqual(o["soil"]["Comments"]["text"].ToString(), "OC and pH estimated");
+        Assert.AreEqual(o["soil"]["Country"].ToString(), "Australia");
+        Assert.AreEqual(o["soil"]["DataSource"]["text"].ToString(), "Qld Department of Primary Industries and Fisheries (D Lack)");
+        //Assert.AreEqual(o["soil"]["LocalName"]["text"].ToString(), "");
+        Assert.AreEqual(o["soil"]["LocationAccuracy"]["text"].ToString(), "+/- 20m");
+        Assert.AreEqual(o["soil"]["NaturalVegetation"]["text"].ToString(), "Qld Bluegrass, Mountain Coolibah");
+        Assert.AreEqual(o["soil"]["NearestTown"]["text"].ToString(), "Capella, Q 4723");
+        Assert.AreEqual(o["soil"]["Region"].ToString(), "Central Highlands");
+        Assert.AreEqual(o["soil"]["Site"].ToString(), "Capella");
+        Assert.AreEqual(o["soil"]["SoilType"]["text"].ToString(), "Clay");
+        Assert.AreEqual(o["soil"]["State"].ToString(), "Queensland");
 
         dynamic p1 = o;
+
+        // Water info
 
         Assert.AreEqual(p1.soil.Water.Layer.Count, 6);
 
@@ -320,12 +324,49 @@ public class Tests
         Assert.AreEqual(p1.soil.Water.Layer[4].Thickness.Value, "300");
         Assert.AreEqual(p1.soil.Water.Layer[5].Thickness.Value, "300");
 
+        //Assert.AreEqual(p1.soil.Water.Layer[0].KS.text.Value, "");
+        Assert.AreEqual(p1.soil.Water.Layer[1].KS.Value, null);
+        Assert.AreEqual(p1.soil.Water.Layer[2].KS.Value, null);
+        Assert.AreEqual(p1.soil.Water.Layer[3].KS.Value, null);
+        Assert.AreEqual(p1.soil.Water.Layer[4].KS.Value, null);
+        Assert.AreEqual(p1.soil.Water.Layer[5].KS.Value, null);
+
+        Assert.AreEqual(p1.soil.Water.Layer[0].BD.text.Value, "1.04");
+        Assert.AreEqual(p1.soil.Water.Layer[1].BD.text.Value, "1.22");
+        Assert.AreEqual(p1.soil.Water.Layer[2].BD.text.Value, "1.21");
+        Assert.AreEqual(p1.soil.Water.Layer[3].BD.text.Value, "1.32");
+        Assert.AreEqual(p1.soil.Water.Layer[4].BD.text.Value, "1.42");
+        Assert.AreEqual(p1.soil.Water.Layer[5].BD.text.Value, "1.5");
+
+        Assert.AreEqual(p1.soil.Water.Layer[0].Airdry.text.Value, "0.125");
+        Assert.AreEqual(p1.soil.Water.Layer[1].Airdry.text.Value, "0.224");
+        Assert.AreEqual(p1.soil.Water.Layer[2].Airdry.text.Value, "0.33");
+        Assert.AreEqual(p1.soil.Water.Layer[3].Airdry.text.Value, "0.24");
+        Assert.AreEqual(p1.soil.Water.Layer[4].Airdry.text.Value, "0.32");
+        Assert.AreEqual(p1.soil.Water.Layer[5].Airdry.text.Value, "0.3");
+
         Assert.AreEqual(p1.soil.Water.Layer[0].LL15.text.Value, "0.25");
         Assert.AreEqual(p1.soil.Water.Layer[1].LL15.text.Value, "0.28");
         Assert.AreEqual(p1.soil.Water.Layer[2].LL15.text.Value, "0.33");
         Assert.AreEqual(p1.soil.Water.Layer[3].LL15.text.Value, "0.24");
         Assert.AreEqual(p1.soil.Water.Layer[4].LL15.text.Value, "0.32");
         Assert.AreEqual(p1.soil.Water.Layer[5].LL15.text.Value, "0.3");
+
+        Assert.AreEqual(p1.soil.Water.Layer[0].DUL.text.Value, "0.48");
+        Assert.AreEqual(p1.soil.Water.Layer[1].DUL.text.Value, "0.46");
+        Assert.AreEqual(p1.soil.Water.Layer[2].DUL.text.Value, "0.46");
+        Assert.AreEqual(p1.soil.Water.Layer[3].DUL.text.Value, "0.35");
+        Assert.AreEqual(p1.soil.Water.Layer[4].DUL.text.Value, "0.33");
+        Assert.AreEqual(p1.soil.Water.Layer[5].DUL.text.Value, "0.33");
+
+        Assert.AreEqual(p1.soil.Water.Layer[0].SAT.text.Value, "0.58");
+        Assert.AreEqual(p1.soil.Water.Layer[1].SAT.text.Value, "0.51");
+        Assert.AreEqual(p1.soil.Water.Layer[2].SAT.text.Value, "0.51");
+        Assert.AreEqual(p1.soil.Water.Layer[3].SAT.text.Value, "0.47");
+        Assert.AreEqual(p1.soil.Water.Layer[4].SAT.text.Value, "0.43");
+        Assert.AreEqual(p1.soil.Water.Layer[5].SAT.text.Value, "0.4");
+
+        // Crop info
 
         Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[0].Thickness.text.Value, "150");
         Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[1].Thickness.Value, "150");
@@ -334,12 +375,54 @@ public class Tests
         Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[4].Thickness.Value, "300");
         Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[5].Thickness.Value, "300");
 
+        Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[0].ll.text.Value, "0.25");
+        Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[1].ll.text.Value, "0.28");
+        Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[2].ll.text.Value, "0.33");
+        Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[3].ll.text.Value, "0.24");
+        Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[4].ll.text.Value, "0.32");
+        Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[5].ll.text.Value, "0.3");
+
+        Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[0].kl.text.Value, "0.06");
+        Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[1].kl.Value, "0.06");
+        Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[2].kl.Value, "0.06");
+        Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[3].kl.Value, "0.04");
+        Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[4].kl.Value, "0.04");
+        Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[5].kl.Value, "0.02");
+
+        Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[0].xf.text.Value, "1");
+        Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[1].xf.Value, "1");
+        Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[2].xf.Value, "1");
+        Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[3].xf.Value, "1");
+        Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[4].xf.Value, "1");
+        Assert.AreEqual(p1.soil.Water.SoilCrop.Layer[5].xf.Value, "1");
+
+        // Soil Organic Matter info.
+        Assert.AreEqual(p1.soil.SoilOrganicMatter.RootCn.ToString(), "40");
+        Assert.AreEqual(p1.soil.SoilOrganicMatter.RootWt.ToString(), "1000");
+        Assert.AreEqual(p1.soil.SoilOrganicMatter.SoilCn.ToString(), "12");
+        Assert.AreEqual(p1.soil.SoilOrganicMatter.EnrACoeff.ToString(), "7.4");
+        Assert.AreEqual(p1.soil.SoilOrganicMatter.EnrBCoeff.ToString(), "0.2");
+
         Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[0].Thickness.text.Value, "150");
         Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[1].Thickness.Value, "150");
         Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[2].Thickness.Value, "300");
         Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[3].Thickness.Value, "300");
         Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[4].Thickness.Value, "300");
         Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[5].Thickness.Value, "300");
+
+        Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[0].FINERT.text.Value, "0.4");
+        Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[1].FINERT.Value, "0.6");
+        Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[2].FINERT.Value, "0.8");
+        Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[3].FINERT.Value, "1");
+        Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[4].FINERT.Value, "1");
+        Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[5].FINERT.Value, "1");
+
+        Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[0].FBIOM.text.Value, "0.04");
+        Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[1].FBIOM.Value, "0.02");
+        Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[2].FBIOM.Value, "0.02");
+        Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[3].FBIOM.Value, "0.02");
+        Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[4].FBIOM.Value, "0.01");
+        Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[5].FBIOM.Value, "0.01");
 
         Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[0].OC.text.Value, "0.953846153846154");
         Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[1].OC.text.Value, "0.953846153846154");
@@ -348,6 +431,8 @@ public class Tests
         Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[4].OC.text.Value, "0.546153846153846");
         Assert.AreEqual(p1.soil.SoilOrganicMatter.Layer[5].OC.text.Value, "0.261538461538462");
 
+        // Analysis
+
         Assert.AreEqual(p1.soil.Analysis.Layer[0].Thickness.text.Value, "150");
         Assert.AreEqual(p1.soil.Analysis.Layer[1].Thickness.Value, "150");
         Assert.AreEqual(p1.soil.Analysis.Layer[2].Thickness.Value, "300");
@@ -355,12 +440,131 @@ public class Tests
         Assert.AreEqual(p1.soil.Analysis.Layer[4].Thickness.Value, "300");
         Assert.AreEqual(p1.soil.Analysis.Layer[5].Thickness.Value, "300");
 
+        //Assert.AreEqual(p1.soil.Analysis.Layer[0].Rocks.text.Value, "");
+        //Assert.AreEqual(p1.soil.Analysis.Layer[1].Rocks.Value, "");
+        //Assert.AreEqual(p1.soil.Analysis.Layer[2].Rocks.Value, "");
+        //Assert.AreEqual(p1.soil.Analysis.Layer[3].Rocks.Value, "");
+        //Assert.AreEqual(p1.soil.Analysis.Layer[4].Rocks.Value, "");
+        //Assert.AreEqual(p1.soil.Analysis.Layer[5].Rocks.Value, "");
+
+        Assert.AreEqual(p1.soil.Analysis.Layer[0].Texture.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[1].Texture.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[2].Texture.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[3].Texture.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[4].Texture.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[5].Texture.Value, null);
+
+        Assert.AreEqual(p1.soil.Analysis.Layer[0].MunsellColour.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[1].MunsellColour.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[2].MunsellColour.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[3].MunsellColour.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[4].MunsellColour.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[5].MunsellColour.Value, null);
+
+        Assert.AreEqual(p1.soil.Analysis.Layer[0].EC.text, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[1].EC.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[2].EC.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[3].EC.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[4].EC.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[5].EC.Value, null);
+
         Assert.AreEqual(p1.soil.Analysis.Layer[0].PH.text.Value, "8");
         Assert.AreEqual(p1.soil.Analysis.Layer[1].PH.text.Value, "8");
         Assert.AreEqual(p1.soil.Analysis.Layer[2].PH.text.Value, "8");
         Assert.AreEqual(p1.soil.Analysis.Layer[3].PH.text.Value, "8");
         Assert.AreEqual(p1.soil.Analysis.Layer[4].PH.text.Value, "8");
         Assert.AreEqual(p1.soil.Analysis.Layer[5].PH.text.Value, "8");
+
+        Assert.AreEqual(p1.soil.Analysis.Layer[0].CL.text, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[1].CL.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[2].CL.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[3].CL.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[4].CL.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[5].CL.Value, null);
+
+        Assert.AreEqual(p1.soil.Analysis.Layer[0].Boron.text, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[1].Boron.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[2].Boron.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[3].Boron.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[4].Boron.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[5].Boron.Value, null);
+
+        Assert.AreEqual(p1.soil.Analysis.Layer[0].CEC.text, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[1].CEC.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[2].CEC.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[3].CEC.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[4].CEC.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[5].CEC.Value, null);
+
+        Assert.AreEqual(p1.soil.Analysis.Layer[0].Ca.text, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[1].Ca.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[2].Ca.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[3].Ca.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[4].Ca.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[5].Ca.Value, null);
+
+        Assert.AreEqual(p1.soil.Analysis.Layer[0].Mg.text, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[1].Mg.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[2].Mg.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[3].Mg.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[4].Mg.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[5].Mg.Value, null);
+
+        Assert.AreEqual(p1.soil.Analysis.Layer[0].Na.text, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[1].Na.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[2].Na.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[3].Na.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[4].Na.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[5].Na.Value, null);
+
+        Assert.AreEqual(p1.soil.Analysis.Layer[0].K.text, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[1].K.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[2].K.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[3].K.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[4].K.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[5].K.Value, null);
+
+        Assert.AreEqual(p1.soil.Analysis.Layer[0].ESP.text, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[1].ESP.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[2].ESP.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[3].ESP.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[4].ESP.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[5].ESP.Value, null);
+
+        Assert.AreEqual(p1.soil.Analysis.Layer[0].Mn.text, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[1].Mn.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[2].Mn.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[3].Mn.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[4].Mn.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[5].Mn.Value, null);
+
+        Assert.AreEqual(p1.soil.Analysis.Layer[0].Al.text, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[1].Al.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[2].Al.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[3].Al.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[4].Al.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[5].Al.Value, null);
+
+        Assert.AreEqual(p1.soil.Analysis.Layer[0].ParticleSizeSand.text, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[1].ParticleSizeSand.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[2].ParticleSizeSand.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[3].ParticleSizeSand.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[4].ParticleSizeSand.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[5].ParticleSizeSand.Value, null);
+
+        Assert.AreEqual(p1.soil.Analysis.Layer[0].ParticleSizeSilt.text, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[1].ParticleSizeSilt.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[2].ParticleSizeSilt.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[3].ParticleSizeSilt.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[4].ParticleSizeSilt.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[5].ParticleSizeSilt.Value, null);
+
+        Assert.AreEqual(p1.soil.Analysis.Layer[0].ParticleSizeClay.text, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[1].ParticleSizeClay.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[2].ParticleSizeClay.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[3].ParticleSizeClay.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[4].ParticleSizeClay.Value, null);
+        Assert.AreEqual(p1.soil.Analysis.Layer[5].ParticleSizeClay.Value, null);
     }
 
     /// <summary>
@@ -389,7 +593,7 @@ public class Tests
         string json = S.SoilAsJson("Soils/Australia/Queensland/Central Highlands/Black Vertosol-Orion (Capella No049)");
         XmlDocument doc = JsonConvert.DeserializeXmlNode(json);
         byte[] ChartBytes = S.SoilChartPNGFromXML(doc.OuterXml);
-        Assert.AreEqual(ChartBytes.Length, 22314);
+        Assert.AreEqual(ChartBytes.Length, 19041);
     }
 
     #endregion

@@ -29,10 +29,11 @@ namespace Apsoil
                 string SoilName = Request.QueryString["Name"];
 
                 ApsoilWeb.Service SoilsDB = new Apsoil.ApsoilWeb.Service();
-                XmlDocument Doc = new XmlDocument();
-                Doc.LoadXml("<soils>" + SoilsDB.SoilXML(SoilName) + "</soils>");
+                Soil Soil = Soil.Create(SoilsDB.SoilXML(SoilName));
+                
+                DataTable Data = new DataTable();
+                SoilDataTable.SoilToTable(Soil, Data);
 
-                DataTable Data = SoilDataTable.XMLToTable(Doc.DocumentElement, null);
                 Response.Write(DataTableUtility.DataTableToCSV(Data, 0));
                 Response.Flush();                 // send our content to the client browser.
                 Response.SuppressContent = true;  // stops .net from writing it's stuff.

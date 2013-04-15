@@ -39,16 +39,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ApsimFile">
-      <HintPath>.\ApsimFile.dll</HintPath>
+      <HintPath>..\..\Apsim\Model\ApsimFile.dll</HintPath>
     </Reference>
     <Reference Include="Controllers">
-      <HintPath>.\Controllers.dll</HintPath>
+      <HintPath>..\..\Apsim\Model\Controllers.dll</HintPath>
     </Reference>
     <Reference Include="CSGeneral">
-      <HintPath>.\CSGeneral.dll</HintPath>
+      <HintPath>..\..\Apsim\Model\CSGeneral.dll</HintPath>
     </Reference>
     <Reference Include="Graph">
-      <HintPath>.\Graph.dll</HintPath>
+      <HintPath>..\..\Apsim\Model\Graph.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\JSON.NET\Bin\Net40\Newtonsoft.Json.dll</HintPath>
@@ -75,7 +75,6 @@
   <ItemGroup>
     <Content Include="Apsim.xml" />
     <Content Include="ApsoilKML.aspx" />
-    <Content Include="Test.htm" />
     <Content Include="Download.html" />
     <Content Include="Excel.aspx" />
     <Content Include="GetSoil.aspx" />

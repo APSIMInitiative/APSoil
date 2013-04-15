@@ -38,7 +38,13 @@ namespace Apsoil
                 if (MemStream.ToArray() != null)
                     Response.BinaryWrite(MemStream.ToArray());
             }
+            else if (Request.QueryString["NameJSON"] != null)
+            {
+                string SoilName = Request.QueryString["NameJSON"];
 
+                ApsoilWeb.Service SoilsDB = new Apsoil.ApsoilWeb.Service();
+                Response.Write(SoilsDB.SoilAsJson(SoilName));
+            }
         }
 
 
