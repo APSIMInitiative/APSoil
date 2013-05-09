@@ -185,6 +185,8 @@ namespace Apsoil
         public double PAW(string SoilName, double[] Thickness, double[] SW, bool IsGravimetric, string CropName)
         {
             Soil Soil = Soil.Create(SoilXML(SoilName));
+            if (!StringManip.Contains(Soil.CropNames, CropName))
+                CropName = "Wheat";
 
             RemoveMissingValues(ref Thickness, ref SW);
             Soil.Samples.Add(new Sample() { Thickness = Thickness, SW = SW });
@@ -253,6 +255,8 @@ namespace Apsoil
         public double PAWC(string SoilName, string CropName)
         {
             Soil Soil = Soil.Create(SoilXML(SoilName));
+            if (!StringManip.Contains(Soil.CropNames, CropName))
+                CropName = "Wheat";
             double[] PAWCmm = MathUtility.Multiply(Soil.PAWCCrop(CropName), Soil.Thickness);
             return MathUtility.Sum(PAWCmm);
         }

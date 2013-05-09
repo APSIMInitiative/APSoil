@@ -192,7 +192,7 @@ public class Tests
         double PAW = S.PAW("Soils/Australia/Victoria/Mallee/Clay Loam (Jil Jil No728)", 
                            Thickness, SW, IsGravimetric:true,
                            CropName:"Wheat");
-        Assert.AreEqual(PAW, 145.5, 0.01);
+        Assert.AreEqual(PAW, 11.368, 0.01);
     }
 
     /// <summary>
@@ -593,7 +593,7 @@ public class Tests
         string json = S.SoilAsJson("Soils/Australia/Queensland/Central Highlands/Black Vertosol-Orion (Capella No049)");
         XmlDocument doc = JsonConvert.DeserializeXmlNode(json);
         byte[] ChartBytes = S.SoilChartPNGFromXML(doc.OuterXml);
-        Assert.AreEqual(ChartBytes.Length, 19041);
+        Assert.AreEqual(ChartBytes.Length, 17033);
     }
 
     #endregion
