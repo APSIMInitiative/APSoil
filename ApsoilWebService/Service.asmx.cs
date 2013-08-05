@@ -160,6 +160,24 @@ namespace Apsoil
         }
 
         /// <summary>
+        /// Return info about a soil.
+        /// </summary>
+        [WebMethod]
+        public SoilAnalysisInfo GetSoilAnalysisInfo(string SoilName)
+        {
+            Soil Soil = Soil.Create(SoilXML(SoilName));
+            SoilAnalysisInfo Analysis = new SoilAnalysisInfo();
+            Analysis.Thickness = Soil.Analysis.Thickness;
+            Analysis.Texture = Soil.Analysis.Texture;
+            Analysis.EC = Soil.Analysis.EC;
+            Analysis.PH = Soil.Analysis.PH;
+            Analysis.CL = Soil.Analysis.CL;
+            Analysis.Boron = Soil.Analysis.Boron;
+            Analysis.ESP = Soil.Analysis.ESP;
+            Analysis.AL = Soil.Analysis.Al;
+            return Analysis;
+        }
+        /// <summary>
         /// Returns a list of all soil types in the APSoil repository.
         /// </summary>
         /// <returns></returns>
@@ -497,7 +515,18 @@ namespace Apsoil
             public string ASCOrder;
             public string ASCSubOrder;
         }
-
+        public class SoilAnalysisInfo
+        {
+            public string Name;
+            public double[] Thickness;
+            public string[] Texture;
+            public double[] EC;
+            public double[] PH;
+            public double[] CL;
+            public double[] Boron;
+            public double[] ESP;
+            public double[] AL;
+        }
         /// <summary>
         /// Return the soil as a JSON string. Called from iPAD app.
         /// </summary>
