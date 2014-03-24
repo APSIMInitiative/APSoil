@@ -175,6 +175,10 @@ namespace Apsoil
             Analysis.Boron = Soil.Analysis.Boron;
             Analysis.ESP = Soil.Analysis.ESP;
             Analysis.AL = Soil.Analysis.Al;
+
+
+            if (StringManip.Contains(Soil.CropNames, "wheat"))
+                Analysis.WheatLL = Soil.Crop("Wheat").LL;
             return Analysis;
         }
         /// <summary>
@@ -526,6 +530,7 @@ namespace Apsoil
             public double[] Boron;
             public double[] ESP;
             public double[] AL;
+            public double[] WheatLL;
         }
         /// <summary>
         /// Return the soil as a JSON string. Called from iPAD app.
