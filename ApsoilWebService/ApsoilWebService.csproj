@@ -81,9 +81,6 @@
   <ItemGroup>
     <Content Include="jquery-1.2.3.min.js" />
     <Content Include="Service.asmx" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SoilToOldXml.cs" />

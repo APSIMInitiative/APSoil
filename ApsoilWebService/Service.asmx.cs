@@ -1071,6 +1071,9 @@ namespace Apsoil
             if (Name[Name.Length - 1] == '/')
                 Name = Name.Remove(Name.Length - 1);
 
+            if (Name[0] == '/')
+                Name = Name.Remove(0, 1);
+
             string SQL;
             if (SoilNames().Contains(Name))
                 SQL = "UPDATE " + TableName + " SET XML = @XML, IsApsoil = @IsApsoil WHERE Name = @Name";
