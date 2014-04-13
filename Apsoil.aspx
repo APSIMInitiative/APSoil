@@ -26,6 +26,14 @@
        Text="ShowInfo" />
     <asp:Button ID="Button3" runat="server" onclick="KMLClick" 
        Text="GetKML for all soils" />
+    <asp:Button ID="Button6" runat="server" onclick="ShowJSONClick" 
+       Text="Show selected soil (json)" style="margin-bottom: 0px" />
+    <asp:Button ID="Button7" runat="server" onclick="SoilChart" 
+       Text="Soil chart" style="margin-bottom: 0px" />
+    <asp:Button ID="Button8" runat="server" onclick="SoilChartFromJson" 
+       Text="Soil chart (from json)" style="margin-bottom: 0px" />
+    <asp:Button ID="Button9" runat="server" onclick="Button9_Click" 
+       Text="All Aust Soils" style="margin-bottom: 0px" />
     <p>
        <asp:Label ID="InfoLabel" runat="server" Text=" "></asp:Label>
     </p>

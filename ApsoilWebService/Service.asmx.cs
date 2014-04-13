@@ -123,7 +123,13 @@ namespace Apsoil
                 {
                     XmlDocument Doc = new XmlDocument();
                     Doc.LoadXml(Reader["XML"].ToString());
-                    ReturnString = Doc.OuterXml;
+                    //if (Doc.DocumentElement.Name == "soil")
+                    //{
+                    //    // old soil format - convert to new.
+                    //    ReturnString = ConvertOldXmlToNew(Doc.OuterXml);
+                    //}
+                    //else
+                        ReturnString = Doc.OuterXml;
                 }
             }
             catch (Exception err)
@@ -178,9 +184,15 @@ namespace Apsoil
 
 
             if (StringManip.Contains(Soil.CropNames, "wheat"))
+            {
                 Analysis.WheatLL = Soil.Crop("Wheat").LL;
+                Analysis.WheatXF = Soil.Crop("Wheat").XF;
+            }
+            Analysis.LL15 = Soil.LL15;
+            Analysis.DUL = Soil.DUL;
             return Analysis;
         }
+        
         /// <summary>
         /// Returns a list of all soil types in the APSoil repository.
         /// </summary>
@@ -531,6 +543,9 @@ namespace Apsoil
             public double[] ESP;
             public double[] AL;
             public double[] WheatLL;
+            public double[] WheatXF;
+            public double[] LL15;
+            public double[] DUL;
         }
         /// <summary>
         /// Return the soil as a JSON string. Called from iPAD app.
@@ -640,6 +655,12 @@ namespace Apsoil
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public SoilInfo[] SearchSoils(SearchSoilsParams Params)
         {
+            //StreamWriter Out3 = new StreamWriter("D:\\Websites\\FILES\\Transfer\\ApsoilWeb.txt", true);
+            //Out3.WriteLine(DateTime.Now.ToString());
+            //Out3.WriteLine("SearchSoils");
+            //Out3.Close();
+
+
             List<SoilInfo> Soils = new List<SoilInfo>();
             SqlConnection Connection = Open();
             SqlDataReader Reader = null;
@@ -686,6 +707,11 @@ namespace Apsoil
             {
                 Reader.Close();
                 Connection.Close();
+
+                StreamWriter out1 = new StreamWriter("D:\\Websites\\FILES\\Transfer\\ApsoilWeb.txt", true);
+                out1.WriteLine("Error:" + err.Message);
+                out1.Close();
+
                 throw err;
             }
             Reader.Close();
@@ -695,7 +721,7 @@ namespace Apsoil
             Soils.Sort(CompareSoilLocations);
 
             //StreamWriter Out = new StreamWriter("D:\\Websites\\FILES\\Transfer\\ApsoilWeb.txt", true);
-            //Out.WriteLine("Number of soils added:" + Soils.Count.ToString());
+            //Out.WriteLine("Number of soils returned:" + Soils.Count.ToString());
             //Out.Close();
 
             return Soils.ToArray();
@@ -747,12 +773,19 @@ namespace Apsoil
             {
                 Reader.Close();
                 Connection.Close();
+
+                StreamWriter Out2 = new StreamWriter("D:\\Websites\\FILES\\Transfer\\ApsoilWeb.txt", true);
+                Out2.WriteLine("Error: " + err.Message);
+                Out2.Close();
+
                 throw err;
             }
             Reader.Close();
             Connection.Close();
 
-
+            //StreamWriter Out3 = new StreamWriter("D:\\Websites\\FILES\\Transfer\\ApsoilWeb.txt", true);
+            //Out3.WriteLine("Num soils returned: " + Soils.Count);
+            //Out3.Close();
             return Soils.ToArray();
         }
 
@@ -770,6 +803,10 @@ namespace Apsoil
 
             SoilGraphUI Graph = CreateSoilGraph(Soil, false);
 
+            //StreamWriter Out = new StreamWriter("D:\\Websites\\FILES\\Transfer\\ApsoilWeb.txt", true);
+            //Out.WriteLine("xml: " + NewXML);
+            //Out.Close();
+            
             // Make first 3 LL series active.
             int Count = 0;
             foreach (Series S in Graph.Chart.Series)
@@ -1047,7 +1084,7 @@ namespace Apsoil
         {
             SoilGraphUI Graph = new SoilGraphUI();
             Graph.Populate(Soil, "Water", WithSW);
-            Graph.OnRefresh();
+            //Graph.OnRefresh();
             return Graph;
         }
 

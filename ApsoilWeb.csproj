@@ -28,6 +28,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -75,6 +76,7 @@
   <ItemGroup>
     <Content Include="Apsim.xml" />
     <Content Include="ApsoilKML.aspx" />
+    <Content Include="AllAustralianSoils.aspx" />
     <Content Include="Download.html" />
     <Content Include="Excel.aspx" />
     <Content Include="GetSoil.aspx" />
@@ -113,6 +115,13 @@
     </Compile>
     <Compile Include="ApsoilKML.aspx.designer.cs">
       <DependentUpon>ApsoilKML.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AllAustralianSoils.aspx.cs">
+      <DependentUpon>AllAustralianSoils.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AllAustralianSoils.aspx.designer.cs">
+      <DependentUpon>AllAustralianSoils.aspx</DependentUpon>
     </Compile>
     <Compile Include="Excel.aspx.cs">
       <DependentUpon>Excel.aspx</DependentUpon>

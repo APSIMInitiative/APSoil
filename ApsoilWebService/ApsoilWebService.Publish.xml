@@ -1,15 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <publishData>
   <publishProfile publishUrl="ftp://www.apsim.info/ApsoilWeb/ApsoilWebService" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FTP" replaceMatchingFiles="False" userName="Administrator" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAASID6BnjNDUGKRvls3GoVzQAAAAACAAAAAAADZgAAwAAAABAAAABxcjjLjBkLNQYB/r8871xhAAAAAASAAACgAAAAEAAAANey+dfZBSIz0zVnu7cHSWMYAAAAgt5xjDIJyk9THBUQtZ5ihDs2IXL/W9E1FAAAAFGsgiCw6vM69kdV0mO/anIYsu4m" SelectedForPublish="True">
-    <file relUrl="bin/Graph.pdb" publishTime="03/21/2014 13:47:42" />
+    <file relUrl="Web.config" publishTime="04/10/2014 12:55:08" />
+    <file relUrl="bin/Graph.pdb" publishTime="04/08/2014 08:45:08" />
     <file relUrl="bin/Newtonsoft.Json.pdb" publishTime="04/14/2012 01:25:24" />
-    <file relUrl="bin/ApsoilWebService.dll" publishTime="04/03/2014 16:11:00" />
+    <file relUrl="bin/ApsoilWebService.dll" publishTime="04/14/2014 08:26:48" />
     <file relUrl="jquery-1.2.3.min.js" publishTime="04/13/2012 10:17:43" />
-    <file relUrl="bin/ApsimFile.dll" publishTime="04/03/2014 16:10:33" />
+    <file relUrl="bin/ApsimFile.dll" publishTime="04/10/2014 14:19:03" />
     <file relUrl="bin/Newtonsoft.Json.xml" publishTime="04/14/2012 01:25:24" />
-    <file relUrl="bin/Graph.dll" publishTime="03/24/2014 12:45:58" />
-    <file relUrl="bin/Controllers.dll" publishTime="03/24/2014 12:45:54" />
-    <file relUrl="bin/ApsoilWebService.pdb" publishTime="04/03/2014 16:11:00" />
+    <file relUrl="bin/Graph.dll" publishTime="04/08/2014 08:45:08" />
+    <file relUrl="bin/Controllers.dll" publishTime="04/08/2014 08:45:07" />
+    <file relUrl="bin/ApsoilWebService.pdb" publishTime="04/14/2014 08:26:48" />
     <file relUrl="bin/CMPServices.dll" publishTime="03/24/2014 12:45:34" />
     <file relUrl="Service.asmx" publishTime="05/03/2011 14:41:31" />
     <file relUrl="bin/CSGeneral.dll" publishTime="03/24/2014 12:45:16" />
@@ -17,8 +18,8 @@
     <file relUrl="bin/TeeChart.Client.dll" publishTime="01/29/2013 09:49:02" />
     <file relUrl="bin/Newtonsoft.Json.dll" publishTime="04/14/2012 01:25:24" />
     <file relUrl="bin/ICSharpCode.SharpZipLib.dll" publishTime="11/22/2012 09:49:06" />
-    <file relUrl="bin/ApsimFile.pdb" publishTime="04/03/2014 16:10:33" />
-    <file relUrl="bin/Controllers.pdb" publishTime="03/21/2014 13:47:41" />
+    <file relUrl="bin/ApsimFile.pdb" publishTime="04/10/2014 14:19:03" />
+    <file relUrl="bin/Controllers.pdb" publishTime="04/08/2014 08:45:07" />
     <file relUrl="bin/System.Data.SQLite.dll" publishTime="11/22/2012 09:49:08" />
   </publishProfile>
 </publishData>

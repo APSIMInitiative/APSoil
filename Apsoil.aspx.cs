@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.IO;
 using System.Xml;
 using ApsimFile;
+using Newtonsoft.Json;
 
 namespace Apsoil
 {
@@ -51,6 +52,15 @@ namespace Apsoil
             Response.Redirect("http://www.apsim.info/ApsoilWeb/ApsoilKML.aspx?Mode=1");
         }
 
+        protected void ShowJSONClick(object sender, EventArgs e)
+        {
+            string SelectedName = ListBox.SelectedValue;
+            Response.Redirect("http://www.apsim.info/ApsoilWeb/GetSoil.aspx?NameJSON=" + SelectedName);
+        }
+
+        
+
+
         protected void UploadClick(object sender, EventArgs e)
         {
             Response.Redirect("http://www.apsim.info/ApsoilWeb/UploadApsoilSoilsFile.aspx");
@@ -69,6 +79,28 @@ namespace Apsoil
             Response.Flush();                 // send our content to the client browser.
             Response.SuppressContent = true;  // stops .net from writing it's stuff.
             
+        }
+
+        protected void SoilChart(object sender, EventArgs e)
+        {
+            string SelectedName = ListBox.SelectedValue;
+            Response.Redirect("http://www.apsim.info/ApsoilWeb/SoilChart.aspx?Name=" + SelectedName);
+        }
+
+        protected void SoilChartFromJson(object sender, EventArgs e)
+        {
+            string SelectedName = ListBox.SelectedValue;
+            string json = SoilsDB.SoilAsJson(SelectedName);
+            XmlDocument doc = JsonConvert.DeserializeXmlNode(json);
+            byte[] bytes = SoilsDB.SoilChartPNGFromXML(doc.OuterXml);
+            Context.Response.ContentType = "image/png";
+
+            Response.BinaryWrite(bytes);
+        }
+
+        protected void Button9_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("http://www.apsim.info/ApsoilWeb/AllAustralianSoils.aspx");
         }
 
     }
