@@ -953,6 +953,7 @@ namespace Apsoil
             SetValue(SoilNode, "Latitude", Soil.Latitude.ToString());
             SetValue(SoilNode, "Longitude", Soil.Longitude.ToString());
             SetValue(SoilNode, "LocationAccuracy", Soil.LocationAccuracy);
+            SetValue(SoilNode, "YearOfSampling", Soil.YearOfSampling.ToString());
             SetValue(SoilNode, "DataSource", Soil.DataSource);
             SetValue(SoilNode, "Comments", Soil.Comments);
 
