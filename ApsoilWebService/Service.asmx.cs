@@ -123,23 +123,20 @@ namespace Apsoil
                 {
                     XmlDocument Doc = new XmlDocument();
                     Doc.LoadXml(Reader["XML"].ToString());
-                    //if (Doc.DocumentElement.Name == "soil")
-                    //{
-                    //    // old soil format - convert to new.
-                    //    ReturnString = ConvertOldXmlToNew(Doc.OuterXml);
-                    //}
-                    //else
+                    if (Doc.DocumentElement.Name == "soil")
+                    {
+                        // old soil format - convert to new.
+                        ReturnString = ConvertOldXmlToNew(Doc.OuterXml);
+                    }
+                    else
                         ReturnString = Doc.OuterXml;
                 }
             }
-            catch (Exception err)
+            finally
             {
                 Reader.Close();
                 Connection.Close();
-                throw err;
             }
-            Reader.Close();
-            Connection.Close();
             return ReturnString;
         }
 
@@ -554,32 +551,10 @@ namespace Apsoil
         [ScriptMethod(ResponseFormat = ResponseFormat.Xml)]
         public string SoilAsJson(string Name)
         {
-            SqlConnection Connection = Open();
-            SqlDataReader Reader = null;
-            string ReturnJSon = "";
-            try
-            {
-                // This method is marked as ResponseFormat.Xml to stop .NET from serialising the return string.
-                // The return string is already in JSON format so no need for .NET to do it as well.
-                SqlCommand Command = new SqlCommand("SELECT XML FROM " + TableName + " WHERE Name = @Name", Connection);
-                Command.Parameters.Add(new SqlParameter("@Name", Name));
-                Reader = Command.ExecuteReader();
-                if (Reader.Read())
-                {
-                    XmlNode OldNode = ConvertSoilToOldFormat(Reader["XML"].ToString());
-                    ReturnJSon = JsonConvert.SerializeXmlNode(OldNode);
-                }
-            }
-            catch (Exception err)
-            {
-                Reader.Close();
-                Connection.Close();
-                throw err;
-            }
-
-            Reader.Close();
-            Connection.Close();
-            return ReturnJSon;
+            // This method is marked as ResponseFormat.Xml to stop .NET from serialising the return string.
+            // The return string is already in JSON format so no need for .NET to do it as well.
+            XmlNode OldNode = ConvertSoilToOldFormat(SoilXML(Name));
+            return JsonConvert.SerializeXmlNode(OldNode);
         }
 
         /// <summary>
@@ -901,7 +876,37 @@ namespace Apsoil
             Doc.LoadXml("<dummy><folder>" + XML + "</folder></dummy>");
             XmlHelper.SetAttribute(Doc.DocumentElement, "version", "31");
             APSIMChangeTool.UpgradeToVersion(Doc.DocumentElement, 34);
-            return  XmlHelper.Find(Doc.DocumentElement, "folder").InnerXml;
+
+            XmlNode soilNode = XmlHelper.FindByType(Doc.DocumentElement, "folder/Soil");
+            if (soilNode == null)
+                throw new Exception("Cannot find soil node while converting old soil xml to new soil xml");
+
+            Soil soil = Soil.Create(soilNode.OuterXml);
+
+            // Make sure it has a <SoilWater> node.
+            if (soil.SoilWater == null)
+            {
+                soil.SoilWater = new SoilWater();
+                soil.SoilWater.SummerCona = 3.5;
+                soil.SoilWater.SummerU = 6;
+                soil.SoilWater.SummerDate = "1-Nov";
+                soil.SoilWater.WinterCona = 2;
+                soil.SoilWater.WinterU = 2;
+                soil.SoilWater.WinterDate = "1-Apr";
+                soil.SoilWater.DiffusConst = 40;
+                soil.SoilWater.DiffusSlope = 16;
+                soil.SoilWater.Salb = 0.13;
+                soil.SoilWater.CN2Bare = 73;
+                soil.SoilWater.CNRed = 20;
+                soil.SoilWater.CNCov = 0.8;
+                soil.SoilWater.Thickness = soil.Thickness;
+                soil.SoilWater.SWCON = new double[soil.Thickness.Length];
+                for (int i = 0; i < soil.Thickness.Length; i++)
+                    soil.SoilWater.SWCON[i] = 0.3;
+                return soil.ToXml();
+            }
+            else
+                return  XmlHelper.Find(Doc.DocumentElement, "folder").InnerXml;
         }
 
 
