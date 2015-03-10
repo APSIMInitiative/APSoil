@@ -1,0 +1,5 @@
+WebPortal/packages/
+*.Publish.xml
+*.FileListAbsolute.txt
+packages/
+Release/Release.msi

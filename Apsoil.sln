@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebService", "WebService\WebService.csproj", "{CC557A3F-A09E-460F-B624-22389AFB368D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebPortal", "WebPortal\WebPortal.csproj", "{1CDA4F3A-F779-40CA-9859-E6582A763AC1}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ApsoilSetup", "Release\Release.vdproj", "{175C1B19-7F45-49F3-868B-BBD451085B53}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC557A3F-A09E-460F-B624-22389AFB368D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC557A3F-A09E-460F-B624-22389AFB368D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC557A3F-A09E-460F-B624-22389AFB368D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC557A3F-A09E-460F-B624-22389AFB368D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CDA4F3A-F779-40CA-9859-E6582A763AC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CDA4F3A-F779-40CA-9859-E6582A763AC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CDA4F3A-F779-40CA-9859-E6582A763AC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CDA4F3A-F779-40CA-9859-E6582A763AC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{175C1B19-7F45-49F3-868B-BBD451085B53}.Debug|Any CPU.ActiveCfg = Debug
+		{175C1B19-7F45-49F3-868B-BBD451085B53}.Debug|Any CPU.Build.0 = Debug
+		{175C1B19-7F45-49F3-868B-BBD451085B53}.Release|Any CPU.ActiveCfg = Release
+		{175C1B19-7F45-49F3-868B-BBD451085B53}.Release|Any CPU.Build.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
