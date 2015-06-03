@@ -3,3 +3,12 @@ WebPortal/packages/
 *.FileListAbsolute.txt
 packages/
 Release/Release.msi
+*.suo
+*.exe
+*.dll
+*.pdb
+*.cache
+WebPortal/obj/
+*.bak
+WebService/obj/
+*.user

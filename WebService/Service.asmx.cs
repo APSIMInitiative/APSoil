@@ -7,6 +7,7 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Data.SqlClient;
 using System.Xml;
+using System.Linq;
 
 using Steema.TeeChart.Styles;
 using System.IO;
@@ -102,6 +103,28 @@ namespace Apsoil
                 throw err;
             }
             Connection.Close();
+        }
+
+        /// <summary>
+        /// Update all soils to the specified .soils content.
+        /// </summary>
+        [WebMethod]
+        public void UpdateSoil(string soilPath, string contents)
+        {
+            SqlConnection connection = Open();
+            try
+            {
+                // Update the specified soil.
+                string SQL = "UPDATE AllSoils SET XML = @XML WHERE Name = @Name";
+                SqlCommand Cmd = new SqlCommand(SQL, connection);
+                Cmd.Parameters.Add(new SqlParameter("@Name", soilPath));
+                Cmd.Parameters.Add(new SqlParameter("@XML", contents));
+                Cmd.ExecuteNonQuery();
+            }
+            finally 
+            {
+                connection.Close();
+            }
         }
 
         /// <summary>
@@ -484,6 +507,54 @@ namespace Apsoil
             return Soils.ToArray();
         }
 
+        /// <summary>
+        /// Find the closest matching soils that have cll and dul values as specified.
+        /// </summary>
+        /// <param name="thickness">The thicknesses.</param>
+        /// <param name="pawc">The PAWC values to use in the lookup (mm).</param>
+        /// <param name="cropName">The crop name the CLL relates to.</param>
+        /// <param name="numSoilsToReturn">The number of soils to return.</param>
+        /// <returns>A list of matching soil paths. Closest soil will be first in the list.</returns>
+        [WebMethod]
+        public string[] ClosestMatchingSoils(double[] thickness, double[] pawc, string cropName, int numSoilsToReturn)
+        {
+            List<SoilAndPath> allSoils = new List<SoilAndPath>();
+            foreach (string path in SoilNames())
+            {
+                SoilAndPath soilAndPath = new SoilAndPath(Soil.Create(SoilXML(path)),
+                                                          path,
+                                                          thickness, pawc, cropName);
+                allSoils.Add(soilAndPath);
+            }
+
+            // Remove soils that don't have our crop.
+            allSoils.RemoveAll(s => !StringManip.Contains(s.Soil.CropNames, cropName));
+
+            // Sort soils by PAWC.
+            allSoils.Sort(CompareUsingPAWC);
+
+            //StreamWriter writer = new StreamWriter("D:\\WebSites\\FILES\\Temp.csv");
+            //foreach (SoilAndPath soil in allSoils)
+            //    writer.WriteLine(soil.Path + "," + soil.PAWCDistance + "," + soil.Distance);
+            //writer.Close();
+
+            // Only keep those soils within 20mm
+            allSoils.RemoveAll(s => s.PAWCDistance > 20);
+            
+            // Sort the soils by layer using PAWC in each layer.
+            allSoils.Sort(CompareUsingDistance);
+
+            // Only keep the top 'numSoilsToReturn' matches.
+            if (allSoils.Count >= numSoilsToReturn)
+                allSoils.RemoveRange(numSoilsToReturn, allSoils.Count - numSoilsToReturn);
+
+            // Return the paths of the top 'numSoilsToReturn'
+            List<string> paths = new List<string>();
+            paths.AddRange(allSoils.Select(s => s.Path));
+
+            return paths.ToArray();
+        }
+
         #region iPad app methods
 
         public class JsonSoilParam
@@ -807,6 +878,94 @@ namespace Apsoil
         #endregion
 
         #region Privates
+
+        /// <summary>
+        /// A structure for holding a soil path and a distance from some base line soil.
+        /// </summary>
+        private class SoilAndPath
+        {
+            private double[] thickness;
+            private double[] pawc;
+            private double[] xCLL = null;
+            private double[] xDUL = null;
+            private string cropName;
+
+            public Soil Soil;
+            public string Path;
+            public SoilAndPath(Soil soil, string path, double[] thickness, double[] pawc, string cropName)
+            {
+                this.thickness = thickness;
+                this.pawc = pawc;
+                this.Soil = soil;
+                this.Path = path;
+                this.cropName = cropName;
+            }
+
+            /// <summary>Gets the distance this soil is from the desired pawc</summary>
+            public double Distance
+            {
+                get
+                {
+                    if (xCLL == null)
+                    {
+                        xCLL = Soil.LLMapped(cropName, thickness);
+                        xDUL = Soil.DULMapped(thickness);
+                    }
+
+                    double distance = 0;
+                    for (int i = 0; i < thickness.Length; i++)
+                    {
+                        double pawcForLayer = (xDUL[i] - xCLL[i]) * thickness[i];
+                        distance += Math.Abs(pawc[i] - pawcForLayer);
+                    }
+                    return distance;
+                }
+            }
+
+            /// <summary>Gets the pawc.</summary>
+            public double PAWCDistance
+            {
+                get
+                {
+                    double pawcThisSoil = MathUtility.Sum(MathUtility.Multiply(Soil.PAWCCrop(cropName), Soil.Water.Thickness));
+                    double pawcRequired = MathUtility.Sum(pawc);
+                    return Math.Abs(pawcThisSoil - pawcRequired);
+                }
+            }
+        }
+
+        /// <summary>
+        /// A Soil comparison method based on crop PAWC
+        /// </summary>
+        /// <param name="x">LHS soil.</param>
+        /// <param name="y">RHS soil.</param>
+        /// <returns>1 if RHS > LHS</returns>
+        private int CompareUsingPAWC(SoilAndPath x, SoilAndPath y)
+        {
+            if (x.PAWCDistance == y.PAWCDistance)
+                return 0;
+            else if (x.PAWCDistance < y.PAWCDistance)
+                return -1;
+            else
+                return 1;
+        }
+
+        /// <summary>
+        /// A Soil comparison method based on crop PAWC
+        /// </summary>
+        /// <param name="x">LHS soil.</param>
+        /// <param name="y">RHS soil.</param>
+        /// <returns>1 if RHS > LHS</returns>
+        private int CompareUsingDistance(SoilAndPath x, SoilAndPath y)
+        {
+            if (x.Distance == y.Distance)
+                return 0;
+            else if (x.Distance < y.Distance)
+                return -1;
+            else
+                return 1;
+        }
+
 
         /// <summary>
         /// Open the SoilsDB ready for use.
