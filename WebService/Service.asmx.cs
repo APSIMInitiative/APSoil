@@ -813,7 +813,7 @@ namespace Apsoil
         /// </summary>
         private SqlConnection Open()
         {
-            string ConnectionString = "Server=www.apsim.info\\SQLEXPRESS;Database=APSoil;Trusted_Connection=False;User ID=sv-login-internal;password=P@ssword123";
+            string ConnectionString = File.ReadAllText(@"\\IIS-EXT1\APSIM-Sites\dbConnect.txt") + ";Database=APSoil";
 
             SqlConnection Connection = new SqlConnection(ConnectionString);
             Connection.Open();
