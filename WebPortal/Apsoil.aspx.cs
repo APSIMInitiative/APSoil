@@ -9,6 +9,8 @@ using System.Xml;
 using ApsimFile;
 using Newtonsoft.Json;
 using CSGeneral;
+using System.Net;
+using System.Text;
 
 namespace Apsoil
 {
@@ -148,7 +150,49 @@ namespace Apsoil
         protected void OnSoilChart(object sender, EventArgs e)
         {
             string SelectedName = ListBox.SelectedValue;
-            Response.Redirect("http://www.apsim.info/ApsoilWeb/SoilChart.aspx?Name=" + SelectedName);
+            Response.Redirect("SoilChart.aspx?Name=" + SelectedName);
+        }
+
+        /// <summary>
+        /// Test method for creating a chart from JSON.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected void OnSoilChartFromJson(object sender, EventArgs e)
+        {
+            string SelectedName = ListBox.SelectedValue;
+            using (ApsoilWeb.Service soilsDB = new Apsoil.ApsoilWeb.Service())
+            {
+                string json = soilsDB.SoilAsJson(SelectedName);
+
+                byte[] bytes = Encoding.Default.GetBytes(json);
+
+                HttpWebRequest WebReq = (HttpWebRequest)WebRequest.Create("https://www.apsim.info/ApsoilWeb/SoilChart.aspx");
+                //Our method is post, otherwise the buffer (postvars) would be useless
+                WebReq.Method = "POST";
+                //We use form contentType, for the postvars.
+                WebReq.ContentType = "text/plain";
+                //The length of the buffer (postvars) is used as contentlength.
+                WebReq.ContentLength = bytes.Length;
+                //We open a stream for writing the postvars
+                Stream PostData = WebReq.GetRequestStream();
+                //Now we write, and afterwards, we close. Closing is always important!
+                PostData.Write(bytes, 0, bytes.Length);
+                PostData.Close();
+
+                HttpWebResponse WebResp = (HttpWebResponse)WebReq.GetResponse();
+
+                Stream Answer = WebResp.GetResponseStream();
+                byte[] chartBytes = new byte[200000];
+                int numBytes = Answer.Read(chartBytes, 0, chartBytes.Length);
+                Array.Resize(ref chartBytes, numBytes);
+
+                Response.Clear();
+                Response.ContentType = "image/png";
+                Response.BinaryWrite(chartBytes);
+                Response.Flush();
+                Response.End();
+            }
         }
 
         /// <summary>Handles the Click event of the 'upload a soil' button</summary>

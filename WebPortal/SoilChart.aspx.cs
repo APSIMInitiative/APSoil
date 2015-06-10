@@ -50,6 +50,8 @@ namespace Apsoil
             byte[] ImageBytes = DrawChart();
             if (ImageBytes != null)
                 Response.BinaryWrite(ImageBytes);
+            Response.Flush();
+            Response.End();
         }
 
         private byte[] DrawChart()
@@ -65,7 +67,11 @@ namespace Apsoil
             {
                 // The iPad app passes in soil JSON rather than a name parameter.
                 string json = FormBufferToString();
+                if (json == null || json == string.Empty)
+                    throw new Exception("No JSON specified in call to SoilChart.aspx");
                 XmlDocument doc = JsonConvert.DeserializeXmlNode(json);
+                if (doc == null)
+                    throw new Exception("Invalid JSON passed to SoilChart.aspx");
                 ApsoilWeb.Service SoilsDB = new Apsoil.ApsoilWeb.Service();
                 byte[] bytes = SoilsDB.SoilChartPNGFromXML(doc.OuterXml);
                 Context.Response.ContentType = "image/png";

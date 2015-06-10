@@ -50,6 +50,8 @@
        Text="Soil chart" style="margin-bottom: 0px" />
     <asp:Button ID="Button12" runat="server" onclick="OnUploadSoilClick" 
        Text="Update selected soil from .soils file" />
+    <asp:Button ID="Button15" runat="server" onclick="OnSoilChartFromJson" 
+       Text="Soil chart from JSON" style="margin-bottom: 0px" />
     <p>
        <asp:Label ID="InfoLabel" runat="server" Text=" "></asp:Label>
     </p>
