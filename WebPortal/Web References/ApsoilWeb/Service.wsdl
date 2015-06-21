@@ -1666,16 +1666,16 @@
   </wsdl:binding>
   <wsdl:service name="Service">
     <wsdl:port name="ServiceSoap" binding="tns:ServiceSoap">
-      <soap:address location="http://www.apsim.info/ApsoilWebService/Service.asmx" />
+      <soap:address location="https://www.apsim.info/ApsoilWebService/Service.asmx" />
     </wsdl:port>
     <wsdl:port name="ServiceSoap12" binding="tns:ServiceSoap12">
-      <soap12:address location="http://www.apsim.info/ApsoilWebService/Service.asmx" />
+      <soap12:address location="https://www.apsim.info/ApsoilWebService/Service.asmx" />
     </wsdl:port>
     <wsdl:port name="ServiceHttpGet" binding="tns:ServiceHttpGet">
-      <http:address location="http://www.apsim.info/ApsoilWebService/Service.asmx" />
+      <http:address location="https://www.apsim.info/ApsoilWebService/Service.asmx" />
     </wsdl:port>
     <wsdl:port name="ServiceHttpPost" binding="tns:ServiceHttpPost">
-      <http:address location="http://www.apsim.info/ApsoilWebService/Service.asmx" />
+      <http:address location="https://www.apsim.info/ApsoilWebService/Service.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
