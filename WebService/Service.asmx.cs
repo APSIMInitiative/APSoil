@@ -521,10 +521,16 @@ namespace Apsoil
             List<SoilAndPath> allSoils = new List<SoilAndPath>();
             foreach (string path in SoilNames())
             {
-                SoilAndPath soilAndPath = new SoilAndPath(Soil.Create(SoilXML(path)),
-                                                          path,
-                                                          thickness, pawc, cropName);
-                allSoils.Add(soilAndPath);
+                try
+                {
+                    SoilAndPath soilAndPath = new SoilAndPath(Soil.Create(SoilXML(path)),
+                                                              path,
+                                                              thickness, pawc, cropName);
+                    allSoils.Add(soilAndPath);
+                }
+                catch (Exception err)
+                {
+                }
             }
 
             // Remove soils that don't have our crop.

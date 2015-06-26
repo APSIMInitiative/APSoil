@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebService", "WebService\WebService.csproj", "{CC557A3F-A09E-460F-B624-22389AFB368D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebPortal", "WebPortal\WebPortal.csproj", "{1CDA4F3A-F779-40CA-9859-E6582A763AC1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CC557A3F-A09E-460F-B624-22389AFB368D} = {CC557A3F-A09E-460F-B624-22389AFB368D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

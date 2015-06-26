@@ -58,6 +58,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
@@ -188,10 +190,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://www.apsim.info/ApsoilWebService/Service.asmx">
+    <WebReferenceUrl Include="https://www.apsim.info/ApsoilWebService/Service.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\ApsoilWeb\</RelPath>
-      <UpdateFromURL>http://www.apsim.info/ApsoilWebService/Service.asmx</UpdateFromURL>
+      <UpdateFromURL>https://www.apsim.info/ApsoilWebService/Service.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
