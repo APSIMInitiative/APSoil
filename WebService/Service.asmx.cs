@@ -164,6 +164,25 @@ namespace Apsoil
         }
 
         /// <summary>
+        /// Delete the specified soil.
+        /// </summary>
+        [WebMethod]
+        public void Delete(string Name)
+        {
+            SqlConnection Connection = Open();
+            try
+            {
+                SqlCommand Command = new SqlCommand("DELETE FROM " + TableName + " WHERE Name = @Name", Connection);
+                Command.Parameters.Add(new SqlParameter("@Name", Name));
+                Command.ExecuteNonQuery();
+            }
+            finally
+            {
+                Connection.Close();
+            }
+        }
+
+        /// <summary>
         /// Return info about a soil.
         /// </summary>
         [WebMethod]

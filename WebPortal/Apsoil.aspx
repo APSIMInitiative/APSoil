@@ -25,6 +25,7 @@
         <asp:Button ID="Button14" runat="server" onclick="KMLClick" 
             Text="Get KML for all soils"
             Height="72px" Width="120px" CssClass="wrap" />
+
    
         <asp:Label ID="Label1" runat="server" Text="Filter:"></asp:Label>
         <asp:TextBox ID="FilterTextBox" runat="server" 
@@ -52,8 +53,13 @@
        Text="Update selected soil from .soils file" />
     <asp:Button ID="Button15" runat="server" onclick="OnSoilChartFromJson" 
        Text="Soil chart from JSON" style="margin-bottom: 0px" />
+    <asp:Button ID="Button16" runat="server" onclick="OnCheckSoilsClick" 
+       Text="Check selected soils" style="margin-bottom: 0px" />
+    <asp:Button ID="Button1" runat="server" onclick="OnDeleteClick" 
+       Text="Delete selected soils" style="margin-bottom: 0px" />
     <p>
        <asp:Label ID="InfoLabel" runat="server" Text=" "></asp:Label>
+    <asp:Label ID="label3" runat="server"></asp:Label>
     </p>
     </div>
     </form>

@@ -226,6 +226,51 @@ namespace Apsoil
             }
         }
 
+        /// <summary>Check selected soils and show error messages.</summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void OnCheckSoilsClick(object sender, EventArgs e)
+        {
+            string labelText = string.Empty;
+            using (ApsoilWeb.Service soilsDB = new Apsoil.ApsoilWeb.Service())
+            {
+                foreach (ListItem item in ListBox.Items)
+                {
+                    if (item.Selected)
+                    {
+                        string soilPath = item.Text;
+                        Soil soil = Soil.Create(soilsDB.SoilXML(soilPath));
+                        string messages = soil.Check(true);
+                        if (messages != string.Empty)
+                        {
+                            labelText += soilPath + "\r\n";
+                            labelText += messages + "\r\n";
+                        }
+                    }
+                }
+            }
+            label3.Text = labelText.Replace("\r\n", "<br/>");
+        }
+
+        /// <summary>Delete selected soils.</summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void OnDeleteClick(object sender, EventArgs e)
+        {
+            using (ApsoilWeb.Service soilsDB = new Apsoil.ApsoilWeb.Service())
+            {
+                foreach (ListItem item in ListBox.Items)
+                {
+                    if (item.Selected)
+                    {
+                        string soilPath = item.Text;
+                        soilsDB.Delete(soilPath);
+                    }
+                }
+            }
+            Response.Redirect("Apsoil.aspx");
+        }
+
 
         #region Privates
         /// <summary>Gets the selected items in the listbox.</summary>
@@ -255,8 +300,8 @@ namespace Apsoil
             string SelectedName = ListBox.SelectedValue;
             Response.Redirect("ShowFileContents.aspx?FileName=" + fileName);
         }
-        #endregion
 
+        #endregion
 
     }
 }
