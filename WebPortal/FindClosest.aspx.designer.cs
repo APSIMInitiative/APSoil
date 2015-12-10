@@ -58,6 +58,15 @@ namespace Apsoil {
         protected global::System.Web.UI.WebControls.TextBox PAWC1;
         
         /// <summary>
+        /// Grav1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Grav1;
+        
+        /// <summary>
         /// Thickness2 control.
         /// </summary>
         /// <remarks>
@@ -74,6 +83,15 @@ namespace Apsoil {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox PAWC2;
+        
+        /// <summary>
+        /// Grav2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Grav2;
         
         /// <summary>
         /// Thickness3 control.
@@ -94,6 +112,15 @@ namespace Apsoil {
         protected global::System.Web.UI.WebControls.TextBox PAWC3;
         
         /// <summary>
+        /// Grav3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Grav3;
+        
+        /// <summary>
         /// Thickness4 control.
         /// </summary>
         /// <remarks>
@@ -110,6 +137,15 @@ namespace Apsoil {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox PAWC4;
+        
+        /// <summary>
+        /// Grav4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Grav4;
         
         /// <summary>
         /// Thickness5 control.
@@ -130,6 +166,15 @@ namespace Apsoil {
         protected global::System.Web.UI.WebControls.TextBox PAWC5;
         
         /// <summary>
+        /// Grav5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Grav5;
+        
+        /// <summary>
         /// Thickness6 control.
         /// </summary>
         /// <remarks>
@@ -146,6 +191,15 @@ namespace Apsoil {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox PAWC6;
+        
+        /// <summary>
+        /// Grav6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Grav6;
         
         /// <summary>
         /// Thickness7 control.
@@ -166,6 +220,15 @@ namespace Apsoil {
         protected global::System.Web.UI.WebControls.TextBox PAWC7;
         
         /// <summary>
+        /// Grav7 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Grav7;
+        
+        /// <summary>
         /// Thickness8 control.
         /// </summary>
         /// <remarks>
@@ -182,6 +245,15 @@ namespace Apsoil {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox PAWC8;
+        
+        /// <summary>
+        /// Grav8 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Grav8;
         
         /// <summary>
         /// Thickness9 control.
@@ -202,6 +274,15 @@ namespace Apsoil {
         protected global::System.Web.UI.WebControls.TextBox PAWC9;
         
         /// <summary>
+        /// Grav9 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Grav9;
+        
+        /// <summary>
         /// Thickness10 control.
         /// </summary>
         /// <remarks>
@@ -218,6 +299,24 @@ namespace Apsoil {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox PAWC10;
+        
+        /// <summary>
+        /// Grav10 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Grav10;
+        
+        /// <summary>
+        /// CheckBox1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBox1;
         
         /// <summary>
         /// Button1 control.

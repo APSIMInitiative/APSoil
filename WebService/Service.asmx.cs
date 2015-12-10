@@ -220,15 +220,21 @@ namespace Apsoil
             Analysis.Boron = Soil.Analysis.Boron;
             Analysis.ESP = Soil.Analysis.ESP;
             Analysis.AL = Soil.Analysis.Al;
-
-
-            if (StringManip.Contains(Soil.CropNames, "wheat"))
-            {
-                Analysis.WheatLL = Soil.Crop("Wheat").LL;
-                Analysis.WheatXF = Soil.Crop("Wheat").XF;
-            }
             Analysis.LL15 = Soil.LL15;
             Analysis.DUL = Soil.DUL;
+
+            Analysis.Crops = new List<SoilCropInfo>();
+            foreach (string cropName in Soil.CropNames)
+            {
+                SoilCrop crop = Soil.Crop(cropName);
+                SoilCropInfo cropInfo = new SoilCropInfo();
+                cropInfo.Name = cropName;
+                cropInfo.LL = crop.LL;
+                cropInfo.KL = crop.KL;
+                cropInfo.XF = crop.XF;
+
+                Analysis.Crops.Add(cropInfo);
+            }
             return Analysis;
         }
         
@@ -531,11 +537,13 @@ namespace Apsoil
         /// </summary>
         /// <param name="thickness">The thicknesses.</param>
         /// <param name="pawc">The PAWC values to use in the lookup (mm).</param>
+        /// <param name="grav">Gravimetric values</param>
         /// <param name="cropName">The crop name the CLL relates to.</param>
         /// <param name="numSoilsToReturn">The number of soils to return.</param>
+        /// <param name="gravsAtCLL">Are gravs at CLL?</param>
         /// <returns>A list of matching soil paths. Closest soil will be first in the list.</returns>
         [WebMethod]
-        public string[] ClosestMatchingSoils(double[] thickness, double[] pawc, string cropName, int numSoilsToReturn)
+        public string[] ClosestMatchingSoils(double[] thickness, double[] pawc, double[] grav, string cropName, int numSoilsToReturn, bool gravsAtCLL)
         {
             List<SoilAndPath> allSoils = new List<SoilAndPath>();
             foreach (string path in SoilNames())
@@ -544,30 +552,44 @@ namespace Apsoil
                 {
                     SoilAndPath soilAndPath = new SoilAndPath(Soil.Create(SoilXML(path)),
                                                               path,
-                                                              thickness, pawc, cropName);
+                                                              thickness, pawc, cropName,
+                                                              grav, gravsAtCLL);
                     allSoils.Add(soilAndPath);
                 }
                 catch (Exception err)
                 {
                 }
             }
-
             // Remove soils that don't have our crop.
             allSoils.RemoveAll(s => !StringManip.Contains(s.Soil.CropNames, cropName));
 
-            // Sort soils by PAWC.
-            allSoils.Sort(CompareUsingPAWC);
-
-            //StreamWriter writer = new StreamWriter("D:\\WebSites\\FILES\\Temp.csv");
-            //foreach (SoilAndPath soil in allSoils)
-            //    writer.WriteLine(soil.Path + "," + soil.PAWCDistance + "," + soil.Distance);
-            //writer.Close();
-
-            // Only keep those soils within 20mm
-            allSoils.RemoveAll(s => s.PAWCDistance > 20);
-            
             // Sort the soils by layer using PAWC in each layer.
-            allSoils.Sort(CompareUsingDistance);
+            if (gravsAtCLL)
+            {
+                // Sort soils by PAWC.
+                allSoils.Sort(CompareUsingPAWC);
+
+                // Only keep top 20 soils.
+                if (allSoils.Count >= 20)
+                    allSoils.RemoveRange(20, allSoils.Count - 20);
+
+                allSoils.Sort(CompareUsingDistanceGravFromCLL);
+            }
+            else
+            {
+                // Sort soils by PAWC.
+                allSoils.Sort(CompareUsingPAWC);
+
+                //StreamWriter writer = new StreamWriter("D:\\WebSites\\FILES\\Temp.csv");
+                //foreach (SoilAndPath soil in allSoils)
+                //    writer.WriteLine(soil.Path + "," + soil.PAWCDistance + "," + soil.Distance);
+                //writer.Close();
+
+                // Only keep those soils within 20mm
+                allSoils.RemoveAll(s => s.PAWCDistance > 20);
+
+                allSoils.Sort(CompareUsingDistance);
+            }
 
             // Only keep the top 'numSoilsToReturn' matches.
             if (allSoils.Count >= numSoilsToReturn)
@@ -635,10 +657,16 @@ namespace Apsoil
             public double[] Boron;
             public double[] ESP;
             public double[] AL;
-            public double[] WheatLL;
-            public double[] WheatXF;
             public double[] LL15;
             public double[] DUL;
+            public List<SoilCropInfo> Crops;
+        }
+        public class SoilCropInfo
+        {
+            public string Name;
+            public double[] LL;
+            public double[] KL;
+            public double[] XF;
         }
         /// <summary>
         /// Return the soil as a JSON string. Called from iPAD app.
@@ -914,16 +942,21 @@ namespace Apsoil
             private double[] xCLL = null;
             private double[] xDUL = null;
             private string cropName;
+            private double[] grav;
+            private bool gravAtCLL;
 
             public Soil Soil;
             public string Path;
-            public SoilAndPath(Soil soil, string path, double[] thickness, double[] pawc, string cropName)
+            public SoilAndPath(Soil soil, string path, double[] thickness, double[] pawc, string cropName,
+                               double[] grav, bool gravAtCLL)
             {
                 this.thickness = thickness;
                 this.pawc = pawc;
                 this.Soil = soil;
                 this.Path = path;
                 this.cropName = cropName;
+                this.grav = grav;
+                this.gravAtCLL = gravAtCLL;
             }
 
             /// <summary>Gets the distance this soil is from the desired pawc</summary>
@@ -943,9 +976,46 @@ namespace Apsoil
                         double pawcForLayer = (xDUL[i] - xCLL[i]) * thickness[i];
                         distance += Math.Abs(pawc[i] - pawcForLayer);
                     }
+
+                    if (gravAtCLL)
+                    {
+
+                    }
                     return distance;
                 }
             }
+
+            /// <summary>Gets the distance this soil's CLL is from the grav values.</summary>
+            public double DistanceGravFromCLL
+            {
+                get
+                {
+                    if (thickness == null)
+                        throw new Exception("thickness is null");
+                    if (Soil.Water.Thickness == null)
+                        throw new Exception("Soil.Water.Thickness is null");
+                    double[] BD = Soil.Water.BD;
+                    if (BD == null)
+                        throw new Exception("BD is null");
+                    double[] CLL = Soil.LL(cropName);
+                    if (CLL == null)
+                        throw new Exception("CLL is null");
+                    double[] gravMapped = Soil.SWMapped(grav, thickness, Soil.Water.Thickness);
+                    if (gravMapped == null)
+                        throw new Exception("grav is null");
+
+                    double[] vol = MathUtility.Multiply(gravMapped, BD);
+                    if (vol == null)
+                        throw new Exception("volumetric is null.");
+
+                    double distance = 0;
+                    for (int i = 0; i < Soil.Water.Thickness.Length; i++)
+                        distance += Math.Abs(vol[i] - CLL[i]);
+
+                    return distance;
+                }
+            }
+
 
             /// <summary>Gets the pawc.</summary>
             public double PAWCDistance
@@ -986,6 +1056,22 @@ namespace Apsoil
             if (x.Distance == y.Distance)
                 return 0;
             else if (x.Distance < y.Distance)
+                return -1;
+            else
+                return 1;
+        }
+
+        /// <summary>
+        /// A Soil comparison method based on distance gravs are from CLL.
+        /// </summary>
+        /// <param name="x">LHS soil.</param>
+        /// <param name="y">RHS soil.</param>
+        /// <returns>1 if RHS > LHS</returns>
+        private int CompareUsingDistanceGravFromCLL(SoilAndPath x, SoilAndPath y)
+        {
+            if (x.DistanceGravFromCLL == y.DistanceGravFromCLL)
+                return 0;
+            else if (x.DistanceGravFromCLL < y.DistanceGravFromCLL)
                 return -1;
             else
                 return 1;

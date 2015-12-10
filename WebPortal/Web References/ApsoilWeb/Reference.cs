@@ -633,30 +633,34 @@ namespace Apsoil.ApsoilWeb {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/ClosestMatchingSoils", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public string[] ClosestMatchingSoils(double[] thickness, double[] pawc, string cropName, int numSoilsToReturn) {
+        public string[] ClosestMatchingSoils(double[] thickness, double[] pawc, double[] grav, string cropName, int numSoilsToReturn, bool gravsAtCLL) {
             object[] results = this.Invoke("ClosestMatchingSoils", new object[] {
                         thickness,
                         pawc,
+                        grav,
                         cropName,
-                        numSoilsToReturn});
+                        numSoilsToReturn,
+                        gravsAtCLL});
             return ((string[])(results[0]));
         }
         
         /// <remarks/>
-        public void ClosestMatchingSoilsAsync(double[] thickness, double[] pawc, string cropName, int numSoilsToReturn) {
-            this.ClosestMatchingSoilsAsync(thickness, pawc, cropName, numSoilsToReturn, null);
+        public void ClosestMatchingSoilsAsync(double[] thickness, double[] pawc, double[] grav, string cropName, int numSoilsToReturn, bool gravsAtCLL) {
+            this.ClosestMatchingSoilsAsync(thickness, pawc, grav, cropName, numSoilsToReturn, gravsAtCLL, null);
         }
         
         /// <remarks/>
-        public void ClosestMatchingSoilsAsync(double[] thickness, double[] pawc, string cropName, int numSoilsToReturn, object userState) {
+        public void ClosestMatchingSoilsAsync(double[] thickness, double[] pawc, double[] grav, string cropName, int numSoilsToReturn, bool gravsAtCLL, object userState) {
             if ((this.ClosestMatchingSoilsOperationCompleted == null)) {
                 this.ClosestMatchingSoilsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnClosestMatchingSoilsOperationCompleted);
             }
             this.InvokeAsync("ClosestMatchingSoils", new object[] {
                         thickness,
                         pawc,
+                        grav,
                         cropName,
-                        numSoilsToReturn}, this.ClosestMatchingSoilsOperationCompleted, userState);
+                        numSoilsToReturn,
+                        gravsAtCLL}, this.ClosestMatchingSoilsOperationCompleted, userState);
         }
         
         private void OnClosestMatchingSoilsOperationCompleted(object arg) {
@@ -1208,6 +1212,63 @@ namespace Apsoil.ApsoilWeb {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.apsim.info/")]
+    public partial class SoilCropInfo {
+        
+        private string nameField;
+        
+        private double[] llField;
+        
+        private double[] klField;
+        
+        private double[] xfField;
+        
+        /// <remarks/>
+        public string Name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public double[] LL {
+            get {
+                return this.llField;
+            }
+            set {
+                this.llField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public double[] KL {
+            get {
+                return this.klField;
+            }
+            set {
+                this.klField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public double[] XF {
+            get {
+                return this.xfField;
+            }
+            set {
+                this.xfField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.apsim.info/")]
     public partial class SoilAnalysisInfo {
         
         private string nameField;
@@ -1228,13 +1289,11 @@ namespace Apsoil.ApsoilWeb {
         
         private double[] alField;
         
-        private double[] wheatLLField;
-        
-        private double[] wheatXFField;
-        
         private double[] lL15Field;
         
         private double[] dULField;
+        
+        private SoilCropInfo[] cropsField;
         
         /// <remarks/>
         public string Name {
@@ -1327,26 +1386,6 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        public double[] WheatLL {
-            get {
-                return this.wheatLLField;
-            }
-            set {
-                this.wheatLLField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public double[] WheatXF {
-            get {
-                return this.wheatXFField;
-            }
-            set {
-                this.wheatXFField = value;
-            }
-        }
-        
-        /// <remarks/>
         public double[] LL15 {
             get {
                 return this.lL15Field;
@@ -1363,6 +1402,16 @@ namespace Apsoil.ApsoilWeb {
             }
             set {
                 this.dULField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public SoilCropInfo[] Crops {
+            get {
+                return this.cropsField;
+            }
+            set {
+                this.cropsField = value;
             }
         }
     }

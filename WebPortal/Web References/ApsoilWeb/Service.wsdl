@@ -130,15 +130,27 @@
           <s:element minOccurs="0" maxOccurs="1" name="Boron" type="tns:ArrayOfDouble" />
           <s:element minOccurs="0" maxOccurs="1" name="ESP" type="tns:ArrayOfDouble" />
           <s:element minOccurs="0" maxOccurs="1" name="AL" type="tns:ArrayOfDouble" />
-          <s:element minOccurs="0" maxOccurs="1" name="WheatLL" type="tns:ArrayOfDouble" />
-          <s:element minOccurs="0" maxOccurs="1" name="WheatXF" type="tns:ArrayOfDouble" />
           <s:element minOccurs="0" maxOccurs="1" name="LL15" type="tns:ArrayOfDouble" />
           <s:element minOccurs="0" maxOccurs="1" name="DUL" type="tns:ArrayOfDouble" />
+          <s:element minOccurs="0" maxOccurs="1" name="Crops" type="tns:ArrayOfSoilCropInfo" />
         </s:sequence>
       </s:complexType>
       <s:complexType name="ArrayOfDouble">
         <s:sequence>
           <s:element minOccurs="0" maxOccurs="unbounded" name="double" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfSoilCropInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SoilCropInfo" nillable="true" type="tns:SoilCropInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SoilCropInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LL" type="tns:ArrayOfDouble" />
+          <s:element minOccurs="0" maxOccurs="1" name="KL" type="tns:ArrayOfDouble" />
+          <s:element minOccurs="0" maxOccurs="1" name="XF" type="tns:ArrayOfDouble" />
         </s:sequence>
       </s:complexType>
       <s:element name="SoilTypes">
@@ -256,8 +268,10 @@
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="thickness" type="tns:ArrayOfDouble" />
             <s:element minOccurs="0" maxOccurs="1" name="pawc" type="tns:ArrayOfDouble" />
+            <s:element minOccurs="0" maxOccurs="1" name="grav" type="tns:ArrayOfDouble" />
             <s:element minOccurs="0" maxOccurs="1" name="cropName" type="s:string" />
             <s:element minOccurs="1" maxOccurs="1" name="numSoilsToReturn" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="gravsAtCLL" type="s:boolean" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -643,8 +657,10 @@
   <wsdl:message name="ClosestMatchingSoilsHttpGetIn">
     <wsdl:part name="thickness" type="s1:StringArray" />
     <wsdl:part name="pawc" type="s1:StringArray" />
+    <wsdl:part name="grav" type="s1:StringArray" />
     <wsdl:part name="cropName" type="s:string" />
     <wsdl:part name="numSoilsToReturn" type="s:string" />
+    <wsdl:part name="gravsAtCLL" type="s:string" />
   </wsdl:message>
   <wsdl:message name="ClosestMatchingSoilsHttpGetOut">
     <wsdl:part name="Body" element="tns:ArrayOfString" />
@@ -756,8 +772,10 @@
   <wsdl:message name="ClosestMatchingSoilsHttpPostIn">
     <wsdl:part name="thickness" type="s1:StringArray" />
     <wsdl:part name="pawc" type="s1:StringArray" />
+    <wsdl:part name="grav" type="s1:StringArray" />
     <wsdl:part name="cropName" type="s:string" />
     <wsdl:part name="numSoilsToReturn" type="s:string" />
+    <wsdl:part name="gravsAtCLL" type="s:string" />
   </wsdl:message>
   <wsdl:message name="ClosestMatchingSoilsHttpPostOut">
     <wsdl:part name="Body" element="tns:ArrayOfString" />
