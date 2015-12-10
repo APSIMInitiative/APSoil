@@ -91,6 +91,7 @@
     <Content Include="Download.html" />
     <Content Include="Excel.aspx" />
     <Content Include="FindClosest.aspx" />
+    <Content Include="GetSoil.aspx" />
     <Content Include="shovel.png" />
     <Content Include="ShowFileContents.aspx" />
     <Content Include="SoilChart.aspx" />
@@ -146,6 +147,10 @@
     </Compile>
     <Compile Include="FindClosest.aspx.designer.cs">
       <DependentUpon>FindClosest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GetSoil.aspx.cs">
+      <DependentUpon>GetSoil.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

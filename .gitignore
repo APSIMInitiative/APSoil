@@ -12,3 +12,5 @@ WebPortal/obj/
 *.bak
 WebService/obj/
 *.user
+WebPortal/bin/
+WebService/bin/
