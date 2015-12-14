@@ -548,16 +548,20 @@ namespace Apsoil
             List<SoilAndPath> allSoils = new List<SoilAndPath>();
             foreach (string path in SoilNames())
             {
-                try
+                if (!path.Contains("/UserSoils/"))
                 {
-                    SoilAndPath soilAndPath = new SoilAndPath(Soil.Create(SoilXML(path)),
-                                                              path,
-                                                              thickness, pawc, cropName,
-                                                              grav, gravsAtCLL);
-                    allSoils.Add(soilAndPath);
-                }
-                catch (Exception err)
-                {
+                    try
+                    {
+                        SoilAndPath soilAndPath = new SoilAndPath(Soil.Create(SoilXML(path)),
+                                                                  path,
+                                                                  thickness, pawc, cropName,
+                                                                  grav, gravsAtCLL);
+
+                        allSoils.Add(soilAndPath);
+                    }
+                    catch (Exception err)
+                    {
+                    }
                 }
             }
             // Remove soils that don't have our crop.
@@ -570,8 +574,8 @@ namespace Apsoil
                 allSoils.Sort(CompareUsingPAWC);
 
                 // Only keep top 20 soils.
-                if (allSoils.Count >= 20)
-                    allSoils.RemoveRange(20, allSoils.Count - 20);
+                if (allSoils.Count >= 50)
+                    allSoils.RemoveRange(50, allSoils.Count - 50);
 
                 allSoils.Sort(CompareUsingDistanceGravFromCLL);
             }
@@ -1037,9 +1041,9 @@ namespace Apsoil
         /// <returns>1 if RHS > LHS</returns>
         private int CompareUsingPAWC(SoilAndPath x, SoilAndPath y)
         {
-            if (x.PAWCDistance == y.PAWCDistance)
+            if (x.Distance == y.Distance)
                 return 0;
-            else if (x.PAWCDistance < y.PAWCDistance)
+            else if (x.Distance < y.Distance)
                 return -1;
             else
                 return 1;
