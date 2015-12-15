@@ -548,7 +548,7 @@ namespace Apsoil
             List<SoilAndPath> allSoils = new List<SoilAndPath>();
             foreach (string path in SoilNames())
             {
-                if (!path.Contains("/UserSoils/"))
+                if (path.Contains("/Australia/"))
                 {
                     try
                     {
