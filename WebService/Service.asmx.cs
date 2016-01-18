@@ -8,7 +8,6 @@ using System.Web.Services.Protocols;
 using System.Data.SqlClient;
 using System.Xml;
 using System.Linq;
-
 using Steema.TeeChart.Styles;
 using System.IO;
 using System.Drawing;
@@ -559,7 +558,7 @@ namespace Apsoil
 
                         allSoils.Add(soilAndPath);
                     }
-                    catch (Exception err)
+                    catch (Exception)
                     {
                     }
                 }
@@ -1087,7 +1086,7 @@ namespace Apsoil
         /// </summary>
         private SqlConnection Open()
         {
-            string ConnectionString = File.ReadAllText(@"\\IIS-EXT1\APSIM-Sites\dbConnect.txt") + ";Database=APSoil";
+            string ConnectionString = File.ReadAllText(@"D:\Websites\dbConnect.txt") + ";Database=APSoil";
 
             SqlConnection Connection = new SqlConnection(ConnectionString);
             Connection.Open();
