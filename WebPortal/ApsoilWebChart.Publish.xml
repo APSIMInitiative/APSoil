@@ -1,0 +1,8 @@
+<publishData>
+  <publishTarget publishUrl="ftp://www.apsim.info/ApsoilWebService/">
+    <file relUrl="Default.aspx" publishTime="03/17/2011 15:30:05" />
+    <file relUrl="bin/ApsoilWebChart.pdb" publishTime="03/17/2011 15:30:05" />
+    <file relUrl="bin/ApsoilWebChart.dll" publishTime="03/17/2011 15:30:05" />
+    <file relUrl="Web.config" publishTime="03/17/2011 15:07:35" />
+  </publishTarget>
+</publishData>
