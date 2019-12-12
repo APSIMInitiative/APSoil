@@ -12,7 +12,7 @@
     
         <asp:Panel ID="Panel1" runat="server">
             <asp:Label ID="Label2" runat="server" Text="Thickness (cm)"></asp:Label>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PAWC (mm)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Grav. water (mm/mm)</asp:Panel>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PAWC (mm)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Grav. water (mm/mm)</asp:Panel>
         <asp:TextBox ID="Thickness1" runat="server"></asp:TextBox>
         <asp:TextBox ID="PAWC1" runat="server"></asp:TextBox>
         <asp:TextBox ID="Grav1" runat="server"></asp:TextBox>
@@ -56,7 +56,9 @@
         <asp:CheckBox ID="CheckBox1" runat="server" Text="Gravimetrics are at lower limit?" />
         <br />
         <asp:Button ID="Button1" runat="server" Text="Find" onclick="OnFindClick" />
-        
+        <p>
+        <asp:Button ID="Button2" runat="server" Text="Find where gravs are at airdry in top 2 layers and at CLL at depth." onclick="OnFindClick2" />
+        </p>
     </div>
     </form>
 </body>

@@ -19,6 +19,21 @@ namespace Apsoil
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void OnFindClick(object sender, EventArgs e)
         {
+            DoSearch(withPAWC:true);
+        }
+
+
+        /// <summary>Handles the Click event of the Find button2 control.</summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected void OnFindClick2(object sender, EventArgs e)
+        {
+            DoSearch(withPAWC: false);
+        }
+
+        /// <summary>Do a search for soils and display them.</summary>
+        private void DoSearch(bool withPAWC)
+        {
             using (ApsoilWeb.Service SoilsDB = new Apsoil.ApsoilWeb.Service())
             {
                 List<double> thickness = new List<double>();
@@ -36,7 +51,11 @@ namespace Apsoil
                 GetThicknessAndPAWC(Thickness9, PAWC9, Grav9, ref thickness, ref PAWC, ref grav);
                 GetThicknessAndPAWC(Thickness10, PAWC10, Grav10, ref thickness, ref PAWC, ref grav);
 
-                string[] closestSoils = SoilsDB.ClosestMatchingSoils(thickness.ToArray(), PAWC.ToArray(), grav.ToArray(), "Wheat", 10, CheckBox1.Checked);
+                string[] closestSoils;
+                if (withPAWC)
+                    closestSoils = SoilsDB.ClosestMatchingSoils(thickness.ToArray(), PAWC.ToArray(), grav.ToArray(), "Wheat", 10, CheckBox1.Checked, true);
+                else
+                    closestSoils = SoilsDB.ClosestMatchingSoils(thickness.ToArray(), null, grav.ToArray(), "Wheat", 10, CheckBox1.Checked, true);
 
                 string soilNames = string.Empty;
                 foreach (string path in closestSoils)
@@ -58,10 +77,11 @@ namespace Apsoil
         /// <param name="PAWC">The pawc list.</param>
         private void GetThicknessAndPAWC(TextBox thicknessBox, TextBox pawcBox, TextBox gravBox, ref List<double> thickness, ref List<double> PAWC, ref List<double> grav)
         {
-            if (thicknessBox.Text != string.Empty && pawcBox.Text != string.Empty)
+            if (thicknessBox.Text != string.Empty)
             {
                 thickness.Add(Convert.ToDouble(thicknessBox.Text) * 10);
-                PAWC.Add(Convert.ToDouble(pawcBox.Text));
+                if (pawcBox.Text != string.Empty && pawcBox.Text != null)
+                    PAWC.Add(Convert.ToDouble(pawcBox.Text));
                 if (gravBox.Text != string.Empty && gravBox.Text != null)
                     grav.Add(Convert.ToDouble(gravBox.Text));
             }

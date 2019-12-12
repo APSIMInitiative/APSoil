@@ -14,3 +14,8 @@ WebService/obj/
 *.user
 WebPortal/bin/
 WebService/bin/
+*.manifest
+Test/bin
+Test/obj
+WebService/Properties/PublishProfiles
+WebService/Properties/PublishProfiles
