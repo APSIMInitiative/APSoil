@@ -26,7 +26,7 @@ namespace Apsoil.ApsoilWeb {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Web.Services.WebServiceBindingAttribute(Name="ServiceSoap", Namespace="http://www.apsim.info/")]
+    [System.Web.Services.WebServiceBindingAttribute(Name="ServiceSoap", Namespace="http://apsimdev.apsim.info/")]
     public partial class Service : System.Web.Services.Protocols.SoapHttpClientProtocol {
         
         private System.Threading.SendOrPostCallback SoilNamesOperationCompleted;
@@ -178,7 +178,7 @@ namespace Apsoil.ApsoilWeb {
         public event SoilChartPNGFromXMLCompletedEventHandler SoilChartPNGFromXMLCompleted;
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/SoilNames", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/SoilNames", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public string[] SoilNames() {
             object[] results = this.Invoke("SoilNames", new object[0]);
             return ((string[])(results[0]));
@@ -205,7 +205,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/AllSoilNames", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/AllSoilNames", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public string[] AllSoilNames(bool IncludeUserSoils) {
             object[] results = this.Invoke("AllSoilNames", new object[] {
                         IncludeUserSoils});
@@ -234,7 +234,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/UpdateAllSoils", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/UpdateAllSoils", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void UpdateAllSoils(string Contents) {
             this.Invoke("UpdateAllSoils", new object[] {
                         Contents});
@@ -262,7 +262,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/UpdateSoil", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/UpdateSoil", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void UpdateSoil(string soilPath, string contents) {
             this.Invoke("UpdateSoil", new object[] {
                         soilPath,
@@ -292,7 +292,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/SoilXML", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/SoilXML", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public string SoilXML(string Name) {
             object[] results = this.Invoke("SoilXML", new object[] {
                         Name});
@@ -321,7 +321,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/Delete", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/Delete", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public void Delete(string Name) {
             this.Invoke("Delete", new object[] {
                         Name});
@@ -349,7 +349,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/GetSoilInfo", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/GetSoilInfo", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public SoilInfo GetSoilInfo(string SoilName) {
             object[] results = this.Invoke("GetSoilInfo", new object[] {
                         SoilName});
@@ -378,7 +378,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/GetSoilAnalysisInfo", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/GetSoilAnalysisInfo", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public SoilAnalysisInfo GetSoilAnalysisInfo(string SoilName) {
             object[] results = this.Invoke("GetSoilAnalysisInfo", new object[] {
                         SoilName});
@@ -407,7 +407,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/SoilTypes", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/SoilTypes", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public string[] SoilTypes() {
             object[] results = this.Invoke("SoilTypes", new object[0]);
             return ((string[])(results[0]));
@@ -434,7 +434,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/PAW", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/PAW", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public double PAW(string SoilName, double[] Thickness, double[] SW, bool IsGravimetric, string CropName) {
             object[] results = this.Invoke("PAW", new object[] {
                         SoilName,
@@ -471,7 +471,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/PAWC", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/PAWC", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public double PAWC(string SoilName, string CropName) {
             object[] results = this.Invoke("PAWC", new object[] {
                         SoilName,
@@ -502,7 +502,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/ConvertSoilSampleXML", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/ConvertSoilSampleXML", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public string ConvertSoilSampleXML(string SoilSampleXML) {
             object[] results = this.Invoke("ConvertSoilSampleXML", new object[] {
                         SoilSampleXML});
@@ -531,7 +531,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/SoilChartPNG", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/SoilChartPNG", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute(DataType="base64Binary")]
         public byte[] SoilChartPNG(string SoilName) {
             object[] results = this.Invoke("SoilChartPNG", new object[] {
@@ -561,7 +561,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/SoilChartWithSamplePNG", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/SoilChartWithSamplePNG", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute(DataType="base64Binary")]
         public byte[] SoilChartWithSamplePNG(string SoilName, double[] Thickness, double[] SW, bool IsGravimetric) {
             object[] results = this.Invoke("SoilChartWithSamplePNG", new object[] {
@@ -597,7 +597,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/SearchSoilsReturnInfo", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/SearchSoilsReturnInfo", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public SoilInfo[] SearchSoilsReturnInfo(double Latitude, double Longitude, double Radius, string SoilType) {
             object[] results = this.Invoke("SearchSoilsReturnInfo", new object[] {
                         Latitude,
@@ -632,7 +632,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/ClosestMatchingSoils", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/ClosestMatchingSoils", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public string[] ClosestMatchingSoils(double[] thickness, double[] pawc, double[] sw, string cropName, int numSoilsToReturn, bool swAtCLL, bool swIsGrav) {
             object[] results = this.Invoke("ClosestMatchingSoils", new object[] {
                         thickness,
@@ -673,7 +673,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/SoilAsJson", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/SoilAsJson", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public string SoilAsJson(string Name) {
             object[] results = this.Invoke("SoilAsJson", new object[] {
                         Name});
@@ -702,7 +702,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/UpdateUserSoil", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/UpdateUserSoil", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public bool UpdateUserSoil(JsonSoilParam Params) {
             object[] results = this.Invoke("UpdateUserSoil", new object[] {
                         Params});
@@ -731,7 +731,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/PAWCJson", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/PAWCJson", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public PAWCByCrop[] PAWCJson(PAWCJsonParams Params) {
             object[] results = this.Invoke("PAWCJson", new object[] {
                         Params});
@@ -760,7 +760,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/SearchSoils", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/SearchSoils", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public SoilInfo[] SearchSoils(SearchSoilsParams Params) {
             object[] results = this.Invoke("SearchSoils", new object[] {
                         Params});
@@ -789,7 +789,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/AllAustralianSoils", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/AllAustralianSoils", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public SoilBasicInfo[] AllAustralianSoils(SearchSoilsParams Params) {
             object[] results = this.Invoke("AllAustralianSoils", new object[] {
                         Params});
@@ -818,7 +818,7 @@ namespace Apsoil.ApsoilWeb {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.apsim.info/SoilChartPNGFromXML", RequestNamespace="http://www.apsim.info/", ResponseNamespace="http://www.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://apsimdev.apsim.info/SoilChartPNGFromXML", RequestNamespace="http://apsimdev.apsim.info/", ResponseNamespace="http://apsimdev.apsim.info/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute(DataType="base64Binary")]
         public byte[] SoilChartPNGFromXML(string XML) {
             object[] results = this.Invoke("SoilChartPNGFromXML", new object[] {
@@ -871,7 +871,7 @@ namespace Apsoil.ApsoilWeb {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.apsim.info/")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://apsimdev.apsim.info/")]
     public partial class SoilInfo {
         
         private string nameField;
@@ -1012,7 +1012,7 @@ namespace Apsoil.ApsoilWeb {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.apsim.info/")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://apsimdev.apsim.info/")]
     public partial class SoilBasicInfo {
         
         private string nameField;
@@ -1057,7 +1057,7 @@ namespace Apsoil.ApsoilWeb {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.apsim.info/")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://apsimdev.apsim.info/")]
     public partial class SearchSoilsParams {
         
         private double latitudeField;
@@ -1126,7 +1126,7 @@ namespace Apsoil.ApsoilWeb {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.apsim.info/")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://apsimdev.apsim.info/")]
     public partial class PAWCByCrop {
         
         private string cropNameField;
@@ -1171,7 +1171,7 @@ namespace Apsoil.ApsoilWeb {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.apsim.info/")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://apsimdev.apsim.info/")]
     public partial class PAWCJsonParams {
         
         private string jSonSoilField;
@@ -1192,7 +1192,7 @@ namespace Apsoil.ApsoilWeb {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.apsim.info/")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://apsimdev.apsim.info/")]
     public partial class JsonSoilParam {
         
         private string jSonSoilField;
@@ -1213,7 +1213,7 @@ namespace Apsoil.ApsoilWeb {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.apsim.info/")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://apsimdev.apsim.info/")]
     public partial class SoilCropInfo {
         
         private string nameField;
@@ -1270,7 +1270,7 @@ namespace Apsoil.ApsoilWeb {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.apsim.info/")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://apsimdev.apsim.info/")]
     public partial class SoilAnalysisInfo {
         
         private string nameField;

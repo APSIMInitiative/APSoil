@@ -25,6 +25,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -98,7 +99,7 @@
     <Content Include="UploadApsoilSoilsFile.aspx" />
     <Content Include="Apsoil.aspx" />
     <Content Include="packages.config" />
-    <None Include="Properties\PublishProfiles\Profile1.pubxml" />
+    <None Include="Properties\PublishProfiles\ApsoilWebPortal.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -202,10 +203,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="https://www.apsim.info/ApsoilWebService/Service.asmx">
+    <WebReferenceUrl Include="https://apsimdev.apsim.info/ApsoilWebService/Service.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\ApsoilWeb\</RelPath>
-      <UpdateFromURL>https://www.apsim.info/ApsoilWebService/Service.asmx</UpdateFromURL>
+      <UpdateFromURL>https://apsimdev.apsim.info/ApsoilWebService/Service.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

@@ -167,7 +167,7 @@ namespace Apsoil
 
                 byte[] bytes = Encoding.Default.GetBytes(json);
 
-                HttpWebRequest WebReq = (HttpWebRequest)WebRequest.Create("https://www.apsim.info/ApsoilWeb/SoilChart.aspx");
+                HttpWebRequest WebReq = (HttpWebRequest)WebRequest.Create("https://apsimdev.apsim.info/ApsoilWeb/SoilChart.aspx");
                 //Our method is post, otherwise the buffer (postvars) would be useless
                 WebReq.Method = "POST";
                 //We use form contentType, for the postvars.

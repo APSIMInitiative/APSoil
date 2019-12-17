@@ -16,7 +16,7 @@ using System.Collections.Generic;
 using ApsimFile;
 
 // To test the Google Earth KML extract put this into a browser:
-// http://www.apsim.info/ApsoilWeb/ApsoilKML.aspx?Mode=1
+// http://apsimdev.apsim.info/ApsoilWeb/ApsoilKML.aspx?Mode=1
 
 
 namespace Apsoil
@@ -94,7 +94,7 @@ namespace Apsoil
             KmlContent.Documents.Add(KmlDoc);
 
             KML_22_Beta1.Style APSRUIcon = new KML_22_Beta1.Style();
-            APSRUIcon.IconStyle.Icon.Href.Text = "http://www.apsim.info/ApsoilWeb/shovel.png";
+            APSRUIcon.IconStyle.Icon.Href.Text = "http://apsimdev.apsim.info/ApsoilWeb/shovel.png";
             APSRUIcon.IconStyle.Scale.Value = 0.7;
             APSRUIcon.LabelStyle.Scale.Value = 0.7;
             APSRUIcon.id = "APSRUIconID";

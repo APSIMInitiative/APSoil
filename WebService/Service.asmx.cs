@@ -26,7 +26,7 @@ namespace Apsoil
     /// <summary>
     /// Summary description for Service1
     /// </summary>
-    [WebService(Namespace = "http://www.apsim.info/")]
+    [WebService(Namespace = "http://apsimdev.apsim.info/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [ToolboxItem(false)]
     [ScriptService]
