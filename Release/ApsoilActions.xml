@@ -41,7 +41,7 @@
       </FileOpenXLS> 
       <FileOpenWeb>
          <text>Open latest version from web</text>
-         <Description>Open the latest version of the database from www.apsim.info</Description>
+         <Description>Open the latest version of the database from apsimdev.apsim.info</Description>
          <SmallIcon>%apsim%\client_network16.png</SmallIcon>
          <OnInvoke>
             <call>

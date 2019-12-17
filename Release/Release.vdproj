@@ -871,7 +871,7 @@
             "PromptEnabled" = "11:TRUE"
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
-            "ComponentsUrl" = "8:http://www.apsim.info/ProductDownload/Files/ApsimInstall/v72/"
+            "ComponentsUrl" = "8:http://apsimdev.apsim.info/ProductDownload/Files/ApsimInstall/v72/"
                 "Items"
                 {
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0"
@@ -908,7 +908,7 @@
             "PromptEnabled" = "11:TRUE"
             "PrerequisitesLocation" = "2:3"
             "Url" = "8:"
-            "ComponentsUrl" = "8:http://www.apsim.info/ProductDownload/Files/ApsimInstall/v72/"
+            "ComponentsUrl" = "8:http://apsimdev.apsim.info/ProductDownload/Files/ApsimInstall/v72/"
                 "Items"
                 {
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.2.0"
@@ -946,7 +946,7 @@
                 "Message" = "8:[VSDNETMSG]"
                 "FrameworkVersion" = "8:2.0.50727     "
                 "AllowLaterVersions" = "11:FALSE"
-                "InstallUrl" = "8:http://www.apsim.info/ProductDownload/Files/ApsimInstall/v72/"
+                "InstallUrl" = "8:http://apsimdev.apsim.info/ProductDownload/Files/ApsimInstall/v72/"
                 }
             }
         }
@@ -2892,7 +2892,7 @@
         "ARPCONTACT" = "8:CSIRO"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:APSoil"
-        "ARPURLINFOABOUT" = "8:www.apsim.info"
+        "ARPURLINFOABOUT" = "8:apsimdev.apsim.info"
         "ARPPRODUCTICON" = "8:"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
