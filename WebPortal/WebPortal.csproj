@@ -99,7 +99,7 @@
     <Content Include="UploadApsoilSoilsFile.aspx" />
     <Content Include="Apsoil.aspx" />
     <Content Include="packages.config" />
-    <None Include="Properties\PublishProfiles\ApsoilWebPortal.pubxml" />
+    <None Include="Properties\PublishProfiles\ApsoilWeb.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
