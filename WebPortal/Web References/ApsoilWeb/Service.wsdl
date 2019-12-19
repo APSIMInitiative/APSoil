@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://apsimdev.apsim.info/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s1="http://apsimdev.apsim.info/AbstractTypes" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://apsimdev.apsim.info/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.apsim.info/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s1="http://www.apsim.info/AbstractTypes" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://www.apsim.info/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
-    <s:schema elementFormDefault="qualified" targetNamespace="http://apsimdev.apsim.info/">
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.apsim.info/">
       <s:element name="SoilNames">
         <s:complexType />
       </s:element>
@@ -418,7 +418,7 @@
       <s:element name="base64Binary" nillable="true" type="s:base64Binary" />
       <s:element name="ArrayOfSoilInfo" nillable="true" type="tns:ArrayOfSoilInfo" />
     </s:schema>
-    <s:schema targetNamespace="http://apsimdev.apsim.info/AbstractTypes">
+    <s:schema targetNamespace="http://www.apsim.info/AbstractTypes">
       <s:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
       <s:complexType name="StringArray">
         <s:complexContent mixed="false">
@@ -1036,7 +1036,7 @@
   <wsdl:binding name="ServiceSoap" type="tns:ServiceSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="SoilNames">
-      <soap:operation soapAction="http://apsimdev.apsim.info/SoilNames" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/SoilNames" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1045,7 +1045,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="AllSoilNames">
-      <soap:operation soapAction="http://apsimdev.apsim.info/AllSoilNames" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/AllSoilNames" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1054,7 +1054,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="UpdateAllSoils">
-      <soap:operation soapAction="http://apsimdev.apsim.info/UpdateAllSoils" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/UpdateAllSoils" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1063,7 +1063,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="UpdateSoil">
-      <soap:operation soapAction="http://apsimdev.apsim.info/UpdateSoil" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/UpdateSoil" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1072,7 +1072,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SoilXML">
-      <soap:operation soapAction="http://apsimdev.apsim.info/SoilXML" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/SoilXML" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1081,7 +1081,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="Delete">
-      <soap:operation soapAction="http://apsimdev.apsim.info/Delete" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/Delete" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1090,7 +1090,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetSoilInfo">
-      <soap:operation soapAction="http://apsimdev.apsim.info/GetSoilInfo" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/GetSoilInfo" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1099,7 +1099,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetSoilAnalysisInfo">
-      <soap:operation soapAction="http://apsimdev.apsim.info/GetSoilAnalysisInfo" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/GetSoilAnalysisInfo" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1108,7 +1108,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SoilTypes">
-      <soap:operation soapAction="http://apsimdev.apsim.info/SoilTypes" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/SoilTypes" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1117,7 +1117,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="PAW">
-      <soap:operation soapAction="http://apsimdev.apsim.info/PAW" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/PAW" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1126,7 +1126,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="PAWC">
-      <soap:operation soapAction="http://apsimdev.apsim.info/PAWC" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/PAWC" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1135,7 +1135,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="ConvertSoilSampleXML">
-      <soap:operation soapAction="http://apsimdev.apsim.info/ConvertSoilSampleXML" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/ConvertSoilSampleXML" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1144,7 +1144,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SoilChartPNG">
-      <soap:operation soapAction="http://apsimdev.apsim.info/SoilChartPNG" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/SoilChartPNG" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1153,7 +1153,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SoilChartWithSamplePNG">
-      <soap:operation soapAction="http://apsimdev.apsim.info/SoilChartWithSamplePNG" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/SoilChartWithSamplePNG" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1162,7 +1162,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SearchSoilsReturnInfo">
-      <soap:operation soapAction="http://apsimdev.apsim.info/SearchSoilsReturnInfo" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/SearchSoilsReturnInfo" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1171,7 +1171,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="ClosestMatchingSoils">
-      <soap:operation soapAction="http://apsimdev.apsim.info/ClosestMatchingSoils" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/ClosestMatchingSoils" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1180,7 +1180,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SoilAsJson">
-      <soap:operation soapAction="http://apsimdev.apsim.info/SoilAsJson" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/SoilAsJson" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1189,7 +1189,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="UpdateUserSoil">
-      <soap:operation soapAction="http://apsimdev.apsim.info/UpdateUserSoil" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/UpdateUserSoil" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1198,7 +1198,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="PAWCJson">
-      <soap:operation soapAction="http://apsimdev.apsim.info/PAWCJson" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/PAWCJson" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1207,7 +1207,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SearchSoils">
-      <soap:operation soapAction="http://apsimdev.apsim.info/SearchSoils" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/SearchSoils" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1216,7 +1216,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="AllAustralianSoils">
-      <soap:operation soapAction="http://apsimdev.apsim.info/AllAustralianSoils" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/AllAustralianSoils" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1225,7 +1225,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SoilChartPNGFromXML">
-      <soap:operation soapAction="http://apsimdev.apsim.info/SoilChartPNGFromXML" style="document" />
+      <soap:operation soapAction="http://www.apsim.info/SoilChartPNGFromXML" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1237,7 +1237,7 @@
   <wsdl:binding name="ServiceSoap12" type="tns:ServiceSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="SoilNames">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/SoilNames" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/SoilNames" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1246,7 +1246,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="AllSoilNames">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/AllSoilNames" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/AllSoilNames" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1255,7 +1255,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="UpdateAllSoils">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/UpdateAllSoils" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/UpdateAllSoils" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1264,7 +1264,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="UpdateSoil">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/UpdateSoil" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/UpdateSoil" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1273,7 +1273,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SoilXML">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/SoilXML" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/SoilXML" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1282,7 +1282,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="Delete">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/Delete" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/Delete" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1291,7 +1291,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetSoilInfo">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/GetSoilInfo" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/GetSoilInfo" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1300,7 +1300,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetSoilAnalysisInfo">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/GetSoilAnalysisInfo" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/GetSoilAnalysisInfo" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1309,7 +1309,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SoilTypes">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/SoilTypes" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/SoilTypes" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1318,7 +1318,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="PAW">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/PAW" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/PAW" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1327,7 +1327,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="PAWC">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/PAWC" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/PAWC" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1336,7 +1336,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="ConvertSoilSampleXML">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/ConvertSoilSampleXML" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/ConvertSoilSampleXML" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1345,7 +1345,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SoilChartPNG">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/SoilChartPNG" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/SoilChartPNG" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1354,7 +1354,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SoilChartWithSamplePNG">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/SoilChartWithSamplePNG" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/SoilChartWithSamplePNG" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1363,7 +1363,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SearchSoilsReturnInfo">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/SearchSoilsReturnInfo" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/SearchSoilsReturnInfo" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1372,7 +1372,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="ClosestMatchingSoils">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/ClosestMatchingSoils" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/ClosestMatchingSoils" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1381,7 +1381,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SoilAsJson">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/SoilAsJson" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/SoilAsJson" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1390,7 +1390,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="UpdateUserSoil">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/UpdateUserSoil" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/UpdateUserSoil" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1399,7 +1399,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="PAWCJson">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/PAWCJson" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/PAWCJson" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1408,7 +1408,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SearchSoils">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/SearchSoils" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/SearchSoils" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1417,7 +1417,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="AllAustralianSoils">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/AllAustralianSoils" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/AllAustralianSoils" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1426,7 +1426,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SoilChartPNGFromXML">
-      <soap12:operation soapAction="http://apsimdev.apsim.info/SoilChartPNGFromXML" style="document" />
+      <soap12:operation soapAction="http://www.apsim.info/SoilChartPNGFromXML" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1755,16 +1755,16 @@
   </wsdl:binding>
   <wsdl:service name="Service">
     <wsdl:port name="ServiceSoap" binding="tns:ServiceSoap">
-      <soap:address location="https://apsimdev.apsim.info/ApsoilWebService/Service.asmx" />
+      <soap:address location="https://www.apsim.info/ApsoilWebService/Service.asmx" />
     </wsdl:port>
     <wsdl:port name="ServiceSoap12" binding="tns:ServiceSoap12">
-      <soap12:address location="https://apsimdev.apsim.info/ApsoilWebService/Service.asmx" />
+      <soap12:address location="https://www.apsim.info/ApsoilWebService/Service.asmx" />
     </wsdl:port>
     <wsdl:port name="ServiceHttpGet" binding="tns:ServiceHttpGet">
-      <http:address location="https://apsimdev.apsim.info/ApsoilWebService/Service.asmx" />
+      <http:address location="https://www.apsim.info/ApsoilWebService/Service.asmx" />
     </wsdl:port>
     <wsdl:port name="ServiceHttpPost" binding="tns:ServiceHttpPost">
-      <http:address location="https://apsimdev.apsim.info/ApsoilWebService/Service.asmx" />
+      <http:address location="https://www.apsim.info/ApsoilWebService/Service.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
