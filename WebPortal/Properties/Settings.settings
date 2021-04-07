@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="Apsoil_ApsoilWeb_Service" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">https://apsimdev.apsim.info/ApsoilWebService/Service.asmx</Value>
+      <Value Profile="(Default)">https://www.apsim.info/ApsoilWebService/Service.asmx</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -24,6 +24,12 @@ namespace Apsoil
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void Page_Load(object sender, EventArgs e)
         {
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                   | SecurityProtocolType.Tls11
+                   | SecurityProtocolType.Tls12
+                   | SecurityProtocolType.Ssl3;
+
             using (ApsoilWeb.Service soilsDB = new Apsoil.ApsoilWeb.Service())
             {
                 List<string> allSoils = new List<string>();

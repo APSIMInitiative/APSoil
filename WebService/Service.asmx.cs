@@ -500,7 +500,7 @@ namespace Apsoil
                             double SoilDistance = distance(Latitude, Longitude, Lat, Long, 'K');
                             if (SoilDistance < Radius)
                             {
-                                if (SoilType == null || SoilType.ToLower() == XmlHelper.Value(Doc.DocumentElement, "SoilType").ToLower())
+                                if (string.IsNullOrEmpty(SoilType) || SoilType.ToLower() == XmlHelper.Value(Doc.DocumentElement, "SoilType").ToLower())
                                 {
                                     SoilInfo NewSoil = new SoilInfo();
                                     NewSoil.Name = Reader["Name"].ToString();
