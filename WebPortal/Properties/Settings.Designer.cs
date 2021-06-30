@@ -26,7 +26,7 @@ namespace Apsoil.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://www.apsim.info/ApsoilWebService/Service.asmx")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://apsimdev.apsim.info/ApsoilWebService/Service.asmx")]
         public string Apsoil_ApsoilWeb_Service {
             get {
                 return ((string)(this["Apsoil_ApsoilWeb_Service"]));

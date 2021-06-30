@@ -11,7 +11,7 @@
     <div>
     
        <asp:Label ID="Label2" runat="server" 
-          Text="This form allows you to upload soils to apsimdev.apsim.info. They will then be available in Google Earth."></asp:Label>
+          Text="This form allows you to upload soils to apsimdev.apsim.info."></asp:Label>
     
     </div>
     <asp:Label ID="Label1" runat="server" 

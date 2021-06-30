@@ -206,7 +206,7 @@ namespace Apsoil
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void OnUploadSoilClick(object sender, EventArgs e)
         {
-            Response.Redirect("UploadApsoilSoilsFile.aspx?SoilPath=" + ListBox.SelectedValue);
+            Response.Redirect("UploadApsoilSoilsFile.aspx?UserSoils=true");
         }
 
         /// <summary>Handles the TextChanged event of the FilterTextBox control.</summary>

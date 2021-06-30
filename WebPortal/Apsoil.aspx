@@ -50,7 +50,7 @@
     <asp:Button ID="Button7" runat="server" onclick="OnSoilChart" 
        Text="Soil chart" style="margin-bottom: 0px" />
     <asp:Button ID="Button12" runat="server" onclick="OnUploadSoilClick" 
-       Text="Update selected soil from .soils file" />
+       Text="Upload user soils" />
     <asp:Button ID="Button15" runat="server" onclick="OnSoilChartFromJson" 
        Text="Soil chart from JSON" style="margin-bottom: 0px" />
     <asp:Button ID="Button16" runat="server" onclick="OnCheckSoilsClick" 

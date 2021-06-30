@@ -13,6 +13,8 @@ using System.Xml;
 using System.IO;
 using System.Web.UI.MobileControls;
 using System.Collections.Generic;
+using CSGeneral;
+using Newtonsoft.Json;
 
 namespace Apsoil
 {
@@ -23,17 +25,18 @@ namespace Apsoil
     {
         /// <summary>The soil path to upload a new XML for.</summary>
         private string pathToOverride;
+        private bool userSoil = false;
 
         /// <summary>Handles the Load event of the Page control.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Request.QueryString["SoilPath"] != null)
+            if (Request.QueryString["UserSoils"] != null)
             {
-                // User wants to override a single soil.
-                pathToOverride = Request.QueryString["SoilPath"].ToString();
-                Label2.Text = "You are about to overide the soil: " + pathToOverride + " with the soil you upload.";
+                // User wants to upload user soils. Change label to reflect this.
+                Label2.Text = "This form allows you to upload USER soils to apsimdev.apsim.info.";
+                userSoil = true;
             }
         }
 
@@ -47,15 +50,24 @@ namespace Apsoil
                 StreamReader In = new StreamReader(File1.FileContent);
                 string contents = In.ReadToEnd();
 
-                if (pathToOverride == null)
+                if (!userSoil)
                 {
                     // Insert all soils into database.
                     Soils.UpdateAllSoils(contents);
                 }
                 else
                 {
-                    // Update a single soil.
-                    Soils.UpdateSoil(pathToOverride, contents);
+                    // Update a user soil.
+                    XmlDocument doc = new XmlDocument();
+                    doc.LoadXml(contents);
+                    foreach (var soil in XmlHelper.ChildNodes(doc.DocumentElement, "Soil"))
+                    {
+                        var soilParams = new ApsoilWeb.JsonSoilParam()
+                        {
+                            JSonSoil = JsonConvert.SerializeXmlNode(soil)
+                        };
+                        var ok = Soils.UpdateUserSoil(soilParams);
+                    }
                 }
 
                 string[] AllSoils = Soils.SoilNames();
