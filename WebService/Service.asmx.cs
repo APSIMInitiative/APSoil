@@ -20,6 +20,7 @@ using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Xml.Serialization;
+using ModelAttributes;
 
 namespace Apsoil
 {
@@ -695,19 +696,16 @@ namespace Apsoil
         }
 
         /// <summary>
-        /// Update all soils to the specified .soils content. Called from iPAD soil app.
+        /// Update logic shared for both old UpdateUserSoil and new UpdateUserSoilXML
         /// </summary>
-        [WebMethod]
-        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public bool UpdateUserSoil(JsonSoilParam Params)
+        /// <param name="soilDoc"></param>
+        /// <returns>True if the update succeeded</returns>
+        private bool UpdateUserSoilFromXmlDocument(XmlDocument soilDoc)
         {
             SqlConnection Connection = Open();
             try
             {
-                // Load in the XML
-                XmlDocument SoilDoc = JsonConvert.DeserializeXmlNode(Params.JSonSoil);
-
-                string Name = "/UserSoils/" + XmlHelper.Name(SoilDoc.DocumentElement);
+                string Name = "/UserSoils/" + XmlHelper.Name(soilDoc.DocumentElement);
 
                 // Delete the existing soil if it exists
                 SqlCommand Cmd = new SqlCommand("DELETE FROM " + TableName + " WHERE Name = @Name", Connection);
@@ -715,7 +713,7 @@ namespace Apsoil
                 Cmd.ExecuteNonQuery();
 
                 // Add soil to DB
-                AddSoil(Connection, Name, SoilDoc.OuterXml, false);
+                AddSoil(Connection, Name, soilDoc.OuterXml, false);
             }
             catch (Exception)
             {
@@ -724,6 +722,31 @@ namespace Apsoil
             }
             Connection.Close();
             return true;
+        }
+
+        /// <summary>
+        /// Update all soils to the specified .soils content. Called from iPAD soil app.
+        /// </summary>
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public bool UpdateUserSoil(JsonSoilParam Params)
+        {
+            // Load in the XML
+            XmlDocument SoilDoc = JsonConvert.DeserializeXmlNode(Params.JSonSoil);
+            return UpdateUserSoilFromXmlDocument(SoilDoc);
+        }
+
+        /// <summary>
+        /// Update all soils to the specified .soils content. Called from MAUI soil app.
+        /// </summary>
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Xml)]
+        public bool UpdateUserSoilXml(string Xml)
+        {
+            // Load in the XML
+            XmlDocument SoilDoc = new XmlDocument();
+            SoilDoc.LoadXml(Xml);
+            return UpdateUserSoilFromXmlDocument(SoilDoc);
         }
 
         /// <summary>
@@ -910,15 +933,24 @@ namespace Apsoil
         public byte[] SoilChartPNGFromXML(string XML)
         {
             string NewXML = ConvertOldXmlToNew(XML);
+            return SoilChartPNGFromNewXML(NewXML);
+        }
 
-            Soil Soil = Soil.Create(NewXML);
+        /// <summary>
+        /// Return the bytes of a soil chart in PNG format. Google Earth uses this.
+        /// MAUI soil app uses this call.
+        /// </summary>
+        [WebMethod]
+        public byte[] SoilChartPNGFromNewXML(string XML)
+        {
+            Soil Soil = Soil.Create(XML);
 
             SoilGraphUI Graph = CreateSoilGraph(Soil, false);
 
             //StreamWriter Out = new StreamWriter("D:\\Websites\\FILES\\Transfer\\ApsoilWeb.txt", true);
             //Out.WriteLine("xml: " + NewXML);
             //Out.Close();
-            
+
             // Make first 3 LL series active.
             int Count = 0;
             foreach (Series S in Graph.Chart.Series)
