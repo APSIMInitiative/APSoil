@@ -12,7 +12,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Apsoil</RootNamespace>
     <AssemblyName>APSIM.Soils.Service</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -49,19 +49,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ApsimFile">
-      <HintPath>..\..\APSIMClassic\Model\ApsimFile.dll</HintPath>
+      <HintPath>..\Libs\ApsimFile.dll</HintPath>
     </Reference>
     <Reference Include="Controllers">
-      <HintPath>..\..\APSIMClassic\Model\Controllers.dll</HintPath>
+      <HintPath>..\Libs\Controllers.dll</HintPath>
     </Reference>
     <Reference Include="CSGeneral">
-      <HintPath>..\..\APSIMClassic\Model\CSGeneral.dll</HintPath>
+      <HintPath>..\Libs\CSGeneral.dll</HintPath>
     </Reference>
     <Reference Include="Graph">
-      <HintPath>..\..\APSIMClassic\Model\Graph.dll</HintPath>
+      <HintPath>..\Libs\Graph.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1-beta1\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -81,10 +81,10 @@
     <Reference Include="System.Web.Mobile" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="TeeChart.Client">
-      <HintPath>..\..\APSIMClassic\Model\TeeChart.Client.dll</HintPath>
+      <HintPath>..\Libs\TeeChart.Client.dll</HintPath>
     </Reference>
     <Reference Include="UIUtility">
-      <HintPath>..\..\APSIMClassic\Model\UIUtility.dll</HintPath>
+      <HintPath>..\Libs\UIUtility.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -114,9 +114,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\ApsoilWeb.pubxml" />
     <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
   </ItemGroup>

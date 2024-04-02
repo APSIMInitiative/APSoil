@@ -6,7 +6,9 @@ Release/Release.msi
 *.suo
 *.exe
 *.dll
+!Libs/*.dll
 *.pdb
+!Libs/*.pdb
 *.cache
 WebPortal/obj/
 *.bak
