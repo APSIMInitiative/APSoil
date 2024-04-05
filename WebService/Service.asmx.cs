@@ -937,7 +937,7 @@ namespace Apsoil
         }
 
         /// <summary>
-        /// Return the bytes of a soil chart in PNG format. Google Earth uses this.
+        /// Return the bytes of a soil chart in PNG format.
         /// MAUI soil app uses this call.
         /// </summary>
         [WebMethod]
@@ -946,10 +946,6 @@ namespace Apsoil
             Soil Soil = Soil.Create(XML);
 
             SoilGraphUI Graph = CreateSoilGraph(Soil, false);
-
-            //StreamWriter Out = new StreamWriter("D:\\Websites\\FILES\\Transfer\\ApsoilWeb.txt", true);
-            //Out.WriteLine("xml: " + NewXML);
-            //Out.Close();
 
             // Make first 3 LL series active.
             int Count = 0;
