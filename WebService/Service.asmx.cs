@@ -92,7 +92,7 @@ namespace Apsoil
 
             // Load in the XML
             XmlDocument Doc = new XmlDocument();
-            Doc.LoadXml(Contents);
+            Doc.LoadXml(DecodeXML(Contents));
 
             // Insert all soils into database.
             InsertFolderIntoDB(Connection, Doc.DocumentElement);
@@ -118,7 +118,7 @@ namespace Apsoil
                 string SQL = "UPDATE AllSoils SET XML = @XML WHERE Name = @Name";
                 SqlCommand Cmd = new SqlCommand(SQL, connection);
                 Cmd.Parameters.Add(new SqlParameter("@Name", soilPath));
-                Cmd.Parameters.Add(new SqlParameter("@XML", contents));
+                Cmd.Parameters.Add(new SqlParameter("@XML", DecodeXML(contents)));
                 Cmd.ExecuteNonQuery();
             }
             finally 
@@ -348,7 +348,7 @@ namespace Apsoil
         {
             string OldSoilFormat = "<folder version=\"7\">" +
                                    "<soil name=\"test\">" +
-                                   SoilSampleXML +
+                                   DecodeXML(SoilSampleXML) +
                                    "</soil>" +
                                    "</folder>";
             XmlDocument Doc = new XmlDocument();
@@ -745,7 +745,7 @@ namespace Apsoil
         {
             // Load in the XML
             XmlDocument SoilDoc = new XmlDocument();
-            SoilDoc.LoadXml(Xml);
+            SoilDoc.LoadXml(DecodeXML(Xml));
             return UpdateUserSoilFromXmlDocument(SoilDoc);
         }
 
@@ -932,7 +932,7 @@ namespace Apsoil
         [WebMethod]
         public byte[] SoilChartPNGFromXML(string XML)
         {
-            string NewXML = ConvertOldXmlToNew(XML);
+            string NewXML = ConvertOldXmlToNew(DecodeXML(XML));
             return SoilChartPNGFromNewXML(NewXML);
         }
 
@@ -943,7 +943,7 @@ namespace Apsoil
         [WebMethod]
         public byte[] SoilChartPNGFromNewXML(string XML)
         {
-            Soil Soil = Soil.Create(XML);
+            Soil Soil = Soil.Create(DecodeXML(XML));
 
             SoilGraphUI Graph = CreateSoilGraph(Soil, false);
 
@@ -1592,6 +1592,28 @@ namespace Apsoil
             return (rad / Math.PI * 180.0);
         }
 
+        /// <summary>
+        /// Accepts a string which is assumed to contain XML, but may be
+        /// html- or base64-encoded, and returns that string in decoded form.
+        /// This assumes that the first character of the decoded string is '<',
+        /// which encodes to "&lt;" with html encoding and to "P" (and some 
+        /// other character) if base64 encoded. 
+        /// This is a work-around for the problem of unencoded XML strings
+        /// triggering HttpRequestValidationException.
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <returns>Decoded XML string</returns>
+        private static string DecodeXML(string xml)
+        {
+            if (String.IsNullOrEmpty(xml)) 
+                return xml;
+            else if (xml.StartsWith("&"))
+                return System.Web.HttpUtility.HtmlDecode(xml);
+            else if (xml.StartsWith("P"))
+                return System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(xml));
+            else
+                return xml;
+        }
         #endregion
 
     }
