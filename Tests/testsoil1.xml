@@ -1,6 +1,6 @@
-<folder name="Soils">
   <Soil name="Clay (Kerikeri No1353)">
     <RecordNumber>1265</RecordNumber>
+    <FullName>Soils/Tests/Clay (Kerikeri No1353)</FullName>
     <ASCOrder />
     <ASCSubOrder />
     <SoilType>Clay</SoilType>
@@ -407,4 +407,3 @@
       <BoronUnits>HotWater</BoronUnits>
     </Analysis>
   </Soil>
-</folder>

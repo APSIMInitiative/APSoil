@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using SoilAPI.Data;
+using API.Data;
 
-namespace UnitTests.Helpers;
+namespace Tests.Services;
 
 public class MockDb : IDbContextFactory<SoilDbContext>
 {

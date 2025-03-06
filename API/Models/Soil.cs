@@ -1,11 +1,16 @@
-using System.Collections.Generic;
+using System.Xml.Serialization;
+using Microsoft.EntityFrameworkCore;
 
-namespace SoilAPI.Models;
+namespace API.Models;
 
+[Index(nameof(FullName), IsUnique = true)]
 public class Soil
 {
     public int Id { get; set; }
+
+    [XmlAttribute("name")]
     public string Name { get; set; }
+    public string FullName { get; set; }
     public int RecordNumber { get; set; }
     public string ASCOrder { get; set; }
     public string ASCSubOrder { get; set; }

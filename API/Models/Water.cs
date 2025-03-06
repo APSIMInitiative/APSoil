@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 
-namespace SoilAPI.Models;
+namespace API.Models;
 
 public class Water
 {
+    public int Id { get; set; }
     public List<double> Thickness { get; set; }
     public List<double> BD { get; set; }
     public List<double> AirDry { get; set; }

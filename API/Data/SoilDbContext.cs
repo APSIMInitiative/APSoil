@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using SoilAPI.Models;
+using API.Models;
 
-namespace SoilAPI.Data
+namespace API.Data
 {
     public class SoilDbContext : DbContext
     {

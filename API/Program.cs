@@ -3,13 +3,12 @@
 
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.EntityFrameworkCore;
-using SoilAPI.Data;
-using SoilAPI.Models;
+using API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddAntiforgery(options => { options.HeaderName = "X-XSRF-TOKEN"; } );
+builder.Services.AddAntiforgery(options => { options.HeaderName = "X-XSRF-TOKEN"; });
 //builder.Services.AddAuthentication().AddJwtBearer();
 //builder.Services.AddAuthorization();
 
@@ -22,6 +21,14 @@ builder.Services.AddDbContext<SoilDbContext>(options =>
 
 // Create an app from the build container and configure HTTP request pipeline.
 var app = builder.Build();
+
+// Ensure the database is created and apply migrations
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<SoilDbContext>();
+    dbContext.Database.EnsureCreated();
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -51,8 +58,16 @@ app.MapGet("antiforgery/token", (IAntiforgery forgeryService, HttpContext contex
 });
 
 ///////////////////////////////////////////////////////////////////////////
+// Endpoints
+///////////////////////////////////////////////////////////////////////////
 
-// Endpoint: Upload a soil record.
-app.MapPost("/upload", SoilServices.Upload);
+// Endpoint: Add (or update) soils.
+app.MapPost("/add", API.Services.Soil.Add);
+
+// Endpoint: Import soils from old APSoil format.
+app.MapPost("/importold", API.Services.Soil.AddOld);
+
+// Endpoint: Get soils
+app.MapGet("/get", API.Services.Soil.Get);
 
 app.Run();

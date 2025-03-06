@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 
-namespace SoilAPI.Models;
+namespace API.Models;
 
 public class SoilCrop
 {
+    public int Id { get; set; }
     public string Name { get; set; }
     public List<double> Thickness { get; set; }
     public List<double> LL { get; set; }

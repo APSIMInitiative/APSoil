@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 
-namespace SoilAPI.Models;
+namespace API.Models;
 public class SoilWater
 {
+    public int Id { get; set; }
     public double SummerCona { get; set; }
     public double SummerU { get; set; }
     public string SummerDate { get; set; }

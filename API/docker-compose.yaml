@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  apsoil:
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    #volumes:
+    #  - ./API:/app

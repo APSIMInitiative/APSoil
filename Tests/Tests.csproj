@@ -21,4 +21,10 @@
     <ProjectReference Include="..\API\API.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="testsoil1.xml" />
+    <EmbeddedResource Include="testsoil2.xml" />
+    <EmbeddedResource Include="testfolder.xml" />
+    <EmbeddedResource Include="testsoils.xml" />
+  </ItemGroup>
 </Project>

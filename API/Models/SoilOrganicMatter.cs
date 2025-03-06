@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 
-namespace SoilAPI.Models;
+namespace API.Models;
 public class SoilOrganicMatter
 {
+    public int Id { get; set; }
     public int RootCN { get; set; }
     public int RootWt { get; set; }
     public double SoilCN { get; set; }
