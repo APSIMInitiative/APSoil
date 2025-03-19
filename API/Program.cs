@@ -4,6 +4,7 @@
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.EntityFrameworkCore;
 using API.Data;
+using API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
@@ -49,6 +50,13 @@ app.Use(async (context, next) =>
 app.UseAntiforgery();
 app.UseHttpsRedirection();
 
+
+/*app.UseExceptionHandler(exceptionHandlerApp
+    => exceptionHandlerApp.Run(async context
+        => await Results.Problem()
+                     .ExecuteAsync(context)));
+*/
+
 // Endpoint: Get antiforgery token.
 app.MapGet("antiforgery/token", (IAntiforgery forgeryService, HttpContext context) =>
 {
@@ -62,12 +70,12 @@ app.MapGet("antiforgery/token", (IAntiforgery forgeryService, HttpContext contex
 ///////////////////////////////////////////////////////////////////////////
 
 // Endpoint: Add (or update) soils.
-app.MapPost("/add", API.Services.Soil.Add);
-
-// Endpoint: Import soils from old APSoil format.
-app.MapPost("/importold", API.Services.Soil.AddOld);
+app.MapPost("/xml/add", (SoilDbContext context, HttpRequest request)
+    => Soil.Add(context, request.ToXML().ToSoils()));
 
 // Endpoint: Get soils
-app.MapGet("/get", API.Services.Soil.Get);
+app.MapGet("/xml/get", (SoilDbContext context, string name = null, string folder = null, string soilType = null,
+                        double latitude = double.NaN, double longitude = double.NaN)
+    => new XmlResult(Soil.Get(context, name, folder, soilType, latitude, longitude)));
 
 app.Run();
