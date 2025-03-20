@@ -1,30 +1,29 @@
 using Microsoft.EntityFrameworkCore;
 using API.Data;
-using EntityFrameworkCore.Testing.Moq;
+using Microsoft.Data.Sqlite;
 
 namespace Tests.Services;
 
-public class MockDb : IDbContextFactory<SoilDbContext>
+public class MockDb
 {
-
-    public SoilDbContext CreateDbContext()
+    public static DbContextOptions CreateOptions<T>() where T : DbContext
     {
-        return CreateDbContext(true);
-    }
+        //This creates the SQLite connection string to in-memory database
+        var connectionStringBuilder = new SqliteConnectionStringBuilder
+            { DataSource = ":memory:" };
+        var connectionString = connectionStringBuilder.ToString();
 
-    public SoilDbContext CreateDbContext(bool deleteExisting)
-    {
-        // remove existing database
-        if (File.Exists("unittest.db") && deleteExisting)
-            File.Delete("unittest.db");
+        //This creates a SqliteConnectionwith that string
+        var connection = new SqliteConnection(connectionString);
 
-        var options = new DbContextOptionsBuilder<SoilDbContext>()
-            .UseSqlite("Data Source=unittest.db")
-            .Options;
+        //The connection MUST be opened here
+        connection.Open();
 
-        var dbContext = new SoilDbContext(options);
-        dbContext.Database.EnsureCreated();
-        return dbContext;
+        //Now we have the EF Core commands to create SQLite options
+        var builder = new DbContextOptionsBuilder<T>();
+        builder.UseSqlite(connection);
+
+        return builder.Options;
     }
 
 

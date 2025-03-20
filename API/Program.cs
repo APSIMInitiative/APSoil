@@ -23,13 +23,6 @@ builder.Services.AddDbContext<SoilDbContext>(options =>
 // Create an app from the build container and configure HTTP request pipeline.
 var app = builder.Build();
 
-// Ensure the database is created and apply migrations
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<SoilDbContext>();
-    dbContext.Database.EnsureCreated();
-}
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -73,9 +66,21 @@ app.MapGet("antiforgery/token", (IAntiforgery forgeryService, HttpContext contex
 app.MapPost("/xml/add", (SoilDbContext context, HttpRequest request)
     => Soil.Add(context, request.ToXML().ToSoils()));
 
-// Endpoint: Get soils
-app.MapGet("/xml/get", (SoilDbContext context, string name = null, string folder = null, string soilType = null,
-                        double latitude = double.NaN, double longitude = double.NaN)
-    => new XmlResult(Soil.Get(context, name, folder, soilType, latitude, longitude)));
+// Endpoint: Get XML for soils as specified by full names.
+app.MapGet("/xml/get", (SoilDbContext context, Values fullNames)
+    => Soil.Get(context, fullNames.Strings).ToFolder().ToXMLResult());
+
+// Endpoint: Search for soils and return matching full names.
+app.MapGet("/xml/search", (SoilDbContext context, string name = null, string folder = null, string soilType = null, string country = null,
+                           double latitude = double.NaN, double longitude = double.NaN, double radius = double.NaN,
+                           string fullName = null,
+                           string cropName = null, Values thickness = null, Values cll = null, Values pawc = null,
+                           int numToReturn = 0)
+    => Soil.Search(context, name, folder, soilType, country, latitude, longitude, radius,
+                   fullName, cropName, thickness?.Doubles, cll?.Doubles, pawc?.Doubles, numToReturn).ToTextResult());
+
+// Endpoint: Get info about a soil.
+app.MapGet("/xml/info", (SoilDbContext context, string fullName)
+    => Soil.Get(context, Soil.Search(context, fullName: fullName)).ToXMLResult());
 
 app.Run();

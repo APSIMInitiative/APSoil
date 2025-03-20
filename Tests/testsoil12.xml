@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-16"?>
-<Folder xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<Folder xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Soils">
   <Soil name="Clay (Kerikeri No1353)">
     <RecordNumber>1265</RecordNumber>
     <ASCOrder />
@@ -340,6 +340,10 @@
         <string>Estimated based on local knowledge</string>
         <string>Estimated based on local knowledge</string>
       </PHMetadata>
+      <EC />
+      <ECMetadata />
+      <CL />
+      <CLMetadata />
       <CEC>
         <double>28.5</double>
         <double>12.4</double>
@@ -356,6 +360,8 @@
         <string>Measured</string>
         <string>Measured</string>
       </CECMetadata>
+      <ESP />
+      <ESPMetadata />
       <ParticleSizeSand>
         <double>6.448</double>
         <double>7.363</double>
@@ -671,8 +677,14 @@
         <string>Estimated based on local knowledge</string>
         <string>Estimated based on local knowledge</string>
       </PHMetadata>
+      <EC />
+      <ECMetadata />
+      <CL />
+      <CLMetadata />
       <CEC />
       <CECMetadata />
+      <ESP />
+      <ESPMetadata />
       <ParticleSizeSand />
       <ParticleSizeSandMetadata />
       <ParticleSizeSilt />

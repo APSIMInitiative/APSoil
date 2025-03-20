@@ -16,8 +16,14 @@ public class Analysis
     public List<string>? TextureMetadata { get; set; } = null;
     public List<double> PH { get; set; } = null!;
     public List<string>? PHMetadata { get; set; } = null;
+    public List<double>? EC { get; set; } = null;
+    public List<string>? ECMetadata { get; set; } = null;
+    public List<double>? CL { get; set; } = null;
+    public List<string>? CLMetadata { get; set; } = null;
     public List<double>? CEC { get; set; } = null;
     public List<string>? CECMetadata { get; set; } = null;
+    public List<double>? ESP { get; set; } = null;
+    public List<string>? ESPMetadata { get; set; } = null;
     public List<double>? ParticleSizeSand { get; set; } = null;
     public List<string>? ParticleSizeSandMetadata { get; set; } = null;
     public List<double>? ParticleSizeSilt { get; set; } = null;
