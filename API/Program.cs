@@ -66,10 +66,6 @@ app.MapGet("antiforgery/token", (IAntiforgery forgeryService, HttpContext contex
 app.MapPost("/xml/add", (SoilDbContext context, HttpRequest request)
     => Soil.Add(context, request.ToXML().ToSoils()));
 
-// Endpoint: Get XML for soils as specified by full names.
-app.MapGet("/xml/get", (SoilDbContext context, Values fullNames)
-    => Soil.Get(context, fullNames.Strings).ToFolder().ToXMLResult());
-
 // Endpoint: Search for soils and return matching full names.
 app.MapGet("/xml/search", (SoilDbContext context, string name = null, string folder = null, string soilType = null, string country = null,
                            double latitude = double.NaN, double longitude = double.NaN, double radius = double.NaN,
@@ -79,8 +75,12 @@ app.MapGet("/xml/search", (SoilDbContext context, string name = null, string fol
     => Soil.Search(context, name, folder, soilType, country, latitude, longitude, radius,
                    fullName, cropName, thickness?.Doubles, cll?.Doubles, pawc?.Doubles, numToReturn).ToTextResult());
 
+// Endpoint: Get XML for soils as specified by full names.
+app.MapGet("/xml/get", (SoilDbContext context, Values fullNames)
+    => Soil.Get(context, fullNames.Strings).ToFolder().ToXMLResult());
+
 // Endpoint: Get info about a soil.
 app.MapGet("/xml/info", (SoilDbContext context, string fullName)
-    => Soil.Get(context, Soil.Search(context, fullName: fullName)).ToXMLResult());
+    => Soil.Get(context, Soil.Search(context, fullName: fullName)).First()?.ToInfo().ToXMLResult());
 
-app.Run();
+app.Run("http://*:80");

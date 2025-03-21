@@ -1,13 +1,13 @@
 version: '3.8'
 
 services:
-  apsoil:
-    build:
-      context: .
-      dockerfile: dockerfile
+  apsoil-api:
+    image: apsiminitiative/apsoil:latest
+    container_name: apsoil-api
+    restart: unless-stopped
     ports:
-      - "8080:8080"
+      - "80:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    #volumes:
-    #  - ./API:/app
+    volumes:
+      - ./db/:/app/db
