@@ -1,3 +1,4 @@
+using System.Drawing;
 using API.Data;
 using API.Services;
 using NUnit.Framework;
@@ -217,5 +218,15 @@ public class UploadEndpointTests
         Assert.That(info.Crops[0].LL, Is.EqualTo(new double[] { 0.282, 0.295, 0.313, 0.304, 0.286, 0.295 }));
         Assert.That(info.Crops[1].Name, Is.EqualTo("perennialgrass"));
         Assert.That(info.Crops[1].LL, Is.EqualTo(new double[] { 0.282, 0.295, 0.313, 0.304, 0.286, 0.295 }));
+    }
+
+    [Test]
+    public void Graph_ShouldReturnGraph()
+    {
+        var soil = ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil1.xml");
+        var s = API.Services.Soil.ToGraphPng(soil);
+        using (var fileStream = new FileStream("Tests.testgraph.png", FileMode.Create, FileAccess.Write))
+            s.CopyTo(fileStream);
+        Assert.That(File.Exists("Tests.testgraph.png"), Is.True);
     }
 }

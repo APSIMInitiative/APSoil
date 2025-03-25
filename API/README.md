@@ -27,3 +27,8 @@ To get the XML of the soil with the full name __Soils/Africa/Generic/Clay_Deep_H
 
 To get the XML information of the soil with the full name __Soils/Africa/Generic/Clay_Deep_HF_200mm (No866-Generic)__
 ```https://apsoil.apsim.info/xml/info?fullname=Soils/Africa/Generic/Clay_Deep_HF_200mm (No866-Generic)```
+
+To get a graph of the soil with the full name  __Soils/Africa/Generic/Clay_Deep_HF_200mm (No866-Generic)__
+
+```https://apsoil.apsim.info/xml/graph?fullname=Soils/Africa/Generic/Clay_Deep_HF_200mm (No866-Generic)```
+

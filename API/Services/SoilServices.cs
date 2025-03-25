@@ -1,7 +1,10 @@
+using System.Drawing;
 using System.Text;
 using System.Xml.Serialization;
 using API.Data;
 using API.Models;
+using APSIM.Shared.Utilities;
+using Graph;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Services;
@@ -170,6 +173,118 @@ public static class Soil
         return soilsToReturn.ToArray();
     }
 
+    public static byte[] ToGraphPng(this Models.Soil soil)
+    {
+        double[] midPoints = SoilUtilities.ToMidPoints(soil.Water.Thickness.ToArray());
+
+        GraphModel graph = new()
+        {
+            Title = soil.Name,
+            LegendPosition = GraphModel.LegendPositionEnum.BottomLeft,
+            Axes =
+            [
+                new()
+                {
+                    Title = "Depth (mm)",
+                    Minimum = 0,
+                    Position = AxisModel.PositionEnum.Left,
+                    Maximum = (Math.Truncate(midPoints.Last() / 200) + 1) * 200,  // Scale up to the nearest 200
+                    IsVisible = true,
+                    Inverted = true
+                },
+                new()
+                {
+                    Title = "Volumetric Water Content (mm/mm)",
+                    Position = AxisModel.PositionEnum.Top,
+                    IsVisible = true
+                }
+            ]
+        };
+        double[] ll;
+        double[] xf;
+        double[] pawc;
+        string llName;
+        if (soil.Water.SoilCrops == null || soil.Water.SoilCrops.Count == 0)
+        {
+            ll = soil.Water.LL15.ToArray();
+            llName = "LL15";
+            xf = null;
+        }
+        else
+        {
+            // Look for wheat soil crop. If not found then use the first soil crop.
+            if (soil.Water.SoilCrops.Any(c => c.Name == "wheat"))
+            {
+                ll = soil.Water.SoilCrops.First(c => c.Name == "wheat").LL.ToArray();
+                llName = "wheat";
+                xf = soil.Water.SoilCrops.First(c => c.Name == "wheat").XF.ToArray();
+            }
+            else
+            {
+                ll = soil.Water.SoilCrops.First().LL.ToArray();
+                llName = soil.Water.SoilCrops.First().Name;
+                xf = soil.Water.SoilCrops.First().XF.ToArray();
+            }
+        }
+        pawc = SoilUtilities.CalcPAWC(soil.Water.Thickness.ToArray(), ll, soil.Water.DUL.ToArray(), xf);
+        pawc = MathUtilities.Multiply(pawc, soil.Water.Thickness.ToArray()); // Convert to mm
+
+        graph.Series =
+        [
+            new SeriesModel()
+            {
+                Title = $"{llName} PAWC: {pawc.Sum():F0} mm",
+                SeriesType = SeriesModel.SeriesTypeEnum.Area,
+                Points = soil.Water.LL15.Zip(midPoints)
+                                        .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
+                Points2 = soil.Water.DUL.Zip(midPoints)
+                                        .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
+                ShowInLegend = true,
+                LineType = SeriesModel.LineTypeEnum.Solid,
+                Colour = Color.LightBlue,
+            },
+            new SeriesModel()
+            {
+                Title = "Airdry",
+                Points = soil.Water.AirDry.Zip(midPoints)
+                                        .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
+                ShowInLegend = true,
+                LineType = SeriesModel.LineTypeEnum.Dot,
+                Colour = Color.Red,
+            },
+            new()
+            {
+                Title = "LL15",
+                Points = soil.Water.LL15.Zip(midPoints)
+                                        .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
+                ShowInLegend = true,
+                LineType = SeriesModel.LineTypeEnum.Solid,
+                Colour = Color.Red,
+            },
+            new()
+            {
+                Title = "DUL",
+                Points = soil.Water.DUL.Zip(midPoints)
+                                        .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
+                ShowInLegend = true,
+                LineType = SeriesModel.LineTypeEnum.Solid,
+                Colour = Color.Blue,
+            },
+            new SeriesModel()
+            {
+                Title = "SAT",
+                Points = soil.Water.SAT.Zip(midPoints)
+                                        .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
+                ShowInLegend = true,
+                LineType = SeriesModel.LineTypeEnum.Dot,
+                Colour = Color.Blue,
+            },
+
+
+        ];
+        return GraphRenderToPNG.Render(graph);
+    }
+
     /// <summary>
     /// Convert an XML string to an array of soils.
     /// </summary>
@@ -216,9 +331,9 @@ public static class Soil
     /// </summary>
     /// <param name="soils">The array of soils.</param>
     /// <returns>A custom IResult.</returns>
-    public static CustomResult ToXMLResult<T>(this T soils)
+    public static IResult ToXMLResult<T>(this T soils)
     {
-        return new CustomResult(soils.ToXML(), "application/xml");
+        return new CustomResult<string>(soils.ToXML(), "application/xml");
     }
 
     /// <summary>
@@ -226,9 +341,19 @@ public static class Soil
     /// </summary>
     /// <param name="text">The text string.</param>
     /// <returns>A custom IResult.</returns>
-    public static CustomResult ToTextResult(this string[] text)
+    public static IResult ToTextResult(this string[] text)
     {
-        return new CustomResult(text.Join("\n"), "text/plain");
+        return new CustomResult<string>(text.Join("\n"), "text/plain");
+    }
+
+    /// <summary>
+    /// Convert a collection of text strings to an IResult
+    /// </summary>
+    /// <param name="text">The text string.</param>
+    /// <returns>A custom IResult.</returns>
+    public static IResult ToImageResult(this byte[] bytes)
+    {
+        return new CustomResult<byte[]>(bytes, "image/png");
     }
 
     /// <summary>Convert an object to an XML string.</summary>

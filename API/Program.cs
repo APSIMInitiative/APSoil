@@ -79,8 +79,19 @@ app.MapGet("/xml/search", (SoilDbContext context, string name = null, string fol
 app.MapGet("/xml/get", (SoilDbContext context, Values fullNames)
     => Soil.Get(context, fullNames.Strings).ToFolder().ToXMLResult());
 
+// Endpoint: Get graph of soil.
+app.MapGet("/xml/graph", (SoilDbContext context, string fullName)
+    => Soil.Get(context, Soil.Search(context, fullName: fullName))
+           .First()?
+           .ToGraphPng()
+           .ToImageResult());
+
 // Endpoint: Get info about a soil.
 app.MapGet("/xml/info", (SoilDbContext context, string fullName)
-    => Soil.Get(context, Soil.Search(context, fullName: fullName)).First()?.ToInfo().ToXMLResult());
+    => Soil.Get(context, Soil.Search(context, fullName: fullName))
+           .First()?
+           .ToInfo()
+           .ToXMLResult());
+
 
 app.Run("http://*:80");
