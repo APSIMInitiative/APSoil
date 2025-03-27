@@ -24,9 +24,9 @@ public class CustomResult<T> : IResult
     {
         httpContext.Response.ContentType = contentType;
         using var ms = new MemoryStream();
+        using var writer = new StreamWriter(ms);
         if (payload is string)
         {
-            using var writer = new StreamWriter(ms);
             writer.Write(payload);
             writer.Flush();
         }

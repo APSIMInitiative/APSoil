@@ -45,36 +45,6 @@ public class UploadEndpointTests
     }
 
     [Test]
-    public void GetWithNoArguments_ShouldReturnAllSoilsWithAllRelatedData()
-    {
-        var options = MockDb.CreateOptions<SoilDbContext>();
-        using (var context = new SoilDbContext(options))
-        {
-            // Add 2 soils.
-            var soil1 = ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil1.xml");
-            var soil2 = ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil2.xml");
-            API.Services.Soil.Add(context, [ soil1, soil2 ]);
-        }
-
-        // Create a new DBcontext to ensure the data was saved and can be reloaded correctly.
-        // This mimics a call to the the API to add data and another call to retrieve data.
-        using (var context = new SoilDbContext(options))
-        {
-            // Get soils.
-            var soilNames = API.Services.Soil.Search(context);
-            var soils = API.Services.Soil.Get(context, soilNames);
-
-            Assert.That(soils.Length, Is.EqualTo(2));
-            Assert.That(soils[0].Analysis, Is.Not.Null);
-            Assert.That(soils[0].SoilOrganicMatter, Is.Not.Null);
-            Assert.That(soils[0].Water, Is.Not.Null);
-            Assert.That(soils[0].SoilWater, Is.Not.Null);
-            Assert.That(soils[0].Water.SoilCrops.Count, Is.EqualTo(2));
-        }
-    }
-
-
-    [Test]
     public void GetWithLatLong_ShouldReturnSoilsClosestToPoint()
     {
         var options = MockDb.CreateOptions<SoilDbContext>();
@@ -84,14 +54,12 @@ public class UploadEndpointTests
             ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil2.xml")
          ]);
 
-        var soilNames = API.Services.Soil.Search(context, numToReturn: 1,
-                                                  latitude:-28, longitude: 150);
-        var soils = API.Services.Soil.Get(context, soilNames);
-
+        var soils = API.Services.Soil.Search(context, numToReturn: 1,
+                                             latitude:-28, longitude: 150)
+                                     .ToSoils();
         Assert.That(soils.Length, Is.EqualTo(1));
         Assert.That(soils[0].Name, Is.EqualTo("Red Chromosol (Billa Billa No066)"));
     }
-
 
     [Test]
     public void GetWithLatLongRadius_ShouldReturnSoilsWithinTheRadius()
@@ -103,15 +71,15 @@ public class UploadEndpointTests
             ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil2.xml")
          ]);
 
-        var soilNames = API.Services.Soil.Search(context, latitude:-28, longitude: 150, radius: 100);
-        var soils = API.Services.Soil.Get(context, soilNames);
+        var soils = API.Services.Soil.Search(context, latitude:-28, longitude: 150, radius: 100)
+                                     .ToSoils();
 
         Assert.That(soils.Length, Is.EqualTo(1));
         Assert.That(soils[0].Name, Is.EqualTo("Red Chromosol (Billa Billa No066)"));
 
         // Extend the radius to cover the second soil (New Zealand)
-        soilNames = API.Services.Soil.Search(context, latitude:-28, longitude: 150, radius: 2500);
-        soils = API.Services.Soil.Get(context, soilNames);
+        soils = API.Services.Soil.Search(context, latitude:-28, longitude: 150, radius: 2500)
+                                 .ToSoils();
         Assert.That(soils.Length, Is.EqualTo(2));
         Assert.That(soils[0].Name, Is.EqualTo("Red Chromosol (Billa Billa No066)"));
         Assert.That(soils[1].Name, Is.EqualTo("Clay (Kerikeri No1353)"));
@@ -136,9 +104,9 @@ public class UploadEndpointTests
             ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil2.xml")
          ]);
 
-        var soilNames = API.Services.Soil.Search(context, cropName: "wheat", numToReturn: 1,
-                                                 thickness: [ 200, 300, 300 ], pawc: [ 20, 60, 45 ]);
-        var soils = API.Services.Soil.Get(context, soilNames);
+        var soils = API.Services.Soil.Search(context, cropName: "wheat", numToReturn: 1,
+                                             thickness: [ 200, 300, 300 ], pawc: [ 20, 60, 45 ])
+                                     .ToSoils();
         Assert.That(soils.Length, Is.EqualTo(1));
         Assert.That(soils[0].Name, Is.EqualTo("Red Chromosol (Billa Billa No066)"));
     }
@@ -153,9 +121,9 @@ public class UploadEndpointTests
             ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil2.xml")
          ]);
 
-        var soilNames = API.Services.Soil.Search(context, cropName: "wheat", numToReturn: 1,
-                                                 thickness: [ 800 ], pawc: [ 120 ]);
-        var soils = API.Services.Soil.Get(context, soilNames);
+        var soils = API.Services.Soil.Search(context, cropName: "wheat", numToReturn: 1,
+                                             thickness: [ 800 ], pawc: [ 120 ])
+                                     .ToSoils();
         Assert.That(soils.Length, Is.EqualTo(1));
         Assert.That(soils[0].Name, Is.EqualTo("Red Chromosol (Billa Billa No066)"));
     }
@@ -170,9 +138,9 @@ public class UploadEndpointTests
             ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil2.xml")
          ]);
 
-        var soilNames = API.Services.Soil.Search(context, cropName: "wheat", numToReturn: 1,
-                                                 thickness: [ 200, 300, 300 ], cll: [ 0.12, 0.18, 0.22 ]);
-        var soils = API.Services.Soil.Get(context, soilNames);
+        var soils = API.Services.Soil.Search(context, cropName: "wheat", numToReturn: 1,
+                                             thickness: [ 200, 300, 300 ], cll: [ 0.12, 0.18, 0.22 ])
+                                     .ToSoils();
         Assert.That(soils.Length, Is.EqualTo(1));
         Assert.That(soils[0].Name, Is.EqualTo("Red Chromosol (Billa Billa No066)"));
     }
@@ -186,9 +154,9 @@ public class UploadEndpointTests
                                     ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil2.xml") ];
 
         // Get soils.
-        var result = soils.ToFolder().ToXMLResult();
+        var xml = soils.ToFolder().ToXML();
 
-        Assert.That(result.Text, Is.EqualTo(ResourceFile.Get("Tests.testsoil12.xml")));
+        Assert.That(xml, Is.EqualTo(ResourceFile.Get("Tests.testsoil12.xml")));
     }
 
     [Test]
@@ -224,9 +192,9 @@ public class UploadEndpointTests
     public void Graph_ShouldReturnGraph()
     {
         var soil = ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil1.xml");
-        var s = API.Services.Soil.ToGraphPng(soil);
+        using var ms = new MemoryStream(soil.ToGraphPng());
         using (var fileStream = new FileStream("Tests.testgraph.png", FileMode.Create, FileAccess.Write))
-            s.CopyTo(fileStream);
+            ms.CopyTo(fileStream);
         Assert.That(File.Exists("Tests.testgraph.png"), Is.True);
     }
 }

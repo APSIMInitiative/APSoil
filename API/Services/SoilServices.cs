@@ -1,10 +1,5 @@
-using System.Drawing;
-using System.Text;
-using System.Xml.Serialization;
 using API.Data;
 using API.Models;
-using APSIM.Shared.Utilities;
-using Graph;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Services;
@@ -50,11 +45,11 @@ public static class Soil
     /// <param name="cll">The crop lower limit (volumetric).</param>
     /// <param name="pawc">The plant available water capacity by layer (mm).</param>
     /// <returns>An array of full soil names.</returns>
-    public static string[] Search(SoilDbContext context, string name = null, string folder = null, string soilType = null, string country = null,
-                                  double latitude = double.NaN, double longitude = double.NaN, double radius = double.NaN,
-                                  string fullName = null,
-                                  string cropName = null, double[] thickness = null, double[] cll = null, double[] pawc = null,
-                                  int numToReturn = 0)
+    public static SoilsFromDb Search(SoilDbContext context, string name = null, string folder = null, string soilType = null, string country = null,
+                                     double latitude = double.NaN, double longitude = double.NaN, double radius = double.NaN,
+                                     string fullName = null,
+                                     string cropName = null, double[] thickness = null, double[] cll = null, double[] pawc = null,
+                                     int numToReturn = 0)
     {
         IQueryable<Models.Soil> soils = context.Soils;
         if (name != null)
@@ -77,9 +72,7 @@ public static class Soil
             // return only the required number of soils.
             if (numToReturn > 0)
                 soils = soils.Take(numToReturn);
-
-            // return full soil, forcing eager loading of related entities.
-            return soils.Select(s => s.FullName).ToArray();
+            return new API.Services.SoilsFromDb(soils);
         }
         else
         {
@@ -115,273 +108,9 @@ public static class Soil
             // return only the required number of soils.
             if (numToReturn > 0)
                 soilsInMemory = soilsInMemory.Take(numToReturn);
-            return soilsInMemory.Select(s => s.FullName).ToArray();
-        }
-    }
 
-    /// <summary>Convert a soil to a soil info.</summary>
-    /// <param name="soil">The soil.</param>
-    /// <returns>The soil info.</returns>
-    public static Models.SoilInfo ToInfo(this Models.Soil soil)
-    {
-        return new Models.SoilInfo
-        {
-            Name = soil.Name,
-            Description = soil.DataSource,
-            SoilType = soil.SoilType,
-            Latitude = soil.Latitude,
-            Longitude = soil.Longitude,
-            Distance = 0,
-            ASCOrder = soil.ASCOrder,
-            ASCSubOrder = soil.ASCSubOrder,
-            Site = soil.Site,
-            Region = soil.Region,
-            NearestTown = soil.NearestTown,
-            Thickness = soil.Water.Thickness.ToArray(),
-            Texture = soil.Analysis.Texture.ToArray(),
-            DUL = soil.Water.DUL.ToArray(),
-            LL15 = soil.Water.LL15.ToArray(),
-            EC = soil.Analysis.EC.ToArray(),
-            CL = soil.Analysis.CL.ToArray(),
-            ESP = soil.Analysis.ESP.ToArray(),
-            PH = soil.Analysis.PH.ToArray(),
-            Crops = soil.Water.SoilCrops.Select(c => new Models.SoilCropInfo
-            {
-                Name = c.Name,
-                LL = c.LL.ToArray(),
-                KL = c.KL.ToArray(),
-                XF = c.XF.ToArray()
-            }).ToList()
-        };
-    }
+            return new SoilsFromDb(soilsInMemory);
 
-    /// <summary>Get the soils for the specified full paths.</summary>
-    /// <param name="context">The database context.</param>
-    /// <returns>An array of soils.</returns>
-    public static Models.Soil[] Get(SoilDbContext context, string[] fullNames)
-    {
-        List<Models.Soil> soilsToReturn = new();
-        IQueryable<Models.Soil> soils = context.Soils;
-        foreach (var fullName in fullNames)
-            soilsToReturn.AddRange(soils.Where(s => s.FullName == fullName)
-                                        .Include(s => s.Water)
-                                        .Include(s => s.Water.SoilCrops)
-                                        .Include( s=> s.Analysis)
-                                        .Include( s=> s.SoilWater)
-                                        .Include( s=> s.SoilOrganicMatter)
-                                        .Include( s=> s.Water.SoilCrops));
-        return soilsToReturn.ToArray();
-    }
-
-    public static byte[] ToGraphPng(this Models.Soil soil)
-    {
-        double[] midPoints = SoilUtilities.ToMidPoints(soil.Water.Thickness.ToArray());
-
-        GraphModel graph = new()
-        {
-            Title = soil.Name,
-            LegendPosition = GraphModel.LegendPositionEnum.BottomLeft,
-            Axes =
-            [
-                new()
-                {
-                    Title = "Depth (mm)",
-                    Minimum = 0,
-                    Position = AxisModel.PositionEnum.Left,
-                    Maximum = (Math.Truncate(midPoints.Last() / 200) + 1) * 200,  // Scale up to the nearest 200
-                    IsVisible = true,
-                    Inverted = true
-                },
-                new()
-                {
-                    Title = "Volumetric Water Content (mm/mm)",
-                    Position = AxisModel.PositionEnum.Top,
-                    IsVisible = true
-                }
-            ]
-        };
-        double[] ll;
-        double[] xf;
-        double[] pawc;
-        string llName;
-        if (soil.Water.SoilCrops == null || soil.Water.SoilCrops.Count == 0)
-        {
-            ll = soil.Water.LL15.ToArray();
-            llName = "LL15";
-            xf = null;
-        }
-        else
-        {
-            // Look for wheat soil crop. If not found then use the first soil crop.
-            if (soil.Water.SoilCrops.Any(c => c.Name == "wheat"))
-            {
-                ll = soil.Water.SoilCrops.First(c => c.Name == "wheat").LL.ToArray();
-                llName = "wheat";
-                xf = soil.Water.SoilCrops.First(c => c.Name == "wheat").XF.ToArray();
-            }
-            else
-            {
-                ll = soil.Water.SoilCrops.First().LL.ToArray();
-                llName = soil.Water.SoilCrops.First().Name;
-                xf = soil.Water.SoilCrops.First().XF.ToArray();
-            }
-        }
-        pawc = SoilUtilities.CalcPAWC(soil.Water.Thickness.ToArray(), ll, soil.Water.DUL.ToArray(), xf);
-        pawc = MathUtilities.Multiply(pawc, soil.Water.Thickness.ToArray()); // Convert to mm
-
-        graph.Series =
-        [
-            new SeriesModel()
-            {
-                Title = $"{llName} PAWC: {pawc.Sum():F0} mm",
-                SeriesType = SeriesModel.SeriesTypeEnum.Area,
-                Points = soil.Water.LL15.Zip(midPoints)
-                                        .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
-                Points2 = soil.Water.DUL.Zip(midPoints)
-                                        .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
-                ShowInLegend = true,
-                LineType = SeriesModel.LineTypeEnum.Solid,
-                Colour = Color.LightBlue,
-            },
-            new SeriesModel()
-            {
-                Title = "Airdry",
-                Points = soil.Water.AirDry.Zip(midPoints)
-                                        .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
-                ShowInLegend = true,
-                LineType = SeriesModel.LineTypeEnum.Dot,
-                Colour = Color.Red,
-            },
-            new()
-            {
-                Title = "LL15",
-                Points = soil.Water.LL15.Zip(midPoints)
-                                        .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
-                ShowInLegend = true,
-                LineType = SeriesModel.LineTypeEnum.Solid,
-                Colour = Color.Red,
-            },
-            new()
-            {
-                Title = "DUL",
-                Points = soil.Water.DUL.Zip(midPoints)
-                                        .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
-                ShowInLegend = true,
-                LineType = SeriesModel.LineTypeEnum.Solid,
-                Colour = Color.Blue,
-            },
-            new SeriesModel()
-            {
-                Title = "SAT",
-                Points = soil.Water.SAT.Zip(midPoints)
-                                        .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
-                ShowInLegend = true,
-                LineType = SeriesModel.LineTypeEnum.Dot,
-                Colour = Color.Blue,
-            },
-
-
-        ];
-        return GraphRenderToPNG.Render(graph);
-    }
-
-    /// <summary>
-    /// Convert an XML string to an array of soils.
-    /// </summary>
-    /// <param name="xml">The XML string.</param>
-    /// <returns>An array of soils.</returns>
-    public static Models.Soil[] ToSoils(this string xml)
-    {
-        // Old APSoil format uses lowercase folder tag for the root folder.
-        xml = xml.Replace("folder", "Folder").Replace("NaN", "0");
-
-        var serializer = new XmlSerializer(typeof(Models.Folder));
-        using var reader = new StringReader(xml);
-        var folder = (Models.Folder)serializer.Deserialize(reader);
-        return GetSoilsRecursively(folder).ToArray();
-    }
-
-    /// <summary>
-    /// Convert an array of soils to an XML string.
-    /// </summary>
-    /// <param name="soils">The array of soils.</param>
-    /// <returns>An XML string.</returns>
-    public static Folder ToFolder(this Models.Soil[] soils)
-    {
-        return new Models.Folder()
-        {
-            Name = "Soils",
-            Soils = soils.ToList()
-        };
-    }
-
-    /// <summary>Convert an HTTP request to an XML string.</summary>
-    /// <param name="request">The HTTP request.</param>
-    /// <returns>An XML string.</returns>
-    public static string ToXML(this HttpRequest request)
-    {
-        using StreamReader body = new StreamReader(request.Body);
-        var task = body.ReadToEndAsync();
-        task.Wait();
-        return task.Result;
-    }
-
-    /// <summary>
-    /// Convert an array of soils to an XML IResult
-    /// </summary>
-    /// <param name="soils">The array of soils.</param>
-    /// <returns>A custom IResult.</returns>
-    public static IResult ToXMLResult<T>(this T soils)
-    {
-        return new CustomResult<string>(soils.ToXML(), "application/xml");
-    }
-
-    /// <summary>
-    /// Convert a collection of text strings to an IResult
-    /// </summary>
-    /// <param name="text">The text string.</param>
-    /// <returns>A custom IResult.</returns>
-    public static IResult ToTextResult(this string[] text)
-    {
-        return new CustomResult<string>(text.Join("\n"), "text/plain");
-    }
-
-    /// <summary>
-    /// Convert a collection of text strings to an IResult
-    /// </summary>
-    /// <param name="text">The text string.</param>
-    /// <returns>A custom IResult.</returns>
-    public static IResult ToImageResult(this byte[] bytes)
-    {
-        return new CustomResult<byte[]>(bytes, "image/png");
-    }
-
-    /// <summary>Convert an object to an XML string.</summary>
-    /// <param name="folder">The object to convert.</param>
-    /// <returns>An XML string.</returns>
-    private static string ToXML<T>(this T folder)
-    {
-        // Serialize the object synchronously then rewind the stream
-        XmlSerializer Serializer = new(typeof(T));
-        using var textWriter = new StringWriter();
-        Serializer.Serialize(textWriter, folder);
-        return textWriter.ToString();
-    }
-
-    /// <summary>Get all folders and subfolders recursively.</summary>
-    /// <param name="folder">The root folder.</param>
-    /// <returns>All folders and subfolders.</returns>
-    private static IEnumerable<Models.Soil> GetSoilsRecursively(Models.Folder folder, string parentFolderPath = null)
-    {
-        string path = $"{parentFolderPath}{folder.Name}/";
-        foreach (var subFolder in folder.Folders)
-           foreach (var soil in GetSoilsRecursively(subFolder, path))
-                yield return soil;
-
-        foreach (var soil in folder.Soils)
-        {
-            soil.FullName = $"{path}{soil.Name}";
-            yield return soil;
         }
     }
 
@@ -433,19 +162,6 @@ public static class Soil
         return crop;
     }
 
-    /// <summary>Get the crop lower limit (volumetric) for a soil.</summary>
-    /// <param name="cropName">The crop name.</param>
-    /// <returns>The crop lower limit.</returns>
-    private static double[] CLL(this Models.Soil soil, string cropName)
-    {
-        if (soil.Water == null || soil.Water.SoilCrops == null)
-            throw new Exception("Soil has no soilcrop data.");
-        var crop = soil.Water.SoilCrops.FirstOrDefault(c => c.Name == cropName);
-        if (crop == null)
-            throw new Exception($"Soil has no soilcrop data for {cropName}.");
-        return crop.LL.ToArray();
-    }
-
     private static double[] PAWC(this Models.SoilCrop crop, IList<double> dul)
     {
         if (crop.LL == null)
@@ -484,23 +200,5 @@ public static class Soil
         for (int i = 0; i < thickness.Count; i++)
             mm[i] += values[i] * thickness[i];
         return mm;
-    }
-
-
-    /// <summary>Join a collection of strings together with a delimiter between each.</summary>
-    /// <param name="strings">The collection of strings.</param>
-    /// <param name="delimiter">The delimiter.</param>
-    /// <returns></returns>
-    /// <returns>The new collection that was created.</returns>
-    private static string Join<T>(this IEnumerable<T> strings, string delimiter)
-    {
-        var writer = new StringBuilder();
-        foreach (var st in strings)
-        {
-            if (writer.Length > 0)
-                writer.Append(delimiter);
-            writer.Append(st);
-        }
-        return writer.ToString();
     }
 }
