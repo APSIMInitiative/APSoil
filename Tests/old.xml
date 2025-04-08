@@ -1,0 +1,238 @@
+  <Soil name="Ferrosol (Nth Au No1032-Generic)">
+    <RecordNumber>944</RecordNumber>
+    <ASCOrder>Ferrosol</ASCOrder>
+    <ASCSubOrder />
+    <SoilType>Other</SoilType>
+    <LocalName />
+    <Site>Northern GRDC region</Site>
+    <NearestTown />
+    <Region />
+    <State>Generic</State>
+    <Country>Australia</Country>
+    <NaturalVegetation />
+    <ApsoilNumber>1032-GENERIC</ApsoilNumber>
+    <Latitude>-27.161725</Latitude>
+    <Longitude>151.266385</Longitude>
+    <LocationAccuracy>Regional soil type</LocationAccuracy>
+    <YearOfSampling>0</YearOfSampling>
+    <DataSource>Hochman, Z., Gobbett, D., Horan, H. and Navarro Garcia, J. (2015). Visualizing yield gaps in Australia’s wheat cropping zone. In proceedings of the 17th Australian Agronomy Conference, Wrest Point Convention Centre, Hobart, Tasmania. 20-24 September 2015.</DataSource>
+    <Comments>Ferrosol - Typical Carcarosol - median values of all Calcarosols in APSoil as at 08/04/2013; This soil was created for the purpose of representing dominant soil types per weather station in Australia’s wheat zone. They were used to match the ASRIS maps with characterised soils. Typical soil profiles for each soil type were determined by finding the median values of the soil characterisation parameters of 434 deep soil profiles characterised in APSoil that had their Australian Soil Classification (ASC) identified;
+This soil is pinned to a location in Queensland (Dalby) only to allow viewing with Google Earth. This does not imply that this soil has been characterised at a particular location but is a generic set of values available for use in the Northern Cropping Region of Australia where a soil of this type is required for simulation.
+</Comments>
+    <Water>
+      <Thickness>
+        <double>150</double>
+        <double>150</double>
+        <double>300</double>
+        <double>300</double>
+        <double>300</double>
+      </Thickness>
+      <BD>
+        <double>1.005</double>
+        <double>1.125</double>
+        <double>1.17</double>
+        <double>1.19475263258664</double>
+        <double>1.1902068463106</double>
+      </BD>
+      <AirDry>
+        <double>0.127442154001834</double>
+        <double>0.21877177066761</double>
+        <double>0.328942120347336</double>
+        <double>0.328942120347336</double>
+        <double>0.328942120347336</double>
+      </AirDry>
+      <LL15>
+        <double>0.254884308003668</double>
+        <double>0.273464713334512</double>
+        <double>0.328942120347336</double>
+        <double>0.328942120347336</double>
+        <double>0.328942120347336</double>
+      </LL15>
+      <DUL>
+        <double>0.405</double>
+        <double>0.429</double>
+        <double>0.42</double>
+        <double>0.431741144935861</double>
+        <double>0.468195529694114</double>
+      </DUL>
+      <SAT>
+        <double>0.570754716981132</double>
+        <double>0.525471698113207</double>
+        <double>0.508490566037736</double>
+        <double>0.499149949967307</double>
+        <double>0.500865341014868</double>
+      </SAT>
+      <BDMetadata>
+        <string>Unknown source or quality of data</string>
+        <string>Unknown source or quality of data</string>
+        <string>Unknown source or quality of data</string>
+        <string>Unknown source or quality of data</string>
+        <string>Unknown source or quality of data</string>
+      </BDMetadata>
+      <AirDryMetadata>
+        <string>Unknown source or quality of data</string>
+        <string>Unknown source or quality of data</string>
+        <string>Unknown source or quality of data</string>
+        <string>Unknown source or quality of data</string>
+        <string>Unknown source or quality of data</string>
+      </AirDryMetadata>
+      <LL15Metadata>
+        <string>Unknown source or quality of data</string>
+        <string>Unknown source or quality of data</string>
+        <string>Unknown source or quality of data</string>
+        <string>Unknown source or quality of data</string>
+        <string>Unknown source or quality of data</string>
+      </LL15Metadata>
+      <DULMetadata>
+        <string>Unknown source or quality of data</string>
+        <string>Unknown source or quality of data</string>
+        <string>Unknown source or quality of data</string>
+        <string>Unknown source or quality of data</string>
+        <string>Unknown source or quality of data</string>
+      </DULMetadata>
+      <SATMetadata>
+        <string>Calculated from measured, estimated or calculated BD</string>
+        <string>Calculated from measured, estimated or calculated BD</string>
+        <string>Calculated from measured, estimated or calculated BD</string>
+        <string>Calculated from measured, estimated or calculated BD</string>
+        <string>Calculated from measured, estimated or calculated BD</string>
+      </SATMetadata>
+      <SoilCrop name="wheat">
+        <Thickness>
+          <double>150</double>
+          <double>150</double>
+          <double>300</double>
+          <double>300</double>
+          <double>300</double>
+        </Thickness>
+        <LL>
+          <double>0.254884308003668</double>
+          <double>0.273464713334512</double>
+          <double>0.328942120347336</double>
+          <double>0.354991800713943</double>
+          <double>0.382613121562824</double>
+        </LL>
+        <KL>
+          <double>0.06</double>
+          <double>0.06</double>
+          <double>0.06</double>
+          <double>0.04</double>
+          <double>0.04</double>
+        </KL>
+        <XF>
+          <double>1</double>
+          <double>1</double>
+          <double>1</double>
+          <double>1</double>
+          <double>1</double>
+        </XF>
+        <LLMetadata>
+          <string>Unknown source or quality of data</string>
+          <string>Unknown source or quality of data</string>
+          <string>Unknown source or quality of data</string>
+          <string>Unknown source or quality of data</string>
+          <string>Unknown source or quality of data</string>
+        </LLMetadata>
+      </SoilCrop>
+    </Water>
+    <SoilWater>
+      <SummerCona>3.5</SummerCona>
+      <SummerU>6</SummerU>
+      <SummerDate>1-Nov</SummerDate>
+      <WinterCona>2.5</WinterCona>
+      <WinterU>4</WinterU>
+      <WinterDate>1-Apr</WinterDate>
+      <DiffusConst>40</DiffusConst>
+      <DiffusSlope>16</DiffusSlope>
+      <Salb>0.13</Salb>
+      <CN2Bare>73</CN2Bare>
+      <CNRed>20</CNRed>
+      <CNCov>0.8</CNCov>
+      <Slope>NaN</Slope>
+      <DischargeWidth>NaN</DischargeWidth>
+      <CatchmentArea>NaN</CatchmentArea>
+      <MaxPond>NaN</MaxPond>
+      <Thickness>
+        <double>150</double>
+        <double>150</double>
+        <double>300</double>
+        <double>300</double>
+        <double>300</double>
+      </Thickness>
+      <SWCON>
+        <double>0.3</double>
+        <double>0.3</double>
+        <double>0.3</double>
+        <double>0.3</double>
+        <double>0.3</double>
+      </SWCON>
+    </SoilWater>
+    <SoilOrganicMatter>
+      <RootCN>40</RootCN>
+      <RootWt>1000</RootWt>
+      <SoilCN>12</SoilCN>
+      <EnrACoeff>7.4</EnrACoeff>
+      <EnrBCoeff>0.2</EnrBCoeff>
+      <Thickness>
+        <double>150</double>
+        <double>150</double>
+        <double>300</double>
+        <double>300</double>
+        <double>300</double>
+      </Thickness>
+      <OC>
+        <double>5.105</double>
+        <double>3.75566666666667</double>
+        <double>1.1925</double>
+        <double>0.786666666666667</double>
+        <double>0.3475</double>
+      </OC>
+      <OCMetadata>
+        <string>Estimated based on local knowledge</string>
+        <string>Estimated based on local knowledge</string>
+        <string>Estimated based on local knowledge</string>
+        <string>Estimated based on local knowledge</string>
+        <string>Estimated based on local knowledge</string>
+      </OCMetadata>
+      <FBiom>
+        <double>0.035</double>
+        <double>0.02</double>
+        <double>0.015</double>
+        <double>0.015</double>
+        <double>0.01</double>
+      </FBiom>
+      <FInert>
+        <double>0.4</double>
+        <double>0.5</double>
+        <double>0.7</double>
+        <double>0.95</double>
+        <double>0.95</double>
+      </FInert>
+      <OCUnits>WalkleyBlack</OCUnits>
+    </SoilOrganicMatter>
+    <Analysis>
+      <Thickness>
+        <double>150</double>
+        <double>150</double>
+        <double>300</double>
+        <double>300</double>
+        <double>300</double>
+      </Thickness>
+      <PH>
+        <double>6.25</double>
+        <double>6.11666666666667</double>
+        <double>5.93333333333333</double>
+        <double>6.05</double>
+        <double>6.095</double>
+      </PH>
+      <PHMetadata>
+        <string>Estimated based on local knowledge</string>
+        <string>Estimated based on local knowledge</string>
+        <string>Estimated based on local knowledge</string>
+        <string>Estimated based on local knowledge</string>
+        <string>Estimated based on local knowledge</string>
+      </PHMetadata>
+      <PHUnits>Water</PHUnits>
+      <BoronUnits>HotWater</BoronUnits>
+    </Analysis>
+  </Soil>

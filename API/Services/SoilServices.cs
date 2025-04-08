@@ -1,5 +1,6 @@
 using API.Data;
 using API.Models;
+using APSIM.Shared.Utilities;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Services;
@@ -43,12 +44,13 @@ public static class Soil
     /// <param name="cropName">The name of the crop to use when cll or pawc is provided.</param>
     /// <param name="thickness">The thickness of the cll or PAWC values.</param>
     /// <param name="cll">The crop lower limit (volumetric).</param>
+    /// <param name="cllIsGrav">True if the cll is gravimetric.</param>
     /// <param name="pawc">The plant available water capacity by layer (mm).</param>
     /// <returns>An array of full soil names.</returns>
     public static SoilsFromDb Search(SoilDbContext context, string name = null, string folder = null, string soilType = null, string country = null,
                                      double latitude = double.NaN, double longitude = double.NaN, double radius = double.NaN,
                                      string fullName = null,
-                                     string cropName = null, double[] thickness = null, double[] cll = null, double[] pawc = null,
+                                     string cropName = null, double[] thickness = null, double[] cll = null, bool cllIsGrav = false, double[] pawc = null,
                                      int numToReturn = 0)
     {
         IQueryable<Models.Soil> soils = context.Soils;
@@ -91,10 +93,20 @@ public static class Soil
             }
 
             if (cll != null)
-                soilsInMemory = soilsInMemory.OrderBy(s => Difference(cll, s.Crop(cropName)
-                                                                            .LL
-                                                                            .MappedTo(s.Water.Thickness, thickness))
-                                                           .Sum());
+            {
+                if (cllIsGrav)
+                    soilsInMemory = soilsInMemory.OrderBy(s => Difference(cll, s.Crop(cropName)
+                                                                                .LL
+                                                                                .ConvertGravimetricToVolumetric(s.Water.BD)
+                                                                                .MappedTo(s.Water.Thickness, thickness))
+                                                 .Sum());
+                else
+                    soilsInMemory = soilsInMemory.OrderBy(s => Difference(cll, s.Crop(cropName)
+                                                                                .LL
+                                                                                .MappedTo(s.Water.Thickness, thickness))
+                                                 .Sum());
+
+            }
 
             if (pawc != null)
             {
@@ -110,8 +122,84 @@ public static class Soil
                 soilsInMemory = soilsInMemory.Take(numToReturn);
 
             return new SoilsFromDb(soilsInMemory);
-
         }
+    }
+
+    /// <summary>Calculate and return the PAWC of a soil</summary>
+    /// <param name="context">The database context.</param>
+    /// <param name="fullName">The full name of the soil.</param>
+    /// <param name="cropName">The name of the crop. Can be null for DUL-SW.</param>
+    /// <returns>The plant available water(mm).</returns>
+    public static double PAWC(SoilDbContext context, string fullName, string cropName)
+    {
+        var soils = context.Soils.Where(s => s.FullName == fullName);
+        if (!soils.Any())
+            throw new Exception($"Soil with full name {fullName} not found.");
+        var soil = soils.Include(s => s.Water)
+                        .Include(s => s.Water.SoilCrops)
+                        .Include(s => s.SoilOrganicMatter)
+                        .Include(s => s.SoilWater)
+                        .Include(s => s.Analysis)
+                        .First();
+        List<double> ll = null;
+        List<double> xf = null;
+        if (cropName != null)
+        {
+            var crop = soil.Water.SoilCrops.FirstOrDefault(c => c.Name == cropName);
+            if (crop == null)
+                throw new Exception($"Soil has no data for crop: {cropName}.");
+            ll = crop.LL;
+        }
+        else
+        {
+            ll = soil.Water.LL15;
+            xf = null;
+        }
+        var pawcByLayer = SoilUtilities.CalcPAWC(soil.Water.Thickness.ToArray(), ll.ToArray(), soil.Water.DUL.ToArray(), xf?.ToArray());
+        var pawc = MathUtilities.Multiply(pawcByLayer, soil.Water.Thickness.ToArray());
+        return pawc.Sum();
+    }
+
+    /// <summary>Calculate and return the PAW of a soil</summary>
+    /// <param name="context">The database context.</param>
+    /// <param name="fullName">The full name of the soil.</param>
+    /// <param name="cropName">The name of the crop. Can be null for DUL-SW.</param>
+    /// <param name="thickness">The thickness of the layers.</param>
+    /// <param name="sw">The soil water content.</param>
+    /// /// <param name="swIsGrav">True if the soil water content is gravimetric.</param>
+    /// <returns>The plant available water(mm).</returns>
+    public static double PAW(SoilDbContext context, string fullName, string cropName, IReadOnlyList<double> thickness, IReadOnlyList<double> sw, bool swIsGrav)
+    {
+        var soils = context.Soils.Where(s => s.FullName == fullName);
+        if (!soils.Any())
+            throw new Exception($"Soil with full name {fullName} not found.");
+        var soil = soils.Include(s => s.Water)
+                        .Include(s => s.Water.SoilCrops)
+                        .Include(s => s.SoilOrganicMatter)
+                        .Include(s => s.SoilWater)
+                        .Include(s => s.Analysis)
+                        .First();
+        IReadOnlyList<double> ll = null;
+        IReadOnlyList<double> xf = null;
+        if (cropName != null)
+        {
+            var crop = soil.Water.SoilCrops.FirstOrDefault(c => c.Name == cropName);
+            if (crop == null)
+                throw new Exception($"Soil has no data for crop: {cropName}.");
+            ll = crop.LL;
+            xf = crop.XF;
+        }
+        else
+        {
+            ll = soil.Water.LL15;
+            xf = null;
+        }
+
+        IReadOnlyList<double> swMapped = sw.SWMappedTo(thickness, soil.Water.Thickness, ll);
+        if (swIsGrav)
+            swMapped = swMapped.ConvertGravimetricToVolumetric(soil.Water.BD);
+        var pawByLayer = SoilUtilities.CalcPAWC(soil.Water.Thickness, ll, swMapped, xf);
+        return MathUtilities.Multiply(pawByLayer, soil.Water.Thickness).Sum();
     }
 
     /// <summary>Get the distance between a soil and a point.</summary>
@@ -185,9 +273,31 @@ public static class Soil
     /// <param name="values">The values to map.</param>
     /// <param name="thickness">The thickness to map to.</param>
     /// <returns>The mapped values.</returns>
-    private static double[] MappedTo(this IList<double> values, IList<double> fromThickness, IList<double> toThickness)
+    private static double[] MappedTo(this IReadOnlyList<double> values, IReadOnlyList<double> fromThickness, IReadOnlyList<double> toThickness)
     {
-        return APSIM.Shared.Utilities.SoilUtilities.MapConcentration(values.ToArray(), fromThickness.ToArray(), toThickness.ToArray(), values.Last());
+        return APSIM.Shared.Utilities.SoilUtilities.MapConcentration(values.ToArray(), fromThickness.ToArray(), toThickness.ToArray());
+    }
+
+    /// <summary>Map values to a thickness using a ramp down (0.8, 0.4, 0 x values.Last()) below profile.</summary>
+    /// <param name="values">The values to map.</param>
+    /// <param name="thickness">The thickness to map to.</param>
+    /// <returns>The mapped values.</returns>
+    private static double[] SWMappedTo(this IReadOnlyList<double> values, IReadOnlyList<double> fromThickness, IReadOnlyList<double> toThickness, IReadOnlyList<double> ll)
+    {
+        List<double> sw = values.ToList();
+        List<double> thickness = fromThickness.ToList();
+        sw.Add(0.8 * values.Last());     // 1st pseudo layer below profile.
+        sw.Add(0.4 * values.Last());     // 2nd pseudo layer below profile.
+        sw.Add(0.0);                     // 3rd pseudo layer below profile.
+        thickness.Add(thickness.Last()); // 1st pseudo layer below profile.
+        thickness.Add(thickness.Last()); // 2nd pseudo layer below profile.
+        thickness.Add(3000);             // 3rd pseudo layer below profile.
+
+        var llMapped = ll.MappedTo(toThickness, thickness);
+        var swMM = sw.LowerConstraint(llMapped, startIndex: values.Count)
+                     .Multiply(thickness);
+        return SoilUtilities.MapMass(swMM, thickness.ToArray(), toThickness.ToArray())
+                            .Divide(toThickness);     // convert back to volumetric
     }
 
     /// <summary>Convert volumetric values to mm.</summary>

@@ -74,11 +74,11 @@ internal class Program
         app.MapGet("/xml/search", (SoilDbContext context, string name = null, string folder = null, string soilType = null, string country = null,
                                    double latitude = double.NaN, double longitude = double.NaN, double radius = double.NaN,
                                    string fullName = null,
-                                   string cropName = null, Values thickness = null, Values cll = null, Values pawc = null,
+                                   string cropName = null, Values thickness = null, Values cll = null, bool cllIsGrav = false, Values pawc = null,
                                    int numToReturn = 0,
                                    OutputFormatEnum output = OutputFormatEnum.Names) =>
             Soil.Search(context, name, folder, soilType, country, latitude, longitude, radius,
-                        fullName, cropName, thickness?.Doubles, cll?.Doubles, pawc?.Doubles, numToReturn)
+                        fullName, cropName, thickness?.Doubles, cll?.Doubles, cllIsGrav, pawc?.Doubles, numToReturn)
                 .ToXMLResult(output));
 
         // Endpoint: Get graph of soil.
@@ -90,6 +90,14 @@ internal class Program
                        .ToGraphPng()
                        .ToImageResult();
         });
+
+        // Endpoint: Calculate and return the PAWC of a specified soil and crop (mm). Crop can be null.
+        app.MapGet("/xml/pawc", (SoilDbContext context, string fullName, string cropName = null)
+            => Soil.PAWC(context, fullName, cropName));
+
+        // Endpoint: Calculate and return the PAW of a specified soil, crop and water content (mm). Crop can be null.
+        app.MapGet("/xml/paw", (SoilDbContext context, string fullName, Values thickness, Values sw, bool swIsGrav, string cropName = null)
+            => Soil.PAW(context, fullName, cropName, thickness?.Doubles, sw?.Doubles, swIsGrav));
 
         app.Run("http://*:80");
     }

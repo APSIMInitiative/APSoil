@@ -258,14 +258,14 @@ namespace APSIM.Shared.Utilities
         /// <param name="DUL">The dul.</param>
         /// <param name="XF">The xf.</param>
         /// <returns></returns>
-        public static double[] CalcPAWC(double[] Thickness, double[] LL, double[] DUL, double[] XF)
+        public static double[] CalcPAWC(IReadOnlyList<double> Thickness, IReadOnlyList<double> LL, IReadOnlyList<double> DUL, IReadOnlyList<double> XF)
         {
-            double[] PAWC = new double[Thickness.Length];
+            double[] PAWC = new double[Thickness.Count];
             if (LL == null || DUL == null)
                 return PAWC;
-            if (Thickness.Length != DUL.Length || Thickness.Length != LL.Length)
+            if (Thickness.Count != DUL.Count || Thickness.Count != LL.Count)
                 return PAWC;
-            for (int layer = 0; layer != Thickness.Length; layer++)
+            for (int layer = 0; layer != Thickness.Count; layer++)
                 if (DUL[layer] == MathUtilities.MissingValue ||
                     LL[layer] == MathUtilities.MissingValue)
                     PAWC[layer] = 0;
@@ -273,7 +273,7 @@ namespace APSIM.Shared.Utilities
                     PAWC[layer] = Math.Max(DUL[layer] - LL[layer], 0.0);
 
             bool ZeroXFFound = false;
-            for (int layer = 0; layer != Thickness.Length; layer++)
+            for (int layer = 0; layer != Thickness.Count; layer++)
                 if (ZeroXFFound || XF != null && XF[layer] == 0)
                 {
                     ZeroXFFound = true;
@@ -349,7 +349,7 @@ namespace APSIM.Shared.Utilities
         /// <returns></returns>
         public static double[] MapConcentration(double[] fromValues, double[] fromThickness,
                                                   double[] toThickness,
-                                                  double defaultValueForBelowProfile,
+                                                  double defaultValueForBelowProfile = double.NaN,
                                                   bool allowMissingValues = false)
         {
             if (fromValues != null && !MathUtilities.AreEqual(fromThickness, toThickness))
@@ -371,8 +371,11 @@ namespace APSIM.Shared.Utilities
                     thickness.Add(fromThickness[i]);
                 }
 
+                if (double.IsNaN(defaultValueForBelowProfile))
+                    defaultValueForBelowProfile = fromValues.Last();
+
                 values.Add(defaultValueForBelowProfile);
-                thickness.Add(30000);
+                thickness.Add(3000);
                 double[] massValues = MathUtilities.Multiply(values.ToArray(), thickness.ToArray());
 
                 double[] newValues = MapMass(massValues, thickness.ToArray(), toThickness, allowMissingValues);

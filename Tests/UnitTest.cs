@@ -1,4 +1,3 @@
-using System.Drawing;
 using API.Data;
 using API.Services;
 using NUnit.Framework;
@@ -196,5 +195,33 @@ public class UploadEndpointTests
         using (var fileStream = new FileStream("Tests.testgraph.png", FileMode.Create, FileAccess.Write))
             ms.CopyTo(fileStream);
         Assert.That(File.Exists("Tests.testgraph.png"), Is.True);
+    }
+
+    [Test]
+    public void PAWC_ShouldReturnCorrectValue()
+    {
+        var options = MockDb.CreateOptions<SoilDbContext>();
+        using var context = new SoilDbContext(options);
+        API.Services.Soil.Add(context, [
+            ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil1.xml"),
+         ]);
+
+        var pawc = API.Services.Soil.PAWC(context, "Clay (Kerikeri No1353)", cropName: "wheat");
+        Assert.That(pawc, Is.EqualTo(214.89).Within(0.000001));
+    }
+
+    [Test]
+    public void PAW_ShouldReturnCorrectValue()
+    {
+        var options = MockDb.CreateOptions<SoilDbContext>();
+        using var context = new SoilDbContext(options);
+        API.Services.Soil.Add(context, [
+            ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil1.xml"),
+         ]);
+
+        var paw = API.Services.Soil.PAW(context, "Clay (Kerikeri No1353)", cropName: "wheat",
+                                        thickness: [ 150, 500 ],
+                                        sw: [ 0.4, 0.3 ], swIsGrav: false);
+        Assert.That(paw, Is.EqualTo(19.5996).Within(0.000001));
     }
 }
