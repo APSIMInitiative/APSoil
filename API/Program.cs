@@ -82,12 +82,12 @@ internal class Program
                 .ToXMLResult(output));
 
         // Endpoint: Get graph of soil.
-        app.MapGet("/xml/graph", (SoilDbContext context, string fullName) =>
+        app.MapGet("/xml/graph", (SoilDbContext context, string fullName, Values thickness = null, Values sw = null, bool swIsGrav = false) =>
         {
-            return Soil.Search(context, fullName: fullName )
+            return Soil.Search(context, fullName:fullName)
                        .ToSoils()
                       ?.First()
-                       .ToGraphPng()
+                       .ToGraphPng(thickness?.Doubles, sw?.Doubles, swIsGrav)
                        .ToImageResult();
         });
 

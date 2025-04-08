@@ -224,4 +224,20 @@ public class UploadEndpointTests
                                         sw: [ 0.4, 0.3 ], swIsGrav: false);
         Assert.That(paw, Is.EqualTo(19.5996).Within(0.000001));
     }
+
+
+    [Test]
+    public void PAWFromGravimetric_ShouldReturnCorrectValue()
+    {
+        var options = MockDb.CreateOptions<SoilDbContext>();
+        using var context = new SoilDbContext(options);
+        API.Services.Soil.Add(context, [
+            ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil1.xml"),
+         ]);
+
+        var paw = API.Services.Soil.PAW(context, "Clay (Kerikeri No1353)", cropName: "wheat",
+                                        thickness: [ 150, 500 ],
+                                        sw: [ 0.4, 0.3 ], swIsGrav: true);
+        Assert.That(paw, Is.EqualTo(38.787046).Within(0.000001));
+    }
 }

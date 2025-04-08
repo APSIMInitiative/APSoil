@@ -93,7 +93,7 @@ public static class Extensions
     {
         return new Models.SoilInfo
         {
-            Name = soil.FullName,
+            Name = soil.FullName == null ? soil.Name : soil.FullName,
             Description = soil.DataSource,
             SoilType = soil.SoilType,
             Latitude = soil.Latitude,
@@ -122,7 +122,7 @@ public static class Extensions
         };
     }
 
-    public static byte[] ToGraphPng(this Models.Soil soil)
+    public static byte[] ToGraphPng(this Models.Soil soil, double[] thickness = null, double[] sw = null, bool swIsGrav = false)
     {
         double[] midPoints = SoilUtilities.ToMidPoints(soil.Water.Thickness.ToArray());
 
@@ -227,10 +227,22 @@ public static class Extensions
                 ShowInLegend = true,
                 LineType = SeriesModel.LineTypeEnum.Dot,
                 Colour = Color.Blue,
-            },
-
-
+            }
         ];
+
+        if (thickness != null && sw != null)
+        {
+            double[] swMidPoints = SoilUtilities.ToMidPoints(thickness.ToArray());
+            graph.Series.Add(new SeriesModel()
+            {
+                Title = "SW",
+                Points = sw.Zip(swMidPoints)
+                           .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
+                ShowInLegend = true,
+                LineType = SeriesModel.LineTypeEnum.Solid,
+                Colour = Color.Green,
+            });
+        }
         return GraphRenderToPNG.Render(graph);
     }
 
