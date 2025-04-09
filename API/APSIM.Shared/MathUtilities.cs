@@ -1926,5 +1926,42 @@ namespace APSIM.Shared.Utilities
             return double.NaN;
         }
 
+
+        /// <summary>Get the distance between a soil and a point.</summary>
+        /// <param name="soil">The soil.</param>
+        /// <param name="latitude2">The latitude of the point.</param>
+        /// <param name="longitude2">The longitude of the point.</param>
+        /// <returns>The distance between the soil and the point (km).</returns>
+        public static double Distance(double latitude1, double longitude1, double latitude2, double longitude2)
+        {
+            double theta = longitude1 - longitude2;
+            double dist = Math.Sin(Deg2Rad(latitude1)) * Math.Sin(Deg2Rad(latitude2)) + Math.Cos(Deg2Rad(latitude1)) * Math.Cos(Deg2Rad(latitude2)) * Math.Cos(Deg2Rad(theta));
+            dist = Math.Acos(dist);
+            dist = Rad2Deg(dist);
+            dist = dist * 60 * 1.1515;
+            return dist * 1.609344; // To kilometers
+        }
+
+        /// <summary>
+        /// This function converts decimal degrees to radians
+        /// </summary>
+        /// <param name="deg">The decimal degrees to convert.</param>
+        /// <returns>The radians.</returns>
+        public static double Deg2Rad(double deg)
+        {
+            return deg * Math.PI / 180.0;
+        }
+
+        /// <summary>
+        /// This function converts radians to decimal degrees
+        /// </summary>
+        /// <param name="rad">The radians to convert.</param>
+        /// <returns>The decimal degrees.</returns>
+        public static double Rad2Deg(double rad)
+        {
+            return rad / Math.PI * 180.0;
+        }
+
+
     }
 }

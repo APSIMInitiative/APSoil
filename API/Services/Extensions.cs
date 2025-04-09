@@ -34,7 +34,7 @@ public static class Extensions
     }
 
     /// <summary>
-    /// Convert a collection of text strings to an IResult
+    /// Convert a collection of bytes to an IResult
     /// </summary>
     /// <param name="text">The text string.</param>
     /// <returns>A custom IResult.</returns>
@@ -44,7 +44,7 @@ public static class Extensions
     }
 
     /// <summary>
-    /// Convert an array of soils to an XML string.
+    /// Convert an array of soils to a Folder string.
     /// </summary>
     /// <param name="soils">The array of soils.</param>
     /// <returns>An XML string.</returns>
@@ -122,6 +122,12 @@ public static class Extensions
         };
     }
 
+    /// <summary>Convert a soil to a graph PNG.</summary>
+    /// <param name="soil">The soil.</param>
+    /// <param name="thickness">The thickness.</param>
+    /// <param name="sw">The soil water.</param>
+    /// <param name="swIsGrav">Is the soil water gravimetric?</param>
+    /// <returns>A PNG image of the soil graph.</returns>
     public static byte[] ToGraphPng(this Models.Soil soil, double[] thickness = null, double[] sw = null, bool swIsGrav = false)
     {
         double[] midPoints = SoilUtilities.ToMidPoints(soil.Water.Thickness.ToArray());
@@ -246,74 +252,17 @@ public static class Extensions
         return GraphRenderToPNG.Render(graph);
     }
 
+    /// <summary>
+    /// Convert a volumetric water content to a gravimetric water content.
+    /// </summary>
+    /// <param name="volumetricWater">The volumetric water content.</param>
+    /// <param name="bulkDensity">The bulk density.</param>
     public static IReadOnlyList<double> ConvertGravimetricToVolumetric(this IReadOnlyList<double> gravimetricWater, IReadOnlyList<double> bulkDensity)
     {
         if (gravimetricWater.Count != bulkDensity.Count)
             throw new ArgumentException("Soil water and bulk density arrays must be the same length.");
 
         return MathUtilities.Multiply(gravimetricWater, bulkDensity);
-    }
-
-    /// <summary>
-    /// Perform a stepwise multiply of the values in value 1 with the values in value2.
-    /// Returns an array of the same size as value 1 and value 2
-    /// </summary>
-    public static double[] Multiply(this IReadOnlyList<double> value1, IReadOnlyList<double> value2)
-    {
-        double[] results = new double[value1.Count];
-        if (value1.Count == value2.Count)
-        {
-            results = new double[value1.Count];
-            for (int iIndex = 0; iIndex < value1.Count; iIndex++)
-                results[iIndex] = value1[iIndex] * value2[iIndex];
-        }
-        return results;
-    }
-
-    /// <summary>
-    /// Perform a stepwise Divide of the values in value 1 with the values in value2.
-    /// Returns an array of the same size as value 1 and value 2
-    /// </summary>
-    public static double[] Divide(this IReadOnlyList<double> value1, IReadOnlyList<double> value2, double errVal=0.0)
-    {
-        double[] results = null;
-        if (value1.Count == value2.Count)
-        {
-            results = new double[value1.Count];
-            for (int iIndex = 0; iIndex < value1.Count; iIndex++)
-                results[iIndex] = MathUtilities.Divide(value1[iIndex], value2[iIndex], errVal);
-        }
-            return results;
-    }
-
-    /// <summary>
-    /// Constrain the values in value1 to be greater than the values in value2.
-    /// </summary>
-    public static IReadOnlyList<double> LowerConstraint(this IReadOnlyList<double> values, IReadOnlyList<double> lower, int startIndex = 0)
-    {
-        if (values.Count != lower.Count)
-            throw new Exception("The two arrays must be the same length.");
-        var results = values.ToArray();
-        for (int iIndex = startIndex; iIndex < values.Count; iIndex++)
-            results[iIndex] = Math.Max(values[iIndex], lower[iIndex]);
-        return results;
-    }
-
-    /// <summary>Join a collection of strings together with a delimiter between each.</summary>
-    /// <param name="strings">The collection of strings.</param>
-    /// <param name="delimiter">The delimiter.</param>
-    /// <returns></returns>
-    /// <returns>The new collection that was created.</returns>
-    private static string Join<T>(this IEnumerable<T> strings, string delimiter)
-    {
-        var writer = new StringBuilder();
-        foreach (var st in strings)
-        {
-            if (writer.Length > 0)
-                writer.Append(delimiter);
-            writer.Append(st);
-        }
-        return writer.ToString();
     }
 
     /// <summary>Get all folders and subfolders recursively.</summary>

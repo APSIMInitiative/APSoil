@@ -15,8 +15,6 @@ internal class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddAntiforgery(options => { options.HeaderName = "X-XSRF-TOKEN"; });
-        //builder.Services.AddAuthentication().AddJwtBearer();
-        //builder.Services.AddAuthorization();
 
         // Add services to the container.
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -47,13 +45,6 @@ internal class Program
         });
         app.UseAntiforgery();
         app.UseHttpsRedirection();
-
-
-        /*app.UseExceptionHandler(exceptionHandlerApp
-            => exceptionHandlerApp.Run(async context
-                => await Results.Problem()
-                             .ExecuteAsync(context)));
-        */
 
         // Endpoint: Get antiforgery token.
         app.MapGet("antiforgery/token", (IAntiforgery forgeryService, HttpContext context) =>

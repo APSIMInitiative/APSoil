@@ -26,6 +26,5 @@
     <EmbeddedResource Include="testfolder.xml" />
     <EmbeddedResource Include="testsoils.xml" />
     <EmbeddedResource Include="testsoil12.xml" />
-    <EmbeddedResource Include="old.xml" />
   </ItemGroup>
 </Project>

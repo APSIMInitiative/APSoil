@@ -88,8 +88,8 @@ public static class Soil
             if (!double.IsNaN(latitude) && !double.IsNaN(longitude))
             {
                 if (!double.IsNaN(radius))
-                    soilsInMemory = soilsInMemory.Where(s => Distance(s, latitude, longitude) <= radius);
-                soilsInMemory = soilsInMemory.OrderBy(s => Distance(s, latitude, longitude));
+                    soilsInMemory = soilsInMemory.Where(s => MathUtilities.Distance(s.Latitude, s.Longitude, latitude, longitude) <= radius);
+                soilsInMemory = soilsInMemory.OrderBy(s => MathUtilities.Distance(s.Latitude, s.Longitude, latitude, longitude));
             }
 
             if (cll != null)
@@ -202,41 +202,6 @@ public static class Soil
         return MathUtilities.Multiply(pawByLayer, soil.Water.Thickness).Sum();
     }
 
-    /// <summary>Get the distance between a soil and a point.</summary>
-    /// <param name="soil">The soil.</param>
-    /// <param name="latitude">The latitude of the point.</param>
-    /// <param name="longitude">The longitude of the point.</param>
-    /// <returns>The distance between the soil and the point (km).</returns>
-    private static double Distance(Models.Soil soil, double latitude, double longitude)
-    {
-        double theta = soil.Longitude - longitude;
-        double dist = Math.Sin(deg2rad(soil.Latitude)) * Math.Sin(deg2rad(latitude)) + Math.Cos(deg2rad(soil.Latitude)) * Math.Cos(deg2rad(latitude)) * Math.Cos(deg2rad(theta));
-        dist = Math.Acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
-        return dist * 1.609344; // To kilometers
-    }
-
-    /// <summary>
-    /// This function converts decimal degrees to radians
-    /// </summary>
-    /// <param name="deg">The decimal degrees to convert.</param>
-    /// <returns>The radians.</returns>
-    private static double deg2rad(double deg)
-    {
-        return deg * Math.PI / 180.0;
-    }
-
-    /// <summary>
-    /// This function converts radians to decimal degrees
-    /// </summary>
-    /// <param name="rad">The radians to convert.</param>
-    /// <returns>The decimal degrees.</returns>
-    private static double rad2deg(double rad)
-    {
-        return rad / Math.PI * 180.0;
-    }
-
     /// <summary>Get the crop lower limit (volumetric) for a soil.</summary>
     /// <param name="cropName">The crop name.</param>
     /// <returns>The crop lower limit.</returns>
@@ -250,6 +215,13 @@ public static class Soil
         return crop;
     }
 
+    /// <summary>
+    /// Get the plant available water content for a soil crop.
+    /// </summary>
+    /// <param name="crop"></param>
+    /// <param name="dul"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     private static double[] PAWC(this Models.SoilCrop crop, IList<double> dul)
     {
         if (crop.LL == null)
