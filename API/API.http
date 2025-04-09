@@ -1,0 +1,6 @@
+@Soil.API_HostAddress = http://localhost:5117
+
+GET {{Soil.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
