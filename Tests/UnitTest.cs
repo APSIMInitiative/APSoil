@@ -1,6 +1,7 @@
 using API.Data;
 using API.Services;
 using NUnit.Framework;
+using SharpKml.Engine;
 using Tests.Services;
 
 namespace Tests;
@@ -239,5 +240,44 @@ public class UploadEndpointTests
                                         thickness: [ 150, 500 ],
                                         sw: [ 0.4, 0.3 ], swIsGrav: true);
         Assert.That(paw, Is.EqualTo(38.787046).Within(0.000001));
+    }
+
+
+    [Test]
+    public void KMZ_ShouldReturnValidKMZ()
+    {
+        var kml = ResourceFile.Get("Tests.testfolder.xml").ToSoils().ToFolder().ToKMZ();
+        var s = new MemoryStream(kml);
+
+        // Now open the file we saved and list the contents
+        using (KmzFile kmz = KmzFile.Open(s))
+        {
+            Assert.That(kmz.Files.Count, Is.EqualTo(2));
+            Assert.That(kmz.Files.First(), Is.EqualTo("soils.kml"));
+            Assert.That(kmz.Files.Last(), Is.EqualTo("shovel.png"));
+            var kmlFile = kmz.GetDefaultKmlFile();
+
+            var feature = (kmlFile.Root as SharpKml.Dom.Kml).Feature as SharpKml.Dom.Folder;
+            Assert.That(feature.Name, Is.EqualTo("Soils"));
+            Assert.That(feature.Features.Count, Is.EqualTo(2));
+        }
+    }
+
+    [Test]
+    public void ToRecursiveFolder_ShouldReturnValidFolder()
+    {
+        var soils = ResourceFile.Get("Tests.testfolder.xml").ToSoils();
+        soils[0].FullName = "Soils/A1/A2/Red Chromosol (Billa Billa No066)";
+        soils[1].FullName = "Soils/B1/B2/Grey Vertosol-Mt Carmel (Billa Billa No036)";
+        var folder = soils.ToRecursiveFolder();
+
+        Assert.That(folder.Name, Is.EqualTo("Soils"));
+        Assert.That(folder.Folders[0].Name, Is.EqualTo("A1"));
+        Assert.That(folder.Folders[0].Folders[0].Name, Is.EqualTo("A2"));
+        Assert.That(folder.Folders[0].Folders[0].Soils[0].Name, Is.EqualTo("Red Chromosol (Billa Billa No066)"));
+
+        Assert.That(folder.Folders[1].Name, Is.EqualTo("B1"));
+        Assert.That(folder.Folders[1].Folders[0].Name, Is.EqualTo("B2"));
+        Assert.That(folder.Folders[1].Folders[0].Soils[0].Name, Is.EqualTo("Grey Vertosol-Mt Carmel (Billa Billa No036)"));
     }
 }
