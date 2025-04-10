@@ -1,10 +1,10 @@
-name: WorkFlo Tests
+name: APSOIL build and tests
 
 env:
   SSH_KEY:  ${{ github.actor }}_SSH_KEY
 on:
   pull_request_target:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   build:
