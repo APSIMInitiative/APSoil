@@ -11,7 +11,7 @@ Old Response:
 </AllSoilNamesResult>
 ```
 
-New URL: https://apsoil.apsim.info/xml/search?output=Names
+New URL: https://apsoil.apsim.info/search?output=Names
 New Response:
 ```xml
 <ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -34,7 +34,7 @@ Old Response:
 </AllAustralianSoilsResult>
 ```
 
-New URL: https://apsoil.apsim.info/xml/search?country=Australia&output=BasicInfo
+New URL: https://apsoil.apsim.info/search?country=Australia&output=BasicInfo
 New Response:
 ```xml
 <ArrayOfBasicInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -75,7 +75,7 @@ Old Response:
 </ClosestMatchingSoilsResponse>
 ```
 
-New URL: http://apsoil.apsim.info/xml/search?cropname=wheat&thickness=100,500&cll=0.3,0.2&numToReturn=2
+New URL: http://apsoil.apsim.info/search?cropname=wheat&thickness=100,500&cll=0.3,0.2&numToReturn=2
 New Response:
 ```xml
 <?xml version="1.0" encoding="utf-16"?>
@@ -110,7 +110,7 @@ Old Response:
 </GetSoilInfoResponse>
 ```
 
-New URL: http://apsoil.apsim.info/xml/search?fullname=Soils/Africa/Generic/Clay_Deep_HF_200mm%20(No866-Generic)&output=ExtendedInfo
+New URL: http://apsoil.apsim.info/search?fullname=Soils/Africa/Generic/Clay_Deep_HF_200mm%20(No866-Generic)&output=ExtendedInfo
 New Response:
 ```xml
 <?xml version="1.0" encoding="utf-16"?>
@@ -195,7 +195,7 @@ Old Response:
 </PAWResponse>
 ```
 
-New URL: http://apsoil.apsim.info/xml/paw?fullname=Soils/Australia/Generic/Ferrosol (Nth Au No1032-Generic)&cropName=wheat&thickness=100,500&sw=0.5,0.4&swIsGrav=false
+New URL: http://apsoil.apsim.info/paw?fullname=Soils/Australia/Generic/Ferrosol (Nth Au No1032-Generic)&cropName=wheat&thickness=100,500&sw=0.5,0.4&swIsGrav=false
 New Response:
 ```
 24.062205301138675
@@ -218,7 +218,7 @@ Old Response:
 </PAWCResponse>
 ```
 
-New URL: http://apsoil.apsim.info/xml/pawc?fullname=Soils/Australia/Generic/Ferrosol (Nth Au No1032-Generic)&cropName=wheat
+New URL: http://apsoil.apsim.info/pawc?fullname=Soils/Australia/Generic/Ferrosol (Nth Au No1032-Generic)&cropName=wheat
 New Response:
 ```
 121.86453640103461
@@ -259,7 +259,7 @@ Old Response:
 </SearchSoilsReturnInfoResponse>
 ```
 
-New URL: http://apsoil.apsim.info/xml/search?latitude=-27&longitude=150&radius=30&soiltype=Clay&output=ExtendedInfo
+New URL: http://apsoil.apsim.info/search?latitude=-27&longitude=150&radius=30&soiltype=Clay&output=ExtendedInfo
 New Response:
 ```xml
 <ArrayOfSoilInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -282,11 +282,11 @@ New Response:
 
 ## SoilChartPNG
 
-New URL: https://apsoil.apsim.info/xml/graph?fullname=Soils/Africa/Generic/Clay_Deep_HF_200mm%20(No866-Generic)
+New URL: https://apsoil.apsim.info/graph?fullname=Soils/Africa/Generic/Clay_Deep_HF_200mm%20(No866-Generic)
 
 ##  SoilChartWithSamplePNG
 
-New URL: http://apsoil.apsim.info/xml/graph?fullname=Soils/Africa/Generic/Clay_Deep_HF_200mm%20(No866-Generic)&thickness=100,500&sw=0.3,0.35&swIsGrav=false
+New URL: http://apsoil.apsim.info/graph?fullname=Soils/Africa/Generic/Clay_Deep_HF_200mm%20(No866-Generic)&thickness=100,500&sw=0.3,0.35&swIsGrav=false
 
 ## SoilXML
 
@@ -312,7 +312,7 @@ Old Response:
 </folder>
 ```
 
-New URL: http://apsoil.apsim.info/xml/search?fullname=Soils/Australia/Generic/Ferrosol%20(Nth%20Au%20No1032-Generic)&output=FullSoil
+New URL: http://apsoil.apsim.info/search?fullname=Soils/Australia/Generic/Ferrosol%20(Nth%20Au%20No1032-Generic)&output=FullSoil
 New Response:
 ```xml
 <Folder xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Soils">
@@ -337,5 +337,5 @@ New Response:
 
 ##  UpdateUserSoilXml
 
-New POST URL: http://apsoil.apsim.info/xml/add
+New POST URL: http://apsoil.apsim.info/add
 Body is the XML of the soil to add / update
