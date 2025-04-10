@@ -31,11 +31,11 @@ jobs:
         run: dotnet build Apsoil.sln --configuration Debug --no-restore --verbosity minimal
       - name: Install fonts for graph unit tests
         run: |
-          sudo -c "echo 'deb http://deb.debian.org/debian/ bookworm main contrib' > /etc/apt/sources.list" && \
-          sudo -c "echo 'deb-src http://deb.debian.org/debian/ bookworm main contrib' >> /etc/apt/sources.list" && \
-          sudo -c "echo 'deb http://security.debian.org/ bookworm-security main contrib' >> /etc/apt/sources.list" && \
-          sudo -c "echo 'deb-src http://security.debian.org/ bookworm-security main contrib' >> /etc/apt/sources.list"
-          sudo -c "sed -i'.bak' 's/$/ contrib/' /etc/apt/sources.list"
-          sudo -c "apt-get update; apt-get install -y ttf-mscorefonts-installer fontconfig"
+          sudo su -c "echo 'deb http://deb.debian.org/debian/ bookworm main contrib' > /etc/apt/sources.list" && \
+          sudo su -c "echo 'deb-src http://deb.debian.org/debian/ bookworm main contrib' >> /etc/apt/sources.list" && \
+          sudo su -c "echo 'deb http://security.debian.org/ bookworm-security main contrib' >> /etc/apt/sources.list" && \
+          sudo su -c "echo 'deb-src http://security.debian.org/ bookworm-security main contrib' >> /etc/apt/sources.list"
+          sudo su -c "sed -i'.bak' 's/$/ contrib/' /etc/apt/sources.list"
+          sudo su -c "apt-get update; apt-get install -y ttf-mscorefonts-installer fontconfig"
       - name: Test
         run: dotnet test Apsoil.sln --no-restore --verbosity minimal
