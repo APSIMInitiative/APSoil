@@ -1,0 +1,41 @@
+name: WorkFlo Tests
+
+env:
+  SSH_KEY:  ${{ github.actor }}_SSH_KEY
+on:
+  pull_request_target:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: [ '8.0.x' ]
+
+    steps:
+      - name: Checkout Pull request branch
+        uses: actions/checkout@v4
+        with:
+          repository: ${{github.event.pull_request.head.repo.full_name}}
+          ref: ${{github.event.pull_request.head.ref}}
+          ssh-key: ${{secrets[env.SSH_KEY]}}
+      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+      - name: Install dependencies
+        run: dotnet restore Apsoil.sln
+      - name: Build
+        run: dotnet build Apsoil.sln --configuration Debug --no-restore --verbosity minimal
+      - name: Install fonts for graph unit tests
+        run: |
+          echo "deb http://deb.debian.org/debian/ bookworm main contrib" > /etc/apt/sources.list && \
+          echo "deb-src http://deb.debian.org/debian/ bookworm main contrib" >> /etc/apt/sources.list && \
+          echo "deb http://security.debian.org/ bookworm-security main contrib" >> /etc/apt/sources.list && \
+          echo "deb-src http://security.debian.org/ bookworm-security main contrib" >> /etc/apt/sources.list
+          sed -i'.bak' 's/$/ contrib/' /etc/apt/sources.list
+          apt-get update; apt-get install -y ttf-mscorefonts-installer fontconfig
+      - name: Test
+        run: dotnet test Apsoil.sln --no-restore --verbosity minimal
