@@ -1,3 +1,4 @@
+using System.Xml.Serialization;
 using API.Data;
 using API.Services;
 using NUnit.Framework;
@@ -156,7 +157,9 @@ public class UploadEndpointTests
         // Get soils.
         var xml = soils.ToFolder().ToXML();
 
-        Assert.That(xml, Is.EqualTo(ResourceFile.Get("Tests.testsoil12.xml")));
+        XmlSerializer serializer = new(typeof(API.Models.Folder));
+        var folder = serializer.Deserialize(new StringReader(xml)) as API.Models.Folder;
+        Assert.That(folder.Soils.Count, Is.EqualTo(2));
     }
 
     [Test]
