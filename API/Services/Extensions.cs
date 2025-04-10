@@ -1,10 +1,12 @@
 using System.Drawing;
-using System.Runtime.CompilerServices;
+using System.IO.Compression;
 using System.Text;
 using System.Xml.Serialization;
-using API.Models;
 using APSIM.Shared.Utilities;
 using Graph;
+using SharpKml.Base;
+using SharpKml.Dom;
+using SharpKml.Engine;
 
 namespace API.Services;
 
@@ -44,11 +46,11 @@ public static class Extensions
     }
 
     /// <summary>
-    /// Convert an array of soils to a Folder string.
+    /// Convert an array of soils to a Folder.
     /// </summary>
     /// <param name="soils">The array of soils.</param>
     /// <returns>An XML string.</returns>
-    public static Folder ToFolder(this API.Models.Soil[] soils)
+    public static API.Models.Folder ToFolder(this API.Models.Soil[] soils)
     {
         return new Models.Folder()
         {
@@ -56,6 +58,58 @@ public static class Extensions
             Soils = soils.ToList()
         };
     }
+
+    /// <summary>
+    /// Convert an array of soils to a nested Folder.
+    /// </summary>
+    /// <param name="soils">The array of soils.</param>
+    /// <returns>An XML string.</returns>
+    public static API.Models.Folder ToRecursiveFolder(this API.Models.Soil[] soils, string folderName = "Soils")
+    {
+        var folder = new Models.Folder()
+        {
+            Name = "Soils",
+            Folders = new List<Models.Folder>(),
+            Soils = new List<Models.Soil>()
+        };
+
+        foreach (var soil in soils)
+            InsertSoilIntoFolder(soil, folder);
+
+        return folder;
+    }
+
+    private static void InsertSoilIntoFolder(Models.Soil soil, Models.Folder folder)
+    {
+        var paths = soil.FullName.Split('/');
+        Models.Folder f = folder;
+        foreach (var path in paths.Skip(1)) // Skip the first element which is the root folder name
+        {
+            if (path != paths.Last())
+            {
+                // Must be a folder - create it if it doesn't exist
+                f = folder.Folders.FirstOrDefault(f => f.Name == path);
+                if (f == null)
+                {
+                    f = new Models.Folder()
+                    {
+                        Name = path,
+                        Folders = new List<Models.Folder>(),
+                        Soils = new List<Models.Soil>()
+                    };
+                    folder.Folders.Add(f);
+                }
+                folder = f;
+            }
+            else
+            {
+                // Must be a soil - add it to the folder
+                f.Soils.Add(soil);
+            }
+        }
+    }
+
+
 
     /// <summary>
     /// Convert an XML string to an array of soils.
@@ -250,6 +304,105 @@ public static class Extensions
             });
         }
         return GraphRenderToPNG.Render(graph);
+    }
+
+    /// <summary>
+    /// Converts the soils to a KML string.
+    /// </summary>
+    public static byte[] ToKMZ(this API.Models.Folder folder)
+    {
+        var style = new Style
+        {
+            Id = "shovel_icon",
+            Icon = new IconStyle() { Icon = new IconStyle.IconLink(new Uri("shovel.png", UriKind.Relative)), }
+        };
+
+        var f = new SharpKml.Dom.Folder
+        {
+            Name = "Soils",
+        };
+        f.AddStyle(style);
+
+        folder.ToKML(f);
+
+
+        // This is the root element of the file
+        var kml = new Kml
+        {
+            Feature = f,
+        };
+
+        var serializer = new Serializer();
+        serializer.Serialize(kml);
+
+        using (var s = new MemoryStream())
+        {
+            using (var archive = new ZipArchive(s, ZipArchiveMode.Create, true))
+            {
+                var zipArchiveEntry = archive.CreateEntry("soils.kml");
+                using (var zipStream = zipArchiveEntry.Open())
+                {
+                    var bytes = serializer.Xml.ToBytes();
+                    zipStream.Write(bytes, 0, bytes.Length);
+                }
+                zipArchiveEntry = archive.CreateEntry("shovel.png");
+                using (var stream = typeof(Extensions).Assembly.GetManifestResourceStream("API.shovel.png"))
+                using (var zipStream = zipArchiveEntry.Open())
+                    stream.CopyTo(zipStream);
+            }
+            return s.ToArray();
+        }
+    }
+
+    /// <summary>
+    /// Converts a string to a byte array using UTF8 encoding.
+    /// </summary>
+    /// <param name="str">The string to convert.</param>
+    public static byte[] ToBytes(this string str)
+    {
+        return Encoding.UTF8.GetBytes(str);
+    }
+
+    /// <summary>
+    /// Convert a folder to KML.
+    /// </summary>
+    /// <param name="folder">The folder to convert.</param>
+    /// <param name="kmlFolder">The KML folder to add features to.</param>
+    private static void ToKML(this Models.Folder folder, SharpKml.Dom.Folder kmlFolder)
+    {
+        foreach (var soil in folder.Soils)
+            kmlFolder.AddFeature(soil.ToPlacemark());
+        if (folder.Folders != null)
+            foreach (var subFolder in folder.Folders)
+            {
+                var sub = new SharpKml.Dom.Folder { Name = subFolder.Name };
+                subFolder.ToKML(sub);
+                kmlFolder.AddFeature(sub);
+            }
+    }
+
+    /// <summary>
+    /// Convert a soil to a KML placemark.
+    /// </summary>
+    /// <param name="soil">The soil to convert.</param>
+    private static Placemark ToPlacemark(this Models.Soil soil)
+    {
+        return new Placemark
+        {
+            Name = soil.Name,
+            StyleUrl = new Uri("#shovel_icon", UriKind.Relative),
+            Geometry = new SharpKml.Dom.Point
+            {
+                Coordinate = new Vector(soil.Latitude, soil.Longitude)
+            },
+            Description = new Description()
+            {
+                Text = $"<p><b>{soil.Name}</b></p>" +
+                       $"<p>{soil.DataSource}</p>" +
+                       $"<a href=\"https://apsoil.apsim.info/xml/search?FullName={soil.FullName}&output=FullSoil\">Download soil</a></p>" +
+                       $"<img src=\"https://apsoil.apsim.info/xml/graph?FullName={soil.FullName}\" width=\"300\" height=\"400\"/><p>"
+            }
+        };
     }
 
     /// <summary>
