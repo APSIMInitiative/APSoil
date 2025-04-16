@@ -1,6 +1,7 @@
 using API.Data;
 using API.Models;
-using APSIM.Shared.Utilities;
+using APSIM.Numerics;
+using APSIM.Soils;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Services;
@@ -95,25 +96,24 @@ public static class Soil
             if (cll != null)
             {
                 if (cllIsGrav)
-                    soilsInMemory = soilsInMemory.OrderBy(s => Difference(cll, s.Crop(cropName)
-                                                                                .LL
-                                                                                .ConvertGravimetricToVolumetric(s.Water.BD)
-                                                                                .MappedTo(s.Water.Thickness, thickness))
+                    soilsInMemory = soilsInMemory.OrderBy(s => cll.Subtract(s.Crop(cropName)
+                                                                             .LL
+                                                                             .ConvertVolumetricToGravimetric(s.Water.BD)
+                                                                             .MappedTo(s.Water.Thickness, thickness))
                                                  .Sum());
                 else
-                    soilsInMemory = soilsInMemory.OrderBy(s => Difference(cll, s.Crop(cropName)
-                                                                                .LL
-                                                                                .MappedTo(s.Water.Thickness, thickness))
+                    soilsInMemory = soilsInMemory.OrderBy(s => cll.Subtract(s.Crop(cropName)
+                                                                             .LL
+                                                                             .MappedTo(s.Water.Thickness, thickness))
                                                  .Sum());
-
             }
 
             if (pawc != null)
             {
-                soilsInMemory = soilsInMemory.OrderBy(s => Difference(pawc, s.Crop(cropName)
-                                                                             .PAWC(s.Water.DUL)
-                                                                             .ToMM(s.Water.Thickness)
-                                                                             .MappedTo(s.Water.Thickness, thickness)
+                soilsInMemory = soilsInMemory.OrderBy(s => pawc.Subtract(s.Crop(cropName)
+                                                                          .PAWC(s.Water.DUL)
+                                                                          .Multiply(s.Water.Thickness)
+                                                                          .MappedTo(s.Water.Thickness, thickness)
                                                                      )
                                                            .Sum());
             }
@@ -135,29 +135,15 @@ public static class Soil
         var soils = context.Soils.Where(s => s.FullName == fullName);
         if (!soils.Any())
             throw new Exception($"Soil with full name {fullName} not found.");
-        var soil = soils.Include(s => s.Water)
-                        .Include(s => s.Water.SoilCrops)
-                        .Include(s => s.SoilOrganicMatter)
-                        .Include(s => s.SoilWater)
-                        .Include(s => s.Analysis)
-                        .First();
-        List<double> ll = null;
-        List<double> xf = null;
-        if (cropName != null)
-        {
-            var crop = soil.Water.SoilCrops.FirstOrDefault(c => c.Name == cropName);
-            if (crop == null)
-                throw new Exception($"Soil has no data for crop: {cropName}.");
-            ll = crop.LL;
-        }
-        else
-        {
-            ll = soil.Water.LL15;
-            xf = null;
-        }
-        var pawcByLayer = SoilUtilities.CalcPAWC(soil.Water.Thickness.ToArray(), ll.ToArray(), soil.Water.DUL.ToArray(), xf?.ToArray());
-        var pawc = MathUtilities.Multiply(pawcByLayer, soil.Water.Thickness.ToArray());
-        return pawc.Sum();
+        return soils.Include(s => s.Water)
+                    .Include(s => s.Water.SoilCrops)
+                    .Include(s => s.SoilOrganicMatter)
+                    .Include(s => s.SoilWater)
+                    .Include(s => s.Analysis)
+                    .First()
+                    .ToAPSIMSoil()
+                    .PAWCmm(cropName)
+                    .Sum();
     }
 
     /// <summary>Calculate and return the PAW of a soil</summary>
@@ -202,55 +188,8 @@ public static class Soil
         return MathUtilities.Multiply(pawByLayer, soil.Water.Thickness).Sum();
     }
 
-    /// <summary>Get the crop lower limit (volumetric) for a soil.</summary>
-    /// <param name="cropName">The crop name.</param>
-    /// <returns>The crop lower limit.</returns>
-    private static SoilCrop Crop(this Models.Soil soil, string cropName)
-    {
-        if (soil.Water == null || soil.Water.SoilCrops == null)
-            throw new Exception("Soil has no soilcrop data.");
-        var crop = soil.Water.SoilCrops.FirstOrDefault(c => c.Name == cropName);
-        if (crop == null)
-            throw new Exception($"Soil has no soilcrop data for {cropName}.");
-        return crop;
-    }
 
-    /// <summary>
-    /// Get the plant available water content for a soil crop.
-    /// </summary>
-    /// <param name="crop"></param>
-    /// <param name="dul"></param>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
-    private static double[] PAWC(this Models.SoilCrop crop, IList<double> dul)
-    {
-        if (crop.LL == null)
-            throw new Exception($"SoilCrop {crop.Name} has no LL data.");
-        return Difference(dul, crop.LL);
-    }
-
-    /// <summary>Get the difference between two arrays of values.</summary>
-    /// <param name="values1">The first array of values.</param>
-    /// <param name="values2">The second array of values.</param>
-    /// <returns>The difference between the two arrays.</returns>
-    private static double[] Difference(IList<double> values1, IList<double> values2)
-    {
-        double[] difference = new double[values1.Count];
-        for (int i = 0; i < values1.Count; i++)
-            difference[i] += Math.Abs(values1[i] - values2[i]);
-        return difference;
-    }
-
-    /// <summary>Map values to a thickness.</summary>
-    /// <param name="values">The values to map.</param>
-    /// <param name="thickness">The thickness to map to.</param>
-    /// <returns>The mapped values.</returns>
-    private static double[] MappedTo(this IReadOnlyList<double> values, IReadOnlyList<double> fromThickness, IReadOnlyList<double> toThickness)
-    {
-        return APSIM.Shared.Utilities.SoilUtilities.MapConcentration(values.ToArray(), fromThickness.ToArray(), toThickness.ToArray());
-    }
-
-    /// <summary>Map values to a thickness using a ramp down (0.8, 0.4, 0 x values.Last()) below profile.</summary>
+    /// <summary>Map values to a thickness using a ramp down (0.8, 0.4, 0 x values.Last()) below profile. </summary>
     /// <param name="values">The values to map.</param>
     /// <param name="thickness">The thickness to map to.</param>
     /// <returns>The mapped values.</returns>
@@ -272,15 +211,4 @@ public static class Soil
                             .Divide(toThickness);     // convert back to volumetric
     }
 
-    /// <summary>Convert volumetric values to mm.</summary>
-    /// <param name="values">The values to convert.</param>
-    /// <param name="thickness">The thickness.</param>
-    /// <returns>The values in mm.</returns>
-    private static double[] ToMM(this IList<double> values, IList<double> thickness)
-    {
-        double[] mm = new double[values.Count];
-        for (int i = 0; i < thickness.Count; i++)
-            mm[i] += values[i] * thickness[i];
-        return mm;
-    }
 }
