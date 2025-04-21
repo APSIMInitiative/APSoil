@@ -72,7 +72,7 @@ internal class Program
                         fullName, cropName, thickness?.Doubles, cll?.Doubles, cllIsGrav, pawc?.Doubles, numToReturn)
                 .ToXMLResult(output));
 
-        // Endpoint: Get graph of soil.
+        // Endpoint: Get graph of specified soil.
         app.MapGet("/graph", (SoilDbContext context, string fullName, Values thickness = null, Values sw = null, bool swIsGrav = false) =>
         {
             return Soil.Search(context, fullName:fullName)
@@ -80,6 +80,17 @@ internal class Program
                       ?.First()
                        .ToGraphPng(thickness?.Doubles, sw?.Doubles, swIsGrav)
                        .ToImageResult();
+        });
+
+        // Endpoint: Get graph of a posted soil.
+        app.MapPost("/graph", (HttpRequest request) =>
+        {
+            return request
+                   .ToXML()
+                   .ToSoils()
+                  ?.First()
+                   .ToGraphPng()
+                   .ToImageResult();
         });
 
         // Endpoint: Calculate and return the PAWC of a specified soil and crop (mm). Crop can be null.
