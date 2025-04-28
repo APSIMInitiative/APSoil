@@ -399,8 +399,8 @@ public static class Extensions
             {
                 Text = $"<p><b>{soil.Name}</b></p>" +
                        $"<p>{soil.DataSource}</p>" +
-                       $"<a href=\"https://apsoil.apsim.info/xml/search?FullName={soil.FullName}&output=FullSoil\">Download soil</a></p>" +
-                       $"<img src=\"https://apsoil.apsim.info/xml/graph?FullName={soil.FullName}\" width=\"300\" height=\"400\"/><p>"
+                       $"<a href=\"https://apsoil.apsim.info/search?FullName={soil.FullName}&output=FullSoil\">Download soil</a></p>" +
+                       $"<img src=\"https://apsoil.apsim.info/graph?FullName={soil.FullName}\" width=\"300\" height=\"400\"/><p>"
             }
         };
     }
