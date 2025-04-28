@@ -174,9 +174,9 @@ public static class Extensions
     /// </summary>
     /// <param name="soil"></param>
     /// <returns></returns>
-    public static GraphModel ToGraph(this Models.Soil soil, double[] thickness = null,
-                                     double[] sw = null, bool swIsGrav = false,
-                                     string cropName = null)
+    public static Graph ToGraph(this Models.Soil soil, double[] thickness = null,
+                                double[] sw = null, bool swIsGrav = false,
+                                string cropName = null)
     {
         IReadOnlyList<double> cll = null;
         double pawc = double.NaN;
