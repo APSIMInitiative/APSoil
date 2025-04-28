@@ -19,7 +19,7 @@ public static class Extensions
     {
         // Serialize the object synchronously then rewind the stream
         XmlSerializer Serializer = new(obj.GetType());
-        using var textWriter = new StringWriter();
+        using var textWriter = new Utf8StringWriter();
         Serializer.Serialize(textWriter, obj);
         return textWriter.ToString();
     }
@@ -433,6 +433,10 @@ public static class Extensions
             soil.FullName = $"{path}{soil.Name}";
             yield return soil;
         }
+    }
+    public class Utf8StringWriter : StringWriter
+    {
+        public override Encoding Encoding => Encoding.UTF8;
     }
 
 }
