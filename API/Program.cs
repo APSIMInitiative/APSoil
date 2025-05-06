@@ -85,6 +85,18 @@ internal class Program
                        .ToImageResult();
         });
 
+        // Endpoint: Get graph of a posted soil.
+        app.MapPost("/graph", (HttpRequest request) =>
+        {
+            return request
+                   .ToXML()
+                   .ToSoils()
+                  ?.First()
+                   .ToGraph()
+                   .ToPNG()
+                   .ToImageResult();
+        });
+
         // Endpoint: Calculate and return the PAWC of a specified soil and crop (mm). Crop can be null.
         app.MapGet("/pawc", (SoilDbContext context, string fullName, string cropName = null)
             => Soil.PAWC(context, fullName, cropName));
