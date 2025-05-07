@@ -1,12 +1,8 @@
-using System.Drawing;
-using System.IO.Compression;
-using System.Text;
 using System.Xml.Serialization;
-using APSIM.Shared.Utilities;
-using Graph;
-using SharpKml.Base;
-using SharpKml.Dom;
-using SharpKml.Engine;
+using APSIM.Numerics;
+using APSIM.Soils;
+using APSIM.Graphs;
+using System.Text;
 
 namespace API.Services;
 
@@ -109,8 +105,6 @@ public static class Extensions
         }
     }
 
-
-
     /// <summary>
     /// Convert an XML string to an array of soils.
     /// </summary>
@@ -176,246 +170,58 @@ public static class Extensions
         };
     }
 
-    /// <summary>Convert a soil to a graph PNG.</summary>
-    /// <param name="soil">The soil.</param>
-    /// <param name="thickness">The thickness.</param>
-    /// <param name="sw">The soil water.</param>
-    /// <param name="swIsGrav">Is the soil water gravimetric?</param>
-    /// <returns>A PNG image of the soil graph.</returns>
-    public static byte[] ToGraphPng(this Models.Soil soil, double[] thickness = null, double[] sw = null, bool swIsGrav = false)
+    /// <summary>
+    /// Convert a soil to a soil graph.
+    /// </summary>
+    /// <param name="soil"></param>
+    /// <returns></returns>
+    public static Graph ToGraph(this Models.Soil soil, double[] thickness = null,
+                                double[] sw = null, bool swIsGrav = false,
+                                string cropName = null)
     {
-        double[] midPoints = SoilUtilities.ToMidPoints(soil.Water.Thickness.ToArray());
-
-        GraphModel graph = new()
+        IReadOnlyList<double> cll = null;
+        double pawc = double.NaN;
+        if (cropName != null)
         {
-            Title = soil.Name,
-            LegendPosition = GraphModel.LegendPositionEnum.BottomLeft,
-            Axes =
-            [
-                new()
-                {
-                    Title = "Depth (mm)",
-                    Minimum = 0,
-                    Position = AxisModel.PositionEnum.Left,
-                    Maximum = (Math.Truncate(midPoints.Last() / 200) + 1) * 200,  // Scale up to the nearest 200
-                    IsVisible = true,
-                    Inverted = true
-                },
-                new()
-                {
-                    Title = "Volumetric Water Content (mm/mm)",
-                    Position = AxisModel.PositionEnum.Top,
-                    IsVisible = true
-                }
-            ]
-        };
-        double[] ll;
-        double[] xf;
-        double[] pawc;
-        string llName;
-        if (soil.Water.SoilCrops == null || soil.Water.SoilCrops.Count == 0)
-        {
-            ll = soil.Water.LL15.ToArray();
-            llName = "LL15";
-            xf = null;
+            var crop = soil.Crop(cropName);
+            cll = crop.LL;
+            pawc = PAWC(crop, soil.Water.DUL).Multiply(soil.Water.Thickness).Sum();
         }
-        else
+
+        if (swIsGrav)
         {
-            // Look for wheat soil crop. If not found then use the first soil crop.
-            if (soil.Water.SoilCrops.Any(c => c.Name == "wheat"))
-            {
-                ll = soil.Water.SoilCrops.First(c => c.Name == "wheat").LL.ToArray();
-                llName = "wheat";
-                xf = soil.Water.SoilCrops.First(c => c.Name == "wheat").XF.ToArray();
-            }
-            else
-            {
-                ll = soil.Water.SoilCrops.First().LL.ToArray();
-                llName = soil.Water.SoilCrops.First().Name;
-                xf = soil.Water.SoilCrops.First().XF.ToArray();
-            }
+            var bdMapped = soil.Water.BD.MappedTo(soil.Water.Thickness, thickness);
+            sw = sw.ConvertGravimetricToVolumetric(bdMapped).ToArray();
         }
-        pawc = SoilUtilities.CalcPAWC(soil.Water.Thickness.ToArray(), ll, soil.Water.DUL.ToArray(), xf);
-        pawc = MathUtilities.Multiply(pawc, soil.Water.Thickness.ToArray()); // Convert to mm
+        return SoilGraph.Create(soil.Name, soil.Water.Thickness.ToMidPoints(), soil.Water.AirDry, soil.Water.LL15,
+                                soil.Water.DUL, soil.Water.SAT, cll, cropName, pawc, thickness?.ToMidPoints(), sw);
+    }
 
-        graph.Series =
-        [
-            new SeriesModel()
-            {
-                Title = $"{llName} PAWC: {pawc.Sum():F0} mm",
-                SeriesType = SeriesModel.SeriesTypeEnum.Area,
-                Points = soil.Water.LL15.Zip(midPoints)
-                                        .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
-                Points2 = soil.Water.DUL.Zip(midPoints)
-                                        .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
-                ShowInLegend = true,
-                LineType = SeriesModel.LineTypeEnum.Solid,
-                Colour = Color.LightBlue,
-            },
-            new SeriesModel()
-            {
-                Title = "Airdry",
-                Points = soil.Water.AirDry.Zip(midPoints)
-                                        .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
-                ShowInLegend = true,
-                LineType = SeriesModel.LineTypeEnum.Dot,
-                Colour = Color.Red,
-            },
-            new()
-            {
-                Title = "LL15",
-                Points = soil.Water.LL15.Zip(midPoints)
-                                        .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
-                ShowInLegend = true,
-                LineType = SeriesModel.LineTypeEnum.Solid,
-                Colour = Color.Red,
-            },
-            new()
-            {
-                Title = "DUL",
-                Points = soil.Water.DUL.Zip(midPoints)
-                                        .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
-                ShowInLegend = true,
-                LineType = SeriesModel.LineTypeEnum.Solid,
-                Colour = Color.Blue,
-            },
-            new SeriesModel()
-            {
-                Title = "SAT",
-                Points = soil.Water.SAT.Zip(midPoints)
-                                        .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
-                ShowInLegend = true,
-                LineType = SeriesModel.LineTypeEnum.Dot,
-                Colour = Color.Blue,
-            }
-        ];
-
-        if (thickness != null && sw != null)
-        {
-            double[] swMidPoints = SoilUtilities.ToMidPoints(thickness.ToArray());
-            graph.Series.Add(new SeriesModel()
-            {
-                Title = "SW",
-                Points = sw.Zip(swMidPoints)
-                           .Select(zip => new DataPoint { X = zip.First, Y = zip.Second }),
-                ShowInLegend = true,
-                LineType = SeriesModel.LineTypeEnum.Solid,
-                Colour = Color.Green,
-            });
-        }
-        return GraphRenderToPNG.Render(graph);
+    /// <summary>Get the crop lower limit (volumetric) for a soil.</summary>
+    /// <param name="cropName">The crop name.</param>
+    /// <returns>The crop lower limit.</returns>
+    public static Models.SoilCrop Crop(this Models.Soil soil, string cropName)
+    {
+        if (soil.Water == null || soil.Water.SoilCrops == null)
+            throw new Exception("Soil has no soilcrop data.");
+        var crop = soil.Water.SoilCrops.FirstOrDefault(c => c.Name == cropName);
+        if (crop == null)
+            throw new Exception($"Soil has no soilcrop data for {cropName}.");
+        return crop;
     }
 
     /// <summary>
-    /// Converts the soils to a KML string.
+    /// Get the plant available water content for a soil crop.
     /// </summary>
-    public static byte[] ToKMZ(this API.Models.Folder folder)
+    /// <param name="crop"></param>
+    /// <param name="dul"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public static double[] PAWC(this Models.SoilCrop crop, IList<double> dul)
     {
-        var style = new Style
-        {
-            Id = "shovel_icon",
-            Icon = new IconStyle() { Icon = new IconStyle.IconLink(new Uri("shovel.png", UriKind.Relative)), }
-        };
-
-        var f = new SharpKml.Dom.Folder
-        {
-            Name = "Soils",
-        };
-        f.AddStyle(style);
-
-        folder.ToKML(f);
-
-
-        // This is the root element of the file
-        var kml = new Kml
-        {
-            Feature = f,
-        };
-
-        var serializer = new Serializer();
-        serializer.Serialize(kml);
-
-        using (var s = new MemoryStream())
-        {
-            using (var archive = new ZipArchive(s, ZipArchiveMode.Create, true))
-            {
-                var zipArchiveEntry = archive.CreateEntry("soils.kml");
-                using (var zipStream = zipArchiveEntry.Open())
-                {
-                    var bytes = serializer.Xml.ToBytes();
-                    zipStream.Write(bytes, 0, bytes.Length);
-                }
-                zipArchiveEntry = archive.CreateEntry("shovel.png");
-                using (var stream = typeof(Extensions).Assembly.GetManifestResourceStream("API.shovel.png"))
-                using (var zipStream = zipArchiveEntry.Open())
-                    stream.CopyTo(zipStream);
-            }
-            return s.ToArray();
-        }
-    }
-
-    /// <summary>
-    /// Converts a string to a byte array using UTF8 encoding.
-    /// </summary>
-    /// <param name="str">The string to convert.</param>
-    public static byte[] ToBytes(this string str)
-    {
-        return Encoding.UTF8.GetBytes(str);
-    }
-
-    /// <summary>
-    /// Convert a folder to KML.
-    /// </summary>
-    /// <param name="folder">The folder to convert.</param>
-    /// <param name="kmlFolder">The KML folder to add features to.</param>
-    private static void ToKML(this Models.Folder folder, SharpKml.Dom.Folder kmlFolder)
-    {
-        foreach (var soil in folder.Soils)
-            kmlFolder.AddFeature(soil.ToPlacemark());
-        if (folder.Folders != null)
-            foreach (var subFolder in folder.Folders)
-            {
-                var sub = new SharpKml.Dom.Folder { Name = subFolder.Name };
-                subFolder.ToKML(sub);
-                kmlFolder.AddFeature(sub);
-            }
-    }
-
-    /// <summary>
-    /// Convert a soil to a KML placemark.
-    /// </summary>
-    /// <param name="soil">The soil to convert.</param>
-    private static Placemark ToPlacemark(this Models.Soil soil)
-    {
-        return new Placemark
-        {
-            Name = soil.Name,
-            StyleUrl = new Uri("#shovel_icon", UriKind.Relative),
-            Geometry = new SharpKml.Dom.Point
-            {
-                Coordinate = new Vector(soil.Latitude, soil.Longitude)
-            },
-            Description = new Description()
-            {
-                Text = $"<p><b>{soil.Name}</b></p>" +
-                       $"<p>{soil.DataSource}</p>" +
-                       $"<a href=\"https://apsoil.apsim.info/search?FullName={soil.FullName}&output=FullSoil\">Download soil</a></p>" +
-                       $"<img src=\"https://apsoil.apsim.info/graph?FullName={soil.FullName}\" width=\"300\" height=\"400\"/><p>"
-            }
-        };
-    }
-
-    /// <summary>
-    /// Convert a volumetric water content to a gravimetric water content.
-    /// </summary>
-    /// <param name="volumetricWater">The volumetric water content.</param>
-    /// <param name="bulkDensity">The bulk density.</param>
-    public static IReadOnlyList<double> ConvertGravimetricToVolumetric(this IReadOnlyList<double> gravimetricWater, IReadOnlyList<double> bulkDensity)
-    {
-        if (gravimetricWater.Count != bulkDensity.Count)
-            throw new ArgumentException("Soil water and bulk density arrays must be the same length.");
-
-        return MathUtilities.Multiply(gravimetricWater, bulkDensity);
+        if (crop.LL == null)
+            throw new Exception($"SoilCrop {crop.Name} has no LL data.");
+        return dul.Subtract(crop.LL);
     }
 
     /// <summary>Get all folders and subfolders recursively.</summary>

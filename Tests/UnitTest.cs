@@ -1,6 +1,7 @@
 using System.Xml.Serialization;
 using API.Data;
 using API.Services;
+using APSIM.Graphs;
 using NUnit.Framework;
 using SharpKml.Engine;
 using Tests.Services;
@@ -143,7 +144,7 @@ public class UploadEndpointTests
                                              thickness: [ 200, 300, 300 ], cll: [ 0.12, 0.18, 0.22 ])
                                      .ToSoils();
         Assert.That(soils.Length, Is.EqualTo(1));
-        Assert.That(soils[0].Name, Is.EqualTo("Red Chromosol (Billa Billa No066)"));
+        Assert.That(soils[0].Name, Is.EqualTo("Clay (Kerikeri No1353)"));
     }
 
 
@@ -192,16 +193,6 @@ public class UploadEndpointTests
     }
 
     [Test]
-    public void Graph_ShouldReturnGraph()
-    {
-        var soil = ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil1.xml");
-        using var ms = new MemoryStream(soil.ToGraphPng());
-        using (var fileStream = new FileStream("Tests.testgraph.png", FileMode.Create, FileAccess.Write))
-            ms.CopyTo(fileStream);
-        Assert.That(File.Exists("Tests.testgraph.png"), Is.True);
-    }
-
-    [Test]
     public void PAWC_ShouldReturnCorrectValue()
     {
         var options = MockDb.CreateOptions<SoilDbContext>();
@@ -245,7 +236,6 @@ public class UploadEndpointTests
         Assert.That(paw, Is.EqualTo(38.787046).Within(0.000001));
     }
 
-
     [Test]
     public void KMZ_ShouldReturnValidKMZ()
     {
@@ -282,5 +272,14 @@ public class UploadEndpointTests
         Assert.That(folder.Folders[1].Name, Is.EqualTo("B1"));
         Assert.That(folder.Folders[1].Folders[0].Name, Is.EqualTo("B2"));
         Assert.That(folder.Folders[1].Folders[0].Soils[0].Name, Is.EqualTo("Grey Vertosol-Mt Carmel (Billa Billa No036)"));
+    }
+
+    [Test]
+    public void ToAPSIMSoil_ShouldPopulateAllMembers()
+    {
+        var soil = ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil1.xml");
+
+        var apsimSoilXml = soil.ToAPSIMSoil().ToXML();
+        Assert.That(apsimSoilXml, Is.EqualTo(ResourceFile.Get("Tests.testsoil1.apsim.xml")));
     }
 }

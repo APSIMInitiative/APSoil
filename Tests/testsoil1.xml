@@ -280,7 +280,7 @@
         <double>0.977</double>
         <double>0.995</double>
       </FInert>
-      <OCUnits>Total</OCUnits>
+      <OCUnits>WalkleyBlack</OCUnits>
     </SoilOrganicMatter>
     <Analysis>
       <Thickness>

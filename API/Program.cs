@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using API.Data;
 using API.Services;
 using static API.Services.SoilsFromDb;
+using APSIM.Graphs;
 
 internal class Program
 {
@@ -72,13 +73,15 @@ internal class Program
                         fullName, cropName, thickness?.Doubles, cll?.Doubles, cllIsGrav, pawc?.Doubles, numToReturn)
                 .ToXMLResult(output));
 
-        // Endpoint: Get graph of specified soil.
-        app.MapGet("/graph", (SoilDbContext context, string fullName, Values thickness = null, Values sw = null, bool swIsGrav = false) =>
+        // Endpoint: Get graph of soil.
+        app.MapGet("/graph", (SoilDbContext context, string fullName, Values thickness = null, Values sw = null,
+                              bool swIsGrav = false, string cropName = null) =>
         {
             return Soil.Search(context, fullName:fullName)
                        .ToSoils()
                       ?.First()
-                       .ToGraphPng(thickness?.Doubles, sw?.Doubles, swIsGrav)
+                       .ToGraph(thickness?.Doubles, sw?.Doubles, swIsGrav, cropName)
+                       .ToPNG()
                        .ToImageResult();
         });
 
@@ -89,7 +92,8 @@ internal class Program
                    .ToXML()
                    .ToSoils()
                   ?.First()
-                   .ToGraphPng()
+                   .ToGraph()
+                   .ToPNG()
                    .ToImageResult();
         });
 
