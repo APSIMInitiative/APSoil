@@ -181,9 +181,13 @@ public static class Soil
             xf = null;
         }
 
-        IReadOnlyList<double> swMapped = sw.SWMappedTo(thickness, soil.Water.Thickness, ll);
         if (swIsGrav)
-            swMapped = swMapped.ConvertGravimetricToVolumetric(soil.Water.BD);
+        {
+            IReadOnlyList<double> bdMapped = soil.Water.BD.MappedTo(soil.Water.Thickness, thickness);
+            sw = sw.ConvertGravimetricToVolumetric(bdMapped);
+        }
+
+        IReadOnlyList<double> swMapped = sw.SWMappedTo(thickness, soil.Water.Thickness, ll);
         var pawByLayer = SoilUtilities.CalcPAWC(soil.Water.Thickness, ll, swMapped, xf);
         return MathUtilities.Multiply(pawByLayer, soil.Water.Thickness).Sum();
     }

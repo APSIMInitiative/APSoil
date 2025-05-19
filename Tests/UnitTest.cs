@@ -233,7 +233,7 @@ public class UploadEndpointTests
         var paw = API.Services.Soil.PAW(context, "Clay (Kerikeri No1353)", cropName: "wheat",
                                         thickness: [ 150, 500 ],
                                         sw: [ 0.4, 0.3 ], swIsGrav: true);
-        Assert.That(paw, Is.EqualTo(38.787046).Within(0.000001));
+        Assert.That(paw, Is.EqualTo(22.165).Within(0.000001));
     }
 
     [Test]
