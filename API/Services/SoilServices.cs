@@ -206,7 +206,7 @@ public static class Soil
         sw.Add(0.0);                     // 3rd pseudo layer below profile.
         thickness.Add(thickness.Last()); // 1st pseudo layer below profile.
         thickness.Add(thickness.Last()); // 2nd pseudo layer below profile.
-        thickness.Add(300);             // 3rd pseudo layer below profile.
+        thickness.Add(3000);             // 3rd pseudo layer below profile.
 
         var llMapped = ll.MappedTo(toThickness, thickness);
         var swMM = sw.LowerConstraint(llMapped, startIndex: values.Count)
