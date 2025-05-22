@@ -165,6 +165,7 @@ public static class Soil
                         .Include(s => s.SoilWater)
                         .Include(s => s.Analysis)
                         .First();
+
         IReadOnlyList<double> ll = null;
         IReadOnlyList<double> xf = null;
         if (cropName != null)
@@ -197,7 +198,7 @@ public static class Soil
     /// <param name="values">The values to map.</param>
     /// <param name="thickness">The thickness to map to.</param>
     /// <returns>The mapped values.</returns>
-    private static double[] SWMappedTo(this IReadOnlyList<double> values, IReadOnlyList<double> fromThickness, IReadOnlyList<double> toThickness, IReadOnlyList<double> ll)
+    public static double[] SWMappedTo(this IReadOnlyList<double> values, IReadOnlyList<double> fromThickness, IReadOnlyList<double> toThickness, IReadOnlyList<double> ll)
     {
         List<double> sw = values.ToList();
         List<double> thickness = fromThickness.ToList();

@@ -13,7 +13,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.*" />
     <PackageReference Include="SharpKml.Core" Version="6.1.*" />
     <PackageReference Include="AutoMapper" Version="14.0.0" />
-    <PackageReference Include="APSIM.Graphs" Version="8.0.0" />
+    <PackageReference Include="APSIM.Graphs" Version="8.1.0" />
     <PackageReference Include="APSIM.Soils" Version="8.0.0" />
     <PackageReference Include="APSIM.Numerics" Version="8.2.0" />
   </ItemGroup>
