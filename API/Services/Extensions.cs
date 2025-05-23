@@ -179,22 +179,42 @@ public static class Extensions
                                 double[] sw = null, bool swIsGrav = false,
                                 string cropName = null)
     {
-        IReadOnlyList<double> cll = null;
-        double pawc = double.NaN;
+        IReadOnlyList<double> ll;
+        IReadOnlyList<double> xf;
         if (cropName != null)
         {
             var crop = soil.Crop(cropName);
-            cll = crop.LL;
-            pawc = PAWC(crop, soil.Water.DUL).Multiply(soil.Water.Thickness).Sum();
+            ll = crop.LL;
+            xf = crop.XF;
+        }
+        else
+        {
+            ll = soil.Water.LL15;
+            xf = Enumerable.Repeat(1.0, ll.Count).ToArray();
         }
 
-        if (swIsGrav)
+        double paw = double.NaN;
+        if (sw != null)
         {
-            var bdMapped = soil.Water.BD.MappedTo(soil.Water.Thickness, thickness);
-            sw = sw.ConvertGravimetricToVolumetric(bdMapped).ToArray();
+            if (swIsGrav)
+            {
+                var bdMapped = soil.Water.BD.MappedTo(soil.Water.Thickness, thickness);
+                sw = sw.ConvertGravimetricToVolumetric(bdMapped).ToArray();
+            }
+            // Map water to bottom of profile.
+            sw = Soil.SWMappedTo(sw, thickness, soil.Water.Thickness, ll);
+
+            // Calculate plant available water.
+            paw = SoilUtilities.CalcPAWC(soil.Water.Thickness, ll, sw, xf)
+                               .Multiply(soil.Water.Thickness)
+                               .Sum();
         }
+        // Calculate PAWC for graph.
+        double pawc = SoilUtilities.CalcPAWC(soil.Water.Thickness, ll, soil.Water.DUL, Enumerable.Repeat(1.0, ll.Count).ToArray())
+                                   .Multiply(soil.Water.Thickness).Sum();
+
         return SoilGraph.Create(soil.Name, soil.Water.Thickness.ToMidPoints(), soil.Water.AirDry, soil.Water.LL15,
-                                soil.Water.DUL, soil.Water.SAT, cll, cropName, pawc, thickness?.ToMidPoints(), sw);
+                                    soil.Water.DUL, soil.Water.SAT, ll, cropName, pawc, paw, thickness?.ToMidPoints(), sw);
     }
 
     /// <summary>Get the crop lower limit (volumetric) for a soil.</summary>
