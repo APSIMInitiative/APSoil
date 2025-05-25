@@ -14,10 +14,10 @@ public class SoilOrganicMatter
     public double SoilCN { get; set; }
     public double EnrACoeff { get; set; }
     public double EnrBCoeff { get; set; }
-    public List<double> Thickness { get; set; } = null!;
-    public List<double> OC { get; set; } = null!;
-    public List<string>? OCMetadata { get; set; }
-    public List<double> FBiom { get; set; } = null!;
-    public List<double> FInert { get; set; } = null!;
+    public double[] Thickness { get; set; } = null!;
+    public double[] OC { get; set; } = null!;
+    public string[]? OCMetadata { get; set; }
+    public double[]? FBiom { get; set; } = null;
+    public double[]? FInert { get; set; } = null;
     public string? OCUnits { get; set; }
 }

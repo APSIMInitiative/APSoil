@@ -36,16 +36,16 @@ public static class DataToDomainModelMap
         var apsimSoil = mapper.Map<APSIM.Soils.Soil>(soil);
 
         // Some manual mapping. Can't find a way for AutoMapper to do it.
-        apsimSoil.Physical.Rocks = soil.Analysis.Rocks;
-        apsimSoil.Physical.RocksMetadata = soil.Analysis.RocksMetadata;
-        apsimSoil.Physical.Texture = soil.Analysis.Texture;
-        apsimSoil.Physical.TextureMetadata = soil.Analysis.TextureMetadata;
-        apsimSoil.Physical.ParticleSizeClay = soil.Analysis.ParticleSizeClay;
-        apsimSoil.Physical.ParticleSizeClayMetadata = soil.Analysis.ParticleSizeClayMetadata;
-        apsimSoil.Physical.ParticleSizeSand = soil.Analysis.ParticleSizeSand;
-        apsimSoil.Physical.ParticleSizeSandMetadata = soil.Analysis.ParticleSizeSandMetadata;
-        apsimSoil.Physical.ParticleSizeSilt = soil.Analysis.ParticleSizeSilt;
-        apsimSoil.Physical.ParticleSizeSiltMetadata = soil.Analysis.ParticleSizeSiltMetadata;
+        apsimSoil.Physical.Rocks = soil.Analysis.Rocks.ToList();
+        apsimSoil.Physical.RocksMetadata = soil.Analysis.RocksMetadata.ToList();
+        apsimSoil.Physical.Texture = soil.Analysis.Texture.ToList();
+        apsimSoil.Physical.TextureMetadata = soil.Analysis.TextureMetadata.ToList();
+        apsimSoil.Physical.ParticleSizeClay = soil.Analysis.ParticleSizeClay.ToList();
+        apsimSoil.Physical.ParticleSizeClayMetadata = soil.Analysis.ParticleSizeClayMetadata.ToList();
+        apsimSoil.Physical.ParticleSizeSand = soil.Analysis.ParticleSizeSand.ToList();
+        apsimSoil.Physical.ParticleSizeSandMetadata = soil.Analysis.ParticleSizeSandMetadata.ToList();
+        apsimSoil.Physical.ParticleSizeSilt = soil.Analysis.ParticleSizeSilt.ToList();
+        apsimSoil.Physical.ParticleSizeSiltMetadata = soil.Analysis.ParticleSizeSiltMetadata.ToList();
         return apsimSoil;
     }
 

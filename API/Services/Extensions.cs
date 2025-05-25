@@ -152,20 +152,20 @@ public static class Extensions
             Site = soil.Site,
             Region = soil.Region,
             NearestTown = soil.NearestTown,
-            Thickness = soil.Water?.Thickness.ToArray(),
-            Texture = soil.Analysis?.Texture.ToArray(),
-            DUL = soil.Water?.DUL.ToArray(),
-            LL15 = soil.Water?.LL15.ToArray(),
-            EC = soil.Analysis?.EC.ToArray(),
-            CL = soil.Analysis?.CL.ToArray(),
-            ESP = soil.Analysis?.ESP.ToArray(),
-            PH = soil.Analysis?.PH.ToArray(),
-            Crops = soil.Water?.SoilCrops.Select(c => new Models.SoilCropInfo
+            Thickness = soil.Water?.Thickness,
+            Texture = soil.Analysis?.Texture,
+            DUL = soil.Water?.DUL,
+            LL15 = soil.Water?.LL15,
+            EC = soil.Analysis?.EC,
+            CL = soil.Analysis?.CL,
+            ESP = soil.Analysis?.ESP,
+            PH = soil.Analysis?.PH,
+            Crops = soil.Water?.SoilCrops?.Select(c => new Models.SoilCropInfo
             {
                 Name = c.Name,
-                LL = c.LL.ToArray(),
-                KL = c.KL.ToArray(),
-                XF = c.XF.ToArray()
+                LL = c.LL,
+                KL = c.KL,
+                XF = c.XF
             }).ToList()
         };
     }
