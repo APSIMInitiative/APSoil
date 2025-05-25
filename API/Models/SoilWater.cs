@@ -26,6 +26,6 @@ public class SoilWater
     public double? DischargeWidth { get; set; }
     public double? CatchmentArea { get; set; }
     public double? MaxPond { get; set; }
-    public List<double> Thickness { get; set; } = null!;
-    public List<double> SWCON { get; set; } = null!;
+    public double[] Thickness { get; set; } = null!;
+    public double[] SWCON { get; set; } = null!;
 }

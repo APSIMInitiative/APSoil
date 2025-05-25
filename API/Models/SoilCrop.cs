@@ -12,9 +12,9 @@ public class SoilCrop
 
     [XmlAttribute("name")]
     public string Name { get; set; } = null!;
-    public List<double> Thickness { get; set; } = null!;
-    public List<double> LL { get; set; } = null!;
-    public List<double> KL { get; set; } = null!;
-    public List<double> XF { get; set; } = null!;
-    public List<string>? LLMetadata { get; set; } = null;
+    public double[] Thickness { get; set; } = null!;
+    public double[] LL { get; set; } = null!;
+    public double[] KL { get; set; } = null!;
+    public double[]? XF { get; set; } = null;
+    public string[]? LLMetadata { get; set; } = null;
 }
