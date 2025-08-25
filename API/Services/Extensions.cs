@@ -202,7 +202,7 @@ public static class Extensions
                 sw = sw.ConvertGravimetricToVolumetric(bdMapped).ToArray();
             }
             // Map water to bottom of profile.
-            sw = Soil.SWMappedTo(sw, thickness, soil.Water.Thickness, ll);
+            sw = Soil.SWMappedTo(sw, thickness, soil.Water.Thickness, soil.Water.LL15, ll, soil.Water.DUL);
 
             // Calculate plant available water.
             paw = SoilUtilities.CalcPAWC(soil.Water.Thickness, ll, sw, xf)
@@ -213,8 +213,10 @@ public static class Extensions
         double pawc = SoilUtilities.CalcPAWC(soil.Water.Thickness, ll, soil.Water.DUL, Enumerable.Repeat(1.0, ll.Count).ToArray())
                                    .Multiply(soil.Water.Thickness).Sum();
 
+        // To stop the sw line crossing over ll, constrain it to ll.
+        var swConstainedToLL = sw.LowerConstraint(ll);
         return SoilGraph.Create(soil.Name, soil.Water.Thickness.ToMidPoints(), soil.Water.AirDry, soil.Water.LL15,
-                                    soil.Water.DUL, soil.Water.SAT, ll, cropName, pawc, paw, thickness?.ToMidPoints(), sw);
+                                    soil.Water.DUL, soil.Water.SAT, ll, cropName, pawc, paw, thickness?.ToMidPoints(), swConstainedToLL);
     }
 
     /// <summary>Get the crop lower limit (volumetric) for a soil.</summary>

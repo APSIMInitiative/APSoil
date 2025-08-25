@@ -188,7 +188,7 @@ public static class Soil
             sw = sw.ConvertGravimetricToVolumetric(bdMapped);
         }
 
-        IReadOnlyList<double> swMapped = sw.SWMappedTo(thickness, soil.Water.Thickness, ll);
+        IReadOnlyList<double> swMapped = sw.SWMappedTo(thickness, soil.Water.Thickness, soil.Water.LL15, ll, soil.Water.DUL);
         var pawByLayer = SoilUtilities.CalcPAWC(soil.Water.Thickness, ll, swMapped, xf);
         return MathUtilities.Multiply(pawByLayer, soil.Water.Thickness).Sum();
     }
@@ -198,22 +198,18 @@ public static class Soil
     /// <param name="values">The values to map.</param>
     /// <param name="thickness">The thickness to map to.</param>
     /// <returns>The mapped values.</returns>
-    public static double[] SWMappedTo(this IReadOnlyList<double> values, IReadOnlyList<double> fromThickness, IReadOnlyList<double> toThickness, IReadOnlyList<double> ll)
+    public static double[] SWMappedTo(this IReadOnlyList<double> values, IReadOnlyList<double> fromThickness, IReadOnlyList<double> toThickness, IReadOnlyList<double> ll15, IReadOnlyList<double> ll, IReadOnlyList<double> dul)
     {
         List<double> sw = values.ToList();
         List<double> thickness = fromThickness.ToList();
-        sw.Add(0.8 * values.Last());     // 1st pseudo layer below profile.
-        sw.Add(0.4 * values.Last());     // 2nd pseudo layer below profile.
-        sw.Add(0.0);                     // 3rd pseudo layer below profile.
-        thickness.Add(thickness.Last()); // 1st pseudo layer below profile.
-        thickness.Add(thickness.Last()); // 2nd pseudo layer below profile.
-        thickness.Add(3000);             // 3rd pseudo layer below profile.
-
-        var llMapped = ll.MappedTo(toThickness, thickness);
-        var swMM = sw.LowerConstraint(llMapped, startIndex: values.Count)
-                     .Multiply(thickness);
-        return SoilUtilities.MapMass(swMM, thickness.ToArray(), toThickness.ToArray())
+        sw.Add(ll15.Last());     // add a pseudo layer below profile.
+        thickness.Add(3000);
+        var swMM = sw.Multiply(thickness);
+        var swVolumetric = SoilUtilities.MapMass(swMM, thickness.ToArray(), toThickness.ToArray())
                             .Divide(toThickness);     // convert back to volumetric
+        return swVolumetric.LowerConstraint(ll15, startIndex: 0)
+                           .UpperConstraint(dul, startIndex: 0)
+                           .ToArray();
     }
 
 }
