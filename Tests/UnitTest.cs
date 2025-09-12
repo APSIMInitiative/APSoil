@@ -73,18 +73,22 @@ public class UploadEndpointTests
             ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil2.xml")
          ]);
 
-        var soils = API.Services.Soil.Search(context, latitude:-28, longitude: 150, radius: 100)
+        var soils = API.Services.Soil.Search(context, latitude: -28, longitude: 150, radius: 100)
                                      .ToSoils();
 
         Assert.That(soils.Length, Is.EqualTo(1));
         Assert.That(soils[0].Name, Is.EqualTo("Red Chromosol (Billa Billa No066)"));
 
         // Extend the radius to cover the second soil (New Zealand)
-        soils = API.Services.Soil.Search(context, latitude:-28, longitude: 150, radius: 2500)
+        soils = API.Services.Soil.Search(context, latitude: -28, longitude: 150, radius: 2500)
                                  .ToSoils();
         Assert.That(soils.Length, Is.EqualTo(2));
         Assert.That(soils[0].Name, Is.EqualTo("Red Chromosol (Billa Billa No066)"));
         Assert.That(soils[1].Name, Is.EqualTo("Clay (Kerikeri No1353)"));
+        Assert.That(soils[0].SoilOrganicMatter, Is.Not.Null);
+        Assert.That(soils[0].Analysis, Is.Not.Null);
+        Assert.That(soils[0].SoilWater, Is.Not.Null);
+        Assert.That(soils[0].Water, Is.Not.Null);
     }
 
     [Test]
