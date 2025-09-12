@@ -84,6 +84,9 @@ public static class Soil
             // the query to be done in SQL (rather than needing a 'Difference' function).
             IEnumerable<Models.Soil> soilsInMemory = soils.Include(s => s.Water)
                                                           .Include(s => s.Water.SoilCrops)
+                                                          .Include(s => s.SoilOrganicMatter)
+                                                          .Include(s => s.SoilWater)
+                                                          .Include(s => s.Analysis)
                                                           .ToList();
 
             if (!double.IsNaN(latitude) && !double.IsNaN(longitude))
