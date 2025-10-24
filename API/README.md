@@ -34,4 +34,4 @@ To get a graph of the soil with the full name  __Soils/Africa/Generic/Clay_Deep_
 
 To get a Google Earth KMZ spatial layer of soils for a country:
 
-```https://apsoil.apsim.info/xml/search?country=Australia&output=KML```
+```https://apsoil.apsim.info/search?country=Australia&output=KML```
