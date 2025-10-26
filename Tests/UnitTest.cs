@@ -286,4 +286,17 @@ public class UploadEndpointTests
         var apsimSoilXml = soil.ToAPSIMSoil().ToXML();
         Assert.That(apsimSoilXml, Is.EqualTo(ResourceFile.Get("Tests.testsoil1.apsim.xml")));
     }
+
+    [Test]
+    public void ToGraph_ShouldWorkWithoutSWSpecified()
+    {
+        var soil = ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil1.xml");
+
+        var graph = soil.ToGraph();
+        Assert.That(graph, Is.Not.Null);
+
+        // should be 5 graph series:
+        //  shaded bucket, ll, airdry, dul, sat
+        Assert.That(graph.Series.Count, Is.EqualTo(5));
+    }
 }
