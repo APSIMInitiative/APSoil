@@ -214,7 +214,7 @@ public static class Extensions
                                    .Multiply(soil.Water.Thickness).Sum();
 
         // To stop the sw line crossing over ll, constrain it to ll.
-        var swConstainedToLL = sw.LowerConstraint(ll);
+        var swConstainedToLL = sw?.LowerConstraint(ll);
         return SoilGraph.Create(soil.Name, soil.Water.Thickness.ToMidPoints(), soil.Water.AirDry, soil.Water.LL15,
                                     soil.Water.DUL, soil.Water.SAT, ll, cropName, pawc, paw, thickness?.ToMidPoints(), swConstainedToLL);
     }
