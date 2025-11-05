@@ -1,4 +1,5 @@
 
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Services;
@@ -33,7 +34,7 @@ public class SoilsFromDb
     /// <summary>
     /// The different output formats for the soils.
     /// </summary>
-    public enum OutputFormatEnum { Names, BasicInfo, ExtendedInfo, FullSoil, KML }
+    public enum OutputFormatEnum { Names, BasicInfo, ExtendedInfo, FullSoil, FullSoilFile, KML, CSV }
 
     /// <summary>
     /// Converts the soils to a custom result in XML format.
@@ -47,8 +48,20 @@ public class SoilsFromDb
             obj = ToExtendedInfo();
         else if (outputFormat == OutputFormatEnum.FullSoil)
             obj = ToSoils().ToFolder();
+        else if (outputFormat == OutputFormatEnum.FullSoilFile)
+        {
+            var soilAsString = ToSoils().ToFolder().ToXML();
+            return Results.File(Encoding.UTF8.GetBytes(soilAsString), "text/xml", "soils.xml");
+        }
         else if (outputFormat == OutputFormatEnum.KML)
             return Results.File(ToSoils().ToRecursiveFolder().ToKMZ(), "application/vnd.google-earth.kmz", "soils.kmz");
+        else if (outputFormat == OutputFormatEnum.CSV)
+        {
+            var soil = ToSoils().First();
+            var table = soil.ToDataTable();
+            var csv = table.ToCSV();
+            return Results.File(Encoding.UTF8.GetBytes(csv), "text/csv", $"{soil.Name}.csv");
+        }
         else
             obj = soilQuery == null ? soils.Select(soil => soil.FullName).ToArray() : soilQuery.Select(soil => soil.FullName).ToArray();
 
