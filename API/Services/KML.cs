@@ -91,7 +91,8 @@ public static class KML
             {
                 Text = $"<p><b>{soil.Name}</b></p>" +
                        $"<p>{soil.DataSource}</p>" +
-                       $"<a href=\"https://apsoil.apsim.info/search?FullName={soil.FullName}&output=FullSoil\">Download soil</a></p>" +
+                       $"<a href=\"https://apsoil.apsim.info/search?FullName={soil.FullName}&output=CSV\">Download soil as .csv</a></p>" +
+                       $"<a href=\"https://apsoil.apsim.info/search?FullName={soil.FullName}&output=FullSoilFile\">Download soil as XML</a></p>" +
                        $"<img src=\"https://apsoil.apsim.info/graph?FullName={soil.FullName}\" width=\"300\" height=\"400\"/><p>"
             }
         };

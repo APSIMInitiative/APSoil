@@ -1,3 +1,4 @@
+using System.Data;
 using System.Xml.Serialization;
 using API.Data;
 using API.Services;
@@ -298,5 +299,48 @@ public class UploadEndpointTests
         // should be 5 graph series:
         //  shaded bucket, ll, airdry, dul, sat
         Assert.That(graph.Series.Count, Is.EqualTo(5));
+    }
+
+    [Test]
+    public void ToDataTable_ShouldWork()
+    {
+        var soil = ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil1.xml");
+
+        var table = soil.ToDataTable();
+        Assert.That(table, Is.Not.Null);
+        Assert.That(table.Columns.Count, Is.EqualTo(251));
+        Assert.That(table.Rows.Count, Is.EqualTo(6));
+
+        string[] someExpectedNames = [ "Name", "RecordNo", "APSoilNumber", "Latitude", "Longitude",
+                                       "BD (g/cc)", "Rocks (%)", "SAT (mm/mm)", "DUL (mm/mm)",
+                                       "LL15 (mm/mm)", "Airdry (mm/mm)" ];
+
+        foreach (var name in someExpectedNames)
+            Assert.That(table.Columns.Contains(name));
+    }
+
+    [Test]
+    public void ToCSV_ShouldWork()
+    {
+        DataTable table = new DataTable()
+        {
+            Columns =
+            {
+                { "Col1", typeof(int) },
+                { "Col2", typeof(double) }
+            },
+            Rows =
+            {
+                { 1, 2 },
+                { 3, 4 }
+            }
+        };
+
+        string csv = table.ToCSV();
+        string expectedCsv = "Col1,Col2" + Environment.NewLine +
+                             "1,2.000" + Environment.NewLine +
+                             "3,4.000" + Environment.NewLine;
+
+        Assert.That(csv, Is.EqualTo(expectedCsv));
     }
 }
