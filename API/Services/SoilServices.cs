@@ -56,9 +56,9 @@ public static class Soil
     {
         IQueryable<Models.Soil> soils = context.Soils;
         if (name != null)
-            soils = soils.Where(s => s.Name.Contains(name));
+            soils = soils.Where(s => s.Name.Trim().Contains(name));
         if (fullName != null)
-            soils = soils.Where(s => s.FullName == fullName);
+            soils = soils.Where(s => s.FullName.Trim() == fullName);
         if (folder != null)
             soils = soils.Where(s => s.FullName.Contains(folder));
         if (soilType != null)
