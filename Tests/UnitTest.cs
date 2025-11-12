@@ -32,19 +32,39 @@ public class UploadEndpointTests
         var soil = ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil1.xml");
 
         // Add soil
-        API.Services.Soil.Add(context, [ soil ]);
+        API.Services.Soil.Add(context, [soil]);
 
         // Change a field
         soil.Region = "New region";
 
         // Add soil with new region.
-        API.Services.Soil.Add(context, [ soil ]);
+        API.Services.Soil.Add(context, [soil]);
 
         // check the soil has been updated
         var updatedSoil = context.Soils
                                  .Where(s => s.Name == "Clay (Kerikeri No1353)")
                                  .FirstOrDefault();
         Assert.That(updatedSoil.Region, Is.EqualTo("New region"));
+    }
+
+    /// <summary>
+    /// The Farm4Prophet soils have trailing spaces in their names. Need to make sure
+    /// they can be retrieved.
+    /// https://github.com/APSIMInitiative/APSoil/issues/51
+    /// </summary>
+    [Test]
+    public void GetUsingFullName_ShouldIgnoreTrailingSpaces()
+    {
+        var options = MockDb.CreateOptions<SoilDbContext>();
+        using var context = new SoilDbContext(options);
+        var folder = ResourceFile.Get("Tests.testsoil1-trailing-spaces.xml").ToSoils();
+
+        API.Services.Soil.Add(context, folder);
+
+        var soils = API.Services.Soil.Search(context, fullName: "Soils/Tests/Clay (Kerikeri No1353)")
+                                     .ToSoils();
+        Assert.That(soils.Length, Is.EqualTo(1));
+        Assert.That(soils[0].Name, Is.EqualTo("Clay (Kerikeri No1353)"));
     }
 
     [Test]

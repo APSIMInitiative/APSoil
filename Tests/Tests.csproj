@@ -26,5 +26,6 @@
     <EmbeddedResource Include="testsoils.xml" />
     <EmbeddedResource Include="testsoil12.xml" />
     <EmbeddedResource Include="testsoil1.apsim.xml" />
+    <EmbeddedResource Include="testsoil1-trailing-spaces.xml" />
   </ItemGroup>
 </Project>
