@@ -42,6 +42,7 @@ public static class Soil
     /// <param name="latitude">The latitude of the point.</param>
     /// <param name="longitude">The longitude of the point.</param>
     /// <param name="fullName">The full name of the soil.</param>
+    /// <param name="recordNumber">The record number of the soil.</param>
     /// <param name="cropName">The name of the crop to use when cll or pawc is provided.</param>
     /// <param name="thickness">The thickness of the cll or PAWC values.</param>
     /// <param name="cll">The crop lower limit (volumetric).</param>
@@ -51,6 +52,7 @@ public static class Soil
     public static SoilsFromDb Search(SoilDbContext context, string name = null, string folder = null, string soilType = null, string country = null,
                                      double latitude = double.NaN, double longitude = double.NaN, double radius = double.NaN,
                                      string fullName = null,
+                                     int recordNumber = int.MinValue,
                                      string cropName = null, double[] thickness = null, double[] cll = null, bool cllIsGrav = false, double[] pawc = null,
                                      int numToReturn = 0)
     {
@@ -67,6 +69,8 @@ public static class Soil
             soils = soils.Where(s => s.Country == country);
         if (cropName != null)
             soils = soils.Where(s => s.Water.SoilCrops.Any(sc => sc.Name == cropName.ToLower()));
+        if (recordNumber != int.MinValue)
+            soils = soils.Where(s => s.RecordNumber == recordNumber);
 
         // The above where clauses can be converted to SQL by EntityFramework.
         // The lat/long, cll and pawc orderby clauses below cannot be converted to SQL so must be done in memory by LINQ
@@ -135,7 +139,7 @@ public static class Soil
     /// <returns>The plant available water(mm).</returns>
     public static double PAWC(SoilDbContext context, string fullName, string cropName)
     {
-        var soils = context.Soils.Where(s => s.FullName == fullName);
+        var soils = context.Soils.Where(s => s.FullName.Trim() == fullName);
         if (!soils.Any())
             throw new Exception($"Soil with full name {fullName} not found.");
         return soils.Include(s => s.Water)
@@ -159,7 +163,7 @@ public static class Soil
     /// <returns>The plant available water(mm).</returns>
     public static double PAW(SoilDbContext context, string fullName, string cropName, IReadOnlyList<double> thickness, IReadOnlyList<double> sw, bool swIsGrav)
     {
-        var soils = context.Soils.Where(s => s.FullName == fullName);
+        var soils = context.Soils.Where(s => s.FullName.Trim() == fullName);
         if (!soils.Any())
             throw new Exception($"Soil with full name {fullName} not found.");
         var soil = soils.Include(s => s.Water)

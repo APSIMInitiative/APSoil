@@ -66,11 +66,12 @@ internal class Program
         app.MapGet("/search", (SoilDbContext context, string name = null, string folder = null, string soilType = null, string country = null,
                                    double latitude = double.NaN, double longitude = double.NaN, double radius = double.NaN,
                                    string fullName = null,
+                                   int recordNumber = int.MinValue,
                                    string cropName = null, Values thickness = null, Values cll = null, bool cllIsGrav = false, Values pawc = null,
                                    int numToReturn = 0,
                                    OutputFormatEnum output = OutputFormatEnum.Names) =>
             Soil.Search(context, name, folder, soilType, country, latitude, longitude, radius,
-                        fullName, cropName, thickness?.Doubles, cll?.Doubles, cllIsGrav, pawc?.Doubles, numToReturn)
+                        fullName, recordNumber, cropName, thickness?.Doubles, cll?.Doubles, cllIsGrav, pawc?.Doubles, numToReturn)
                 .ToXMLResult(output));
 
         // Endpoint: Get graph of soil.

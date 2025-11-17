@@ -1,6 +1,6 @@
 <folder version="36" creator="Apsim 7.7-r3678" name="Soils">
   <Folder name="Tests">
-    <Soil name="Clay (Kerikeri No1353)">
+    <Soil name="Clay (Kerikeri No1353)    ">
       <RecordNumber>1265</RecordNumber>
       <FullName>Soils/Tests/Clay (Kerikeri No1353)    </FullName>
       <ASCOrder />

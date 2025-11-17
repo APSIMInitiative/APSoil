@@ -64,7 +64,7 @@ public class UploadEndpointTests
         var soils = API.Services.Soil.Search(context, fullName: "Soils/Tests/Clay (Kerikeri No1353)")
                                      .ToSoils();
         Assert.That(soils.Length, Is.EqualTo(1));
-        Assert.That(soils[0].Name, Is.EqualTo("Clay (Kerikeri No1353)"));
+        Assert.That(soils[0].Name.Trim(), Is.EqualTo("Clay (Kerikeri No1353)"));
     }
 
     [Test]
@@ -172,6 +172,21 @@ public class UploadEndpointTests
         Assert.That(soils[0].Name, Is.EqualTo("Clay (Kerikeri No1353)"));
     }
 
+    [Test]
+    public void GetWithRecordNumber_ShouldReturnSoil()
+    {
+        var options = MockDb.CreateOptions<SoilDbContext>();
+        using var context = new SoilDbContext(options);
+        API.Services.Soil.Add(context, [
+            ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil1.xml"),
+            ResourceFile.FromResourceXML<API.Models.Soil>("Tests.testsoil2.xml")
+         ]);
+
+        var soils = API.Services.Soil.Search(context, recordNumber: 1)
+                                     .ToSoils();
+        Assert.That(soils.Length, Is.EqualTo(1));
+        Assert.That(soils[0].Name, Is.EqualTo("Red Chromosol (Billa Billa No066)"));
+    }
 
     [Test]
     public void SoilsToXML_ShouldReturnValidXML()
@@ -231,6 +246,18 @@ public class UploadEndpointTests
     }
 
     [Test]
+    public void PAWC_ShouldReturnCorrectValueFromSoilWithTrailingSpacesInName()
+    {
+        var options = MockDb.CreateOptions<SoilDbContext>();
+        using var context = new SoilDbContext(options);
+        var folder = ResourceFile.Get("Tests.testsoil1-trailing-spaces.xml").ToSoils();
+        API.Services.Soil.Add(context, folder);
+
+        var pawc = API.Services.Soil.PAWC(context, "Soils/Tests/Clay (Kerikeri No1353)", cropName: "wheat");
+        Assert.That(pawc, Is.EqualTo(214.89).Within(0.000001));
+    }
+
+    [Test]
     public void PAW_ShouldReturnCorrectValue()
     {
         var options = MockDb.CreateOptions<SoilDbContext>();
@@ -245,6 +272,20 @@ public class UploadEndpointTests
         Assert.That(paw, Is.EqualTo(21.72).Within(0.000001));
     }
 
+
+    [Test]
+    public void PAW_ShouldReturnCorrectValueFromSoilWithTrailingSpacesInName()
+    {
+        var options = MockDb.CreateOptions<SoilDbContext>();
+        using var context = new SoilDbContext(options);
+        var folder = ResourceFile.Get("Tests.testsoil1-trailing-spaces.xml").ToSoils();
+        API.Services.Soil.Add(context, folder);
+
+        var paw = API.Services.Soil.PAW(context, "Soils/Tests/Clay (Kerikeri No1353)", cropName: "wheat",
+                                        thickness: [ 150, 500 ],
+                                        sw: [ 0.4, 0.3 ], swIsGrav: false);
+        Assert.That(paw, Is.EqualTo(21.72).Within(0.000001));
+    }
 
     [Test]
     public void PAWFromGravimetric_ShouldReturnCorrectValue()
